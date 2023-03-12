@@ -5,7 +5,7 @@ import createElement from './createElement';
 
 const screenController = () => {
   const projects = Projects();
-  let activeProject = projects.inbox;
+  let activeProject = projects.projects[0]; // Inbox
 
   const updateTasksDisplay = () => {
     const tasksListEl = document.querySelector('.tasks-list');
@@ -33,21 +33,21 @@ const screenController = () => {
   const addTaskBtn = document.querySelector('.add-task');
   addTaskBtn.addEventListener('click', () => {
     const tasksListEl = document.querySelector('.tasks-list');
-    const taskEl = createElement('div', ['new-task'], {}, '')
-    const statusEl = createElement('input', [], {}, '')
+    const taskEl = createElement('div', ['new-task'], {}, '');
+    const statusEl = createElement('input', [], {}, '');
     const titleEl = createElement('input', ['task-title'], {});
-    const descriptionEl = createElement('input', [], {}, '')
-    const dueDateEl = createElement('input', [], {'type': 'date'}, '')
-    const submitBtn = createElement('button', [], {}, 'Submit')
-    taskEl.appendChild(statusEl)
-    taskEl.appendChild(titleEl)
-    taskEl.appendChild(descriptionEl)
-    taskEl.appendChild(dueDateEl)
+    const descriptionEl = createElement('input', [], {}, '');
+    const dueDateEl = createElement('input', [], { type: 'date' }, '');
+    const submitBtn = createElement('button', [], {}, 'Submit');
+    taskEl.appendChild(statusEl);
+    taskEl.appendChild(titleEl);
+    taskEl.appendChild(descriptionEl);
+    taskEl.appendChild(dueDateEl);
     for (let i = 0; i < 3; i++) {
-      taskEl.appendChild(createElement('div', [], {}, ''))
+      taskEl.appendChild(createElement('div', [], {}, ''));
     }
-    taskEl.appendChild(submitBtn)
-    tasksListEl.appendChild(taskEl)
+    taskEl.appendChild(submitBtn);
+    tasksListEl.appendChild(taskEl);
     titleEl.focus();
 
     submitBtn.addEventListener('click', () => {
@@ -55,12 +55,11 @@ const screenController = () => {
         titleEl.value,
         descriptionEl.value,
         dueDateEl.value,
-        statusEl.value,
+        statusEl.value
       );
       projects.addTaskToProject(task, activeProject);
-      updateTasksDisplay(activeProject);
-    })
-
+      updateTasksDisplay();
+    });
   });
 
   const updateProjectsDisplay = () => {
@@ -83,7 +82,7 @@ const screenController = () => {
   addProjectBtn.addEventListener('click', () => {
     const projectListEl = document.querySelector('.projects-list');
     const projectEl = createElement('input', ['project-title'], {});
-    projectListEl.appendChild(projectEl)
+    projectListEl.appendChild(projectEl);
     projectEl.focus();
 
     projectEl.addEventListener('change', () => {
@@ -91,16 +90,7 @@ const screenController = () => {
       activeProject = projects.projects[projects.projects.length - 1];
       updateProjectsDisplay();
       updateTasksDisplay(activeProject);
-    })
-
-
-  });
-
-  // Event listener for Inbox
-  const inboxEl = document.querySelector('.inbox');
-  inboxEl.addEventListener('click', () => {
-    activeProject = projects.inbox;
-    updateTasksDisplay(activeProject);
+    });
   });
 
   // Event listener for Projects List
@@ -110,6 +100,9 @@ const screenController = () => {
     activeProject = projects.projects[index];
     updateTasksDisplay(activeProject);
   });
+
+  updateProjectsDisplay();
+  updateTasksDisplay();
 };
 
 export default screenController;

@@ -3,33 +3,37 @@ import List from './list';
 const Projects = () => {
   console.log('Next To Do is great');
 
-  // Create default task list - Inbox
-  const inbox = List('Inbox');
-
   // A list of projects that will each contain a list of tasks
-  const projects = [];
+  // Get stored index from localStorage
+  let projects = JSON.parse(localStorage.getItem('projects'));
+  if (projects === null) {
+    projects = [];
+    // Create Inbox
+    const inbox = List('Inbox');
+    projects.push(inbox);
+  }
+
+  const saveProjects = () => {
+    localStorage.projects = JSON.stringify(projects);
+  };
 
   // Create a new project
   const addProject = (name) => {
     const project = List(name);
     projects.push(project);
+    saveProjects();
   };
 
   // Assign a task to a particular project
-  // By default the task is added to Inbox
   const addTaskToProject = (task, project) => {
-    if (!project) {
-      project = inbox;
-    }
     project.addTask(task);
+    saveProjects();
   };
 
   return {
     addProject,
     addTaskToProject,
-    get inbox() {
-      return inbox;
-    },
+    saveProjects,
     get projects() {
       return projects;
     },

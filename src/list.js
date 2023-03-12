@@ -1,12 +1,20 @@
 const List = (name) => {
-  const tasks = [];
-  console.log(`Create list ${name}`);
+  // let tasks = JSON.parse(localStorage.getItem('tasks'));
+  // if (tasks === null) {
+    const tasks = [];
+    console.log(`Create list ${name}`);
+  // }
+
+  const saveTasks = () => {
+    localStorage.projects = JSON.stringify(tasks);
+  };
 
   const printTasks = () => {
     console.log(`${name} has ${tasks.length} tasks: `);
     tasks.forEach((task) => {
       console.log(task.title);
     });
+    // saveTasks();
   };
 
   const addTask = (task) => {
