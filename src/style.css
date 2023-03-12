@@ -27,6 +27,10 @@ h1 {
   grid-template-columns: 1fr 5fr;
 }
 
+.inbox, .add-task, .add-project {
+  cursor: pointer;
+}
+
 .projects-header {
   display: grid;
   grid-template-columns: 6fr 1fr;
