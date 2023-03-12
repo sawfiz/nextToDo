@@ -1,3 +1,4 @@
 import './style.css';
+import listsManager from './listsManaager';
 
-console.log('Next To Do is great');
+listsManager();
