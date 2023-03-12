@@ -6,6 +6,7 @@ import createElement from './createElement';
 const screenController = () => {
   const projects = Projects();
   let activeProject = projects.projects[0]; // Inbox
+  const projectsListEl = document.querySelector('.projects-list');
 
   const updateTasksDisplay = () => {
     const tasksListEl = document.querySelector('.tasks-list');
@@ -63,7 +64,7 @@ const screenController = () => {
   });
 
   const updateProjectsDisplay = () => {
-    const projectsListEl = document.querySelector('.projects-list');
+    // const projectsListEl = document.querySelector('.projects-list');
     projectsListEl.innerHTML = '';
     projects.projects.forEach((project, index) => {
       const projectEl = createElement(
@@ -93,11 +94,19 @@ const screenController = () => {
     });
   });
 
+  // Hightlight Active Project whose tasks is being viewed
+  const highlightActiveProject = (element) => {
+    Array.from(projectsListEl.children).forEach((child) => {
+      child.classList.remove('active-project');
+    });
+    element.classList.add('active-project');
+  };
+
   // Event listener for Projects List
-  const projectsEl = document.querySelector('.projects-list');
-  projectsEl.addEventListener('click', (e) => {
+  projectsListEl.addEventListener('click', (e) => {
     const index = e.target.dataset.id;
     activeProject = projects.projects[index];
+    highlightActiveProject(e.target);
     updateTasksDisplay(activeProject);
   });
 
