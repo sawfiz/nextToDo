@@ -32,15 +32,35 @@ const screenController = () => {
   // Event listener for the add task button
   const addTaskBtn = document.querySelector('.add-task');
   addTaskBtn.addEventListener('click', () => {
-    const task = Task(
-      'Do this',
-      'This needs to be done',
-      '2023-03-12',
-      'Not started'
-    );
+    const tasksListEl = document.querySelector('.tasks-list');
+    const taskEl = createElement('div', ['new-task'], {}, '')
+    const statusEl = createElement('input', [], {}, '')
+    const titleEl = createElement('input', ['task-title'], {});
+    const descriptionEl = createElement('input', [], {}, '')
+    const dueDateEl = createElement('input', [], {'type': 'date'}, '')
+    const submitBtn = createElement('button', [], {}, 'Submit')
+    taskEl.appendChild(statusEl)
+    taskEl.appendChild(titleEl)
+    taskEl.appendChild(descriptionEl)
+    taskEl.appendChild(dueDateEl)
+    for (let i = 0; i < 3; i++) {
+      taskEl.appendChild(createElement('div', [], {}, ''))
+    }
+    taskEl.appendChild(submitBtn)
+    tasksListEl.appendChild(taskEl)
+    titleEl.focus();
 
-    projects.addTaskToProject(task, activeProject);
-    updateTasksDisplay(activeProject);
+    submitBtn.addEventListener('click', () => {
+      const task = Task(
+        titleEl.value,
+        descriptionEl.value,
+        dueDateEl.value,
+        statusEl.value,
+      );
+      projects.addTaskToProject(task, activeProject);
+      updateTasksDisplay(activeProject);
+    })
+
   });
 
   const updateProjectsDisplay = () => {
@@ -61,11 +81,19 @@ const screenController = () => {
   // Event listener for the add project button
   const addProjectBtn = document.querySelector('.add-project');
   addProjectBtn.addEventListener('click', () => {
-    const newProjectName = prompt('Enter a new project name?');
-    projects.addProject(newProjectName);
-    activeProject = projects.projects[projects.projects.length - 1];
-    updateProjectsDisplay();
-    updateTasksDisplay(activeProject);
+    const projectListEl = document.querySelector('.projects-list');
+    const projectEl = createElement('input', ['project-title'], {});
+    projectListEl.appendChild(projectEl)
+    projectEl.focus();
+
+    projectEl.addEventListener('change', () => {
+      projects.addProject(projectEl.value);
+      activeProject = projects.projects[projects.projects.length - 1];
+      updateProjectsDisplay();
+      updateTasksDisplay(activeProject);
+    })
+
+
   });
 
   // Event listener for Inbox
@@ -80,45 +108,8 @@ const screenController = () => {
   projectsEl.addEventListener('click', (e) => {
     const index = e.target.dataset.id;
     activeProject = projects.projects[index];
-
     updateTasksDisplay(activeProject);
   });
 };
 
 export default screenController;
-
-// const task = Task(
-//   'Do this',
-//   'This needs to be done',
-//   '2023-03-12',
-//   'Not started'
-// );
-// console.log('Add a task to inbox');
-// projects.addTaskToProject(task);
-
-// const task2 = Task(
-//   'Do this 2',
-//   'This needs to be done',
-//   '2023-03-12',
-//   'Not started'
-// );
-
-// console.log('Add a task to inbox');
-// projects.addTaskToProject(task2);
-
-// console.log('Initial project');
-// projects.addProject('shopping');
-
-// const task3 = Task(
-//   'Do this 3',
-//   'This needs to be done',
-//   '2023-03-12',
-//   'Not started'
-// );
-
-// const projectName = 'shopping';
-// const shopping = projects.projects.find((proj) => proj.name === projectName);
-// projects.addTaskToProject(task3, shopping);
-
-// console.log('Move tasks2 to shopping list');
-// projects.inbox.moveTask(task2, shopping);
