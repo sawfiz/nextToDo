@@ -1,4 +1,3 @@
-import './style.css';
-import listsManager from './listsManaager';
+import screenController from './screenController';
 
-listsManager();
+screenController();

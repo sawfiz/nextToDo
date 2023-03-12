@@ -1,8 +1,9 @@
 const List = (name) => {
   const tasks = [];
+  console.log(`Create list ${name}`);
 
   const printTasks = () => {
-    console.log(`${name} has ${tasks.length} tasks: `)
+    console.log(`${name} has ${tasks.length} tasks: `);
     tasks.forEach((task) => {
       console.log(task.title);
     });
@@ -28,20 +29,20 @@ const List = (name) => {
     printTasks();
   };
 
-  // This getter is needed, as inbox.list returns undefined.
-  // const getAllTasks = () => {
-  //   return list;
-  // };
-  // The getter can be implemented in return{} below using `get`
-
   return {
+    get name() {
+      return name;
+    },
+    set name(newName) {
+      name = newName;
+    },
+    get tasks() {
+      return tasks;
+    },
     addTask,
     removeTask,
     moveTask,
     printTasks,
-    get tasks() {
-      return tasks;
-    },
   };
 };
 

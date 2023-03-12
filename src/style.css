@@ -5,6 +5,34 @@
   box-sizing: border-box;
 }
 
+body {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 15fr;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 5fr 1fr 20fr;
+
+}
+
 h1 {
   color: red;
+}
+
+.container {
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+}
+
+.projects-header {
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr 1fr;
 }
