@@ -5,11 +5,9 @@ import createElement from './createElement';
 
 const screenController = () => {
   const projects = Projects();
-
-  let activeProjectName = 'Inbox';
   let activeProject = projects.inbox;
 
-  const updateTasksDisplay = (project) => {
+  const updateTasksDisplay = () => {
     const tasksListEl = document.querySelector('.tasks-list');
     tasksListEl.innerHTML = '';
     activeProject.tasks.forEach((task, index) => {
@@ -40,13 +38,7 @@ const screenController = () => {
       '2023-03-12',
       'Not started'
     );
-    console.log('Add a task to inbox');
-    let activeProject = projects.projects.find(
-      (proj) => proj.name === activeProjectName
-    );
-    if (!activeProject) {
-      activeProject = projects.inbox;
-    }
+
     projects.addTaskToProject(task, activeProject);
     updateTasksDisplay(activeProject);
   });
@@ -71,12 +63,7 @@ const screenController = () => {
   addProjectBtn.addEventListener('click', () => {
     const newProjectName = prompt('Enter a new project name?');
     projects.addProject(newProjectName);
-    activeProjectName = newProjectName;
     activeProject = projects.projects[projects.projects.length - 1];
-    console.log(
-      '🚀 ~ file: screenController.js:61 ~ addProjectBtn.addEventListener ~ activeProject:',
-      activeProject
-    );
     updateProjectsDisplay();
     updateTasksDisplay(activeProject);
   });
@@ -85,24 +72,15 @@ const screenController = () => {
   const inboxEl = document.querySelector('.inbox');
   inboxEl.addEventListener('click', () => {
     activeProject = projects.inbox;
-    activeProjectName = activeProject.name;
     updateTasksDisplay(activeProject);
   });
 
   // Event listener for Projects List
   const projectsEl = document.querySelector('.projects-list');
   projectsEl.addEventListener('click', (e) => {
-    console.log(
-      '🚀 ~ file: screenController.js:92 ~ projectsEl.addEventListener ~ e:',
-      e
-    );
     const index = e.target.dataset.id;
-    console.log(
-      '🚀 ~ file: screenController.js:87 ~ projectsEl.addEventListener ~ index:',
-      index
-    );
     activeProject = projects.projects[index];
-    activeProjectName = activeProject.name;
+
     updateTasksDisplay(activeProject);
   });
 };
