@@ -4,10 +4,24 @@ import Projects from './projects';
 import createElement from './createElement';
 
 const screenController = () => {
+  // Create a Projects object with an empty list of projects
   const projects = Projects();
+  // Read saved projects data from local storage
+  const data = JSON.parse(localStorage.getItem('projects'));
+  if (!data) {
+    // If no data exists, create an empty Inbox
+    projects.addProject('Inbox');
+  } else {
+    // Otherwise, create a list of projects based on the stored names and tasks
+    data.forEach((projectData) => {
+      projects.addProject(projectData.name, projectData.tasks);
+    });
+  }
+
   let activeProject = projects.projects[0]; // Inbox
   const projectsListEl = document.querySelector('.projects-list');
 
+  // Function to update the tasks list part of the UI
   const updateTasksDisplay = () => {
     const tasksListEl = document.querySelector('.tasks-list');
     tasksListEl.innerHTML = '';
@@ -95,18 +109,112 @@ const screenController = () => {
   });
 
   // Hightlight Active Project whose tasks is being viewed
-  const highlightActiveProject = (element) => {
+  const highlightActiveProject = (projectEl, index) => {
     Array.from(projectsListEl.children).forEach((child) => {
+      // Remove any highlights
       child.classList.remove('active-project');
+      // Remove mini menu if any
+      if (child.children.length > 0) {
+        const firstChild = child.children[0];
+        firstChild.remove();
+      }
     });
-    element.classList.add('active-project');
+    // Add highlight
+    projectEl.classList.add('active-project');
+
+    // Add mini menu
+    // Do not show mini menu for Inbox
+    if (index > 0) {
+      projectEl.style.cursor = 'default';
+      const menuEl = createElement('div', ['project-mini-menu'], {}, '');
+      projectEl.appendChild(menuEl);
+      menuEl.appendChild(createElement('div', [], {}, ''));
+
+      // Show the up arrow
+      // Do not show for the project just below Inbox
+      if (index > 1) {
+        menuEl.appendChild(
+          createElement(
+            'button',
+            ['project-mini-menu-button'],
+            { 'data-id': 'up' },
+            '^'
+          )
+        );
+      } else {
+        menuEl.appendChild(createElement('div', [], {}, ''));
+      }
+
+      // Show the down arrow
+      // Do not show for the project at the botton of the list
+      if (index < projects.projects.length - 1) {
+        menuEl.appendChild(
+          createElement(
+            'button',
+            ['project-mini-menu-button'],
+            { 'data-id': 'down' },
+            'v'
+          )
+        );
+      } else {
+        menuEl.appendChild(createElement('div', [], {}, ''));
+      }
+
+      menuEl.appendChild(
+        createElement(
+          'button',
+          ['project-mini-menu-button'],
+          { 'data-id': 'edit' },
+          'E'
+        )
+      );
+      menuEl.appendChild(
+        createElement(
+          'button',
+          ['project-mini-menu-button'],
+          { 'data-id': 'remove' },
+          'X'
+        )
+      );
+
+      menuEl.addEventListener('click', (e) => {
+        switch (e.target.dataset.id) {
+          case 'remove':
+            const result = confirm('Do you want to proceed?');
+            if (result) {
+              // user clicked "OK"
+              projects.removeProject(index);
+              activeProject = projects.projects[0];
+              console.log(
+                '🚀 ~ file: screenController.js:174 ~ menuEl.addEventListener ~ activeProject.name:',
+                activeProject.name
+              );
+            } else {
+              // user clicked "Cancel"
+            }
+            updateTasksDisplay(activeProject);
+            break;
+          case 'up':
+            projects.swapUpProject(index);
+            activeProject = projects.projects[index - 1];
+            break;
+
+          default:
+            break;
+        }
+      });
+    }
   };
 
   // Event listener for Projects List
   projectsListEl.addEventListener('click', (e) => {
     const index = e.target.dataset.id;
     activeProject = projects.projects[index];
-    highlightActiveProject(e.target);
+    console.log(
+      '🚀 ~ file: screenController.js:213 ~ projectsListEl.addEventListener ~ activeProject:',
+      activeProject
+    );
+    highlightActiveProject(e.target, index);
     updateTasksDisplay(activeProject);
   });
 

@@ -4,23 +4,22 @@ const Projects = () => {
   console.log('Next To Do is great');
 
   // A list of projects that will each contain a list of tasks
-  // Get stored index from localStorage
-  let projects = JSON.parse(localStorage.getItem('projects'));
-  if (projects === null) {
-    projects = [];
-    // Create Inbox
-    const inbox = List('Inbox');
-    projects.push(inbox);
-  }
+  const projects = [];
 
   const saveProjects = () => {
     localStorage.projects = JSON.stringify(projects);
   };
 
   // Create a new project
-  const addProject = (name) => {
-    const project = List(name);
-    projects.push(project);
+  const addProject = (name, data) => {
+    if (!data) {
+      const project = List(name);
+      projects.push(project);
+    } else {
+      // const project = Object.assign(List(name), data);
+      const project = List(name, data);
+      projects.push(project);
+    }
     saveProjects();
   };
 
@@ -30,9 +29,26 @@ const Projects = () => {
     saveProjects();
   };
 
+  // Swap a project up
+  const swapUpProject = (index) => {
+    [projects[index], projects[index - 1]] = [
+      projects[index - 1],
+      projects[index],
+    ];
+    saveProjects();
+  };
+
+  // Remove a new project
+  const removeProject = (index) => {
+    projects.splice(index, 1);
+    saveProjects();
+  };
+
   return {
     addProject,
     addTaskToProject,
+    removeProject,
+    swapUpProject,
     saveProjects,
     get projects() {
       return projects;

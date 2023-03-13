@@ -43,6 +43,15 @@ h1 {
   background-color: yellow;
 }
 
+.project-mini-menu {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.project-mini-menu-button {
+  cursor: pointer;
+}
+
 .tasks-list-header, .task {
   height: 1.5rem;
   margin: 0 5%;

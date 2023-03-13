@@ -1,8 +1,7 @@
-const List = (name) => {
-  // let tasks = JSON.parse(localStorage.getItem('tasks'));
-  // if (tasks === null) {
-    const tasks = [];
-    console.log(`Create list ${name}`);
+const List = (name, existingTasks = []) => {
+    const tasks = existingTasks || [];
+
+    console.log(`Create list ${name} ${tasks}`);
   // }
 
   const saveTasks = () => {
