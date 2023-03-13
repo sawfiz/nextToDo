@@ -29,21 +29,9 @@ const Projects = () => {
     saveProjects();
   };
 
-  // Swap a project up
-  const swapUpProject = (index) => {
-    [projects[index], projects[index - 1]] = [
-      projects[index - 1],
-      projects[index],
-    ];
-    saveProjects();
-  };
-
-  // Swap a project down
-  const swapDownProject = (index) => {
-    [projects[index], projects[index + 1]] = [
-      projects[index + 1],
-      projects[index],
-    ];
+  // Swap the order of 2 projects 
+  const swapProject = (x, y) => {
+    [projects[x], projects[y]] = [projects[y], projects[x]];
     saveProjects();
   };
 
@@ -57,8 +45,7 @@ const Projects = () => {
     addProject,
     addTaskToProject,
     removeProject,
-    swapUpProject,
-    swapDownProject,
+    swapProject,
     saveProjects,
     get projects() {
       return projects;

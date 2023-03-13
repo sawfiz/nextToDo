@@ -78,25 +78,6 @@ const screenController = () => {
     });
   });
 
-  // Hightlight Active Project whose tasks is being viewed
-  const highlightActiveProject = () => {
-    Array.from(projectsListEl.children).forEach((child) => {
-      // Remove any highlights
-      child.classList.remove('active-project');
-      // Remove mini menu if any
-      if (child.children.length > 0) {
-        const firstChild = child.children[0];
-        firstChild.remove();
-      }
-    });
-
-    // Check if index is valid number
-    // Index might be "remove"
-    if (!activeProject) activeProject = projects.projects[0];
-    // Add highlight
-    projectsListEl.children[projects.projects.indexOf(activeProject)].classList.add('active-project');
-  };
-
   const addProjectMiniMenu = (projectEl, index) => {
     // Add mini menu
     // Do not show mini menu for Inbox
@@ -113,7 +94,7 @@ const screenController = () => {
           createElement(
             'button',
             ['project-mini-menu-button'],
-            { 'data-id': 'up' },
+            { 'data-btn': 'up' },
             '^'
           )
         );
@@ -128,7 +109,7 @@ const screenController = () => {
           createElement(
             'button',
             ['project-mini-menu-button'],
-            { 'data-id': 'down' },
+            { 'data-btn': 'down' },
             'v'
           )
         );
@@ -140,7 +121,7 @@ const screenController = () => {
         createElement(
           'button',
           ['project-mini-menu-button'],
-          { 'data-id': 'edit' },
+          { 'data-btn': 'edit' },
           'E'
         )
       );
@@ -148,50 +129,18 @@ const screenController = () => {
         createElement(
           'button',
           ['project-mini-menu-button'],
-          { 'data-id': 'remove' },
+          { 'data-btn': 'remove' },
           'X'
         )
       );
-
-      menuEl.addEventListener('click', (e) => {
-        switch (e.target.dataset.id) {
-          case 'remove':
-            const result = confirm('Do you want to proceed?');
-            if (result) {
-              // user clicked "OK"
-              projects.removeProject(index);
-              activeProject = projects.projects[0];
-              console.log(
-                '🚀 ~ file: screenController.js:174 ~ menuEl.addEventListener ~ activeProject.name:',
-                activeProject.name
-              );
-            } else {
-              // user clicked "Cancel"
-            }
-            updateProjectsDisplay();
-            updateTasksDisplay(activeProject);
-            break;
-          case 'up':
-            projects.swapUpProject(index);
-            activeProject = projects.projects[index - 1];
-            updateProjectsDisplay();
-            updateTasksDisplay(activeProject);
-            break;
-          case 'down':
-            projects.swapDownProject(index);
-            activeProject = projects.projects[index + 1];
-            updateProjectsDisplay();
-            updateTasksDisplay(activeProject);
-            break;
-
-          default:
-            break;
-        }
-      });
     }
   };
 
   const updateProjectsDisplay = () => {
+    console.log(
+      '🚀 ~ file: screenController.js:197 ~ updateProjectsDisplay ~ activeProject:',
+      activeProject
+    );
     if (!activeProject) {
       activeProject = projects.projects[0];
     }
@@ -204,7 +153,10 @@ const screenController = () => {
         { style: 'cursor: pointer', 'data-id': index },
         `${project.name} ${index}`
       );
-      // projectEl.dataset.id = index;
+      if (project === activeProject) {
+        projectEl.classList.add('active-project');
+        addProjectMiniMenu(projectEl, index);
+      }
       projectsListEl.appendChild(projectEl);
     });
   };
@@ -221,22 +173,57 @@ const screenController = () => {
       projects.addProject(projectEl.value);
       activeProject = projects.projects[projects.projects.length - 1];
       updateProjectsDisplay();
-      highlightActiveProject();
+      // highlightActiveProject();
       updateTasksDisplay(activeProject);
     });
   });
 
   // Event listener for Projects List
   projectsListEl.addEventListener('click', (e) => {
-    const index = e.target.dataset.id;
-    activeProject = projects.projects[index];
-    highlightActiveProject();
-    addProjectMiniMenu(e.target, index);
-    updateTasksDisplay(index);
+    console.log(
+      '🚀 ~ file: screenController.js:258 ~ projectsListEl.addEventListener ~ e:',
+      e
+    );
+    let index;
+    const parent = e.target.parentElement;
+    console.log(
+      '🚀 ~ file: screenController.js:251 ~ projectsListEl.addEventListener ~ parent:',
+      parent
+    );
+    if (parent.classList.contains('projects-list')) {
+      index = e.target.dataset.id;
+      activeProject = projects.projects[index];
+      updateProjectsDisplay();
+      updateTasksDisplay(index);
+    } else if (parent.classList.contains('project-mini-menu')) {
+      index = parent.parentElement.dataset.id;
+      console.log(
+        '🚀 ~ file: screenController.js:269 ~ projectsListEl.addEventListener ~ parent.parent:',
+        parent.parentElement
+      );
+      switch (e.target.dataset.btn) {
+        case 'up':
+          projects.swapProject(index, index - 1);
+          index--;
+          break;
+        case 'down':
+          projects.swapProject(index, index + 1);
+          index++;
+          break;
+        case 'remove':
+          projects.removeProject(index);
+          index = 0;
+          break;
+
+        default:
+          break;
+      }
+      activeProject = projects.projects[index];
+      updateProjectsDisplay();
+    }
   });
 
   updateProjectsDisplay();
-  highlightActiveProject();
   updateTasksDisplay();
 };
 
