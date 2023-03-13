@@ -1,24 +1,16 @@
 const List = (name, existingTasks = []) => {
-    const tasks = existingTasks || [];
-
-    console.log(`Create list ${name} ${tasks}`);
-  // }
-
-  const saveTasks = () => {
-    localStorage.projects = JSON.stringify(tasks);
-  };
+  const tasks = existingTasks || [];
 
   const printTasks = () => {
     console.log(`${name} has ${tasks.length} tasks: `);
     tasks.forEach((task) => {
       console.log(task.title);
     });
-    // saveTasks();
   };
 
   const addTask = (task) => {
     tasks.push(task);
-    printTasks();
+    // printTasks();
   };
 
   const removeTask = (task) => {
@@ -27,13 +19,13 @@ const List = (name, existingTasks = []) => {
       // Make sure the task exists in the list
       tasks.splice(index, 1);
     }
-    printTasks();
+    // printTasks();
   };
 
   const moveTask = (task, newList) => {
     removeTask(task);
     newList.addTask(task);
-    printTasks();
+    // printTasks();
   };
 
   return {

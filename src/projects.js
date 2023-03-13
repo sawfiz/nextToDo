@@ -38,6 +38,15 @@ const Projects = () => {
     saveProjects();
   };
 
+  // Swap a project down
+  const swapDownProject = (index) => {
+    [projects[index], projects[index + 1]] = [
+      projects[index + 1],
+      projects[index],
+    ];
+    saveProjects();
+  };
+
   // Remove a new project
   const removeProject = (index) => {
     projects.splice(index, 1);
@@ -49,6 +58,7 @@ const Projects = () => {
     addTaskToProject,
     removeProject,
     swapUpProject,
+    swapDownProject,
     saveProjects,
     get projects() {
       return projects;

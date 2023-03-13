@@ -23,6 +23,7 @@ const screenController = () => {
 
   // Function to update the tasks list part of the UI
   const updateTasksDisplay = () => {
+    if (!activeProject) activeProject = projects.projects[0];
     const tasksListEl = document.querySelector('.tasks-list');
     tasksListEl.innerHTML = '';
     activeProject.tasks.forEach((task, index) => {
@@ -77,39 +78,8 @@ const screenController = () => {
     });
   });
 
-  const updateProjectsDisplay = () => {
-    // const projectsListEl = document.querySelector('.projects-list');
-    projectsListEl.innerHTML = '';
-    projects.projects.forEach((project, index) => {
-      const projectEl = createElement(
-        'div',
-        [],
-        { style: 'cursor: pointer', 'data-id': index },
-        `${project.name} ${index}`
-      );
-      // projectEl.dataset.id = index;
-      projectsListEl.appendChild(projectEl);
-    });
-  };
-
-  // Event listener for the add project button
-  const addProjectBtn = document.querySelector('.add-project');
-  addProjectBtn.addEventListener('click', () => {
-    const projectListEl = document.querySelector('.projects-list');
-    const projectEl = createElement('input', ['project-title'], {});
-    projectListEl.appendChild(projectEl);
-    projectEl.focus();
-
-    projectEl.addEventListener('change', () => {
-      projects.addProject(projectEl.value);
-      activeProject = projects.projects[projects.projects.length - 1];
-      updateProjectsDisplay();
-      updateTasksDisplay(activeProject);
-    });
-  });
-
   // Hightlight Active Project whose tasks is being viewed
-  const highlightActiveProject = (projectEl, index) => {
+  const highlightActiveProject = () => {
     Array.from(projectsListEl.children).forEach((child) => {
       // Remove any highlights
       child.classList.remove('active-project');
@@ -119,9 +89,15 @@ const screenController = () => {
         firstChild.remove();
       }
     });
-    // Add highlight
-    projectEl.classList.add('active-project');
 
+    // Check if index is valid number
+    // Index might be "remove"
+    if (!activeProject) activeProject = projects.projects[0];
+    // Add highlight
+    projectsListEl.children[projects.projects.indexOf(activeProject)].classList.add('active-project');
+  };
+
+  const addProjectMiniMenu = (projectEl, index) => {
     // Add mini menu
     // Do not show mini menu for Inbox
     if (index > 0) {
@@ -192,11 +168,20 @@ const screenController = () => {
             } else {
               // user clicked "Cancel"
             }
+            updateProjectsDisplay();
             updateTasksDisplay(activeProject);
             break;
           case 'up':
             projects.swapUpProject(index);
             activeProject = projects.projects[index - 1];
+            updateProjectsDisplay();
+            updateTasksDisplay(activeProject);
+            break;
+          case 'down':
+            projects.swapDownProject(index);
+            activeProject = projects.projects[index + 1];
+            updateProjectsDisplay();
+            updateTasksDisplay(activeProject);
             break;
 
           default:
@@ -206,19 +191,52 @@ const screenController = () => {
     }
   };
 
+  const updateProjectsDisplay = () => {
+    if (!activeProject) {
+      activeProject = projects.projects[0];
+    }
+
+    projectsListEl.innerHTML = '';
+    projects.projects.forEach((project, index) => {
+      const projectEl = createElement(
+        'div',
+        [],
+        { style: 'cursor: pointer', 'data-id': index },
+        `${project.name} ${index}`
+      );
+      // projectEl.dataset.id = index;
+      projectsListEl.appendChild(projectEl);
+    });
+  };
+
+  // Event listener for the add project button
+  const addProjectBtn = document.querySelector('.add-project');
+  addProjectBtn.addEventListener('click', () => {
+    const projectListEl = document.querySelector('.projects-list');
+    const projectEl = createElement('input', ['project-title'], {});
+    projectListEl.appendChild(projectEl);
+    projectEl.focus();
+
+    projectEl.addEventListener('change', () => {
+      projects.addProject(projectEl.value);
+      activeProject = projects.projects[projects.projects.length - 1];
+      updateProjectsDisplay();
+      highlightActiveProject();
+      updateTasksDisplay(activeProject);
+    });
+  });
+
   // Event listener for Projects List
   projectsListEl.addEventListener('click', (e) => {
     const index = e.target.dataset.id;
     activeProject = projects.projects[index];
-    console.log(
-      '🚀 ~ file: screenController.js:213 ~ projectsListEl.addEventListener ~ activeProject:',
-      activeProject
-    );
-    highlightActiveProject(e.target, index);
-    updateTasksDisplay(activeProject);
+    highlightActiveProject();
+    addProjectMiniMenu(e.target, index);
+    updateTasksDisplay(index);
   });
 
   updateProjectsDisplay();
+  highlightActiveProject();
   updateTasksDisplay();
 };
 
