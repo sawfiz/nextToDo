@@ -8,17 +8,20 @@ const screenController = () => {
   const projects = Projects();
   // Read saved projects data from local storage
   const data = JSON.parse(localStorage.getItem('projects'));
+  console.log("🚀 ~ file: screenController.js:11 ~ screenController ~ data:", data)
   if (!data) {
     // If no data exists, create an empty Inbox
+    console.log("Create Inbox")
     projects.addProject('Inbox');
   } else {
     // Otherwise, create a list of projects based on the stored names and tasks
     data.forEach((projectData) => {
-      projects.addProject(projectData.name, projectData.tasks);
+      if (projectData) projects.addProject(projectData.name, projectData.tasks);
     });
   }
 
   let activeProject = projects.projects[0]; // Inbox
+  console.log("🚀 ~ file: screenController.js:22 ~ screenController ~ activeProject:", activeProject)
   const projectsListEl = document.querySelector('.projects-list');
 
   // Function to update the tasks list part of the UI
@@ -138,8 +141,8 @@ const screenController = () => {
 
   const updateProjectsDisplay = () => {
     console.log(
-      '🚀 ~ file: screenController.js:197 ~ updateProjectsDisplay ~ activeProject:',
-      activeProject
+      '🚀 ~ file: screenController.js:197 ~ updateProjectsDisplay ~ activeProject.name:',
+      activeProject.name
     );
     if (!activeProject) {
       activeProject = projects.projects[0];
@@ -191,12 +194,14 @@ const screenController = () => {
       parent
     );
     if (parent.classList.contains('projects-list')) {
-      index = e.target.dataset.id;
+      // id is stored as a string, need to convert it to a number to avoid issues
+      index = Number(e.target.dataset.id);
       activeProject = projects.projects[index];
       updateProjectsDisplay();
       updateTasksDisplay(index);
     } else if (parent.classList.contains('project-mini-menu')) {
-      index = parent.parentElement.dataset.id;
+      // id is stored as a string, need to convert it to a number to avoid issues
+      index = Number(parent.parentElement.dataset.id);
       console.log(
         '🚀 ~ file: screenController.js:269 ~ projectsListEl.addEventListener ~ parent.parent:',
         parent.parentElement
@@ -219,6 +224,7 @@ const screenController = () => {
           break;
       }
       activeProject = projects.projects[index];
+      console.log("🚀 ~ file: screenController.js:225 ~ projectsListEl.addEventListener ~ activeProject.name:", activeProject.name)
       updateProjectsDisplay();
     }
   });

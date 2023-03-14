@@ -16,7 +16,6 @@ const Projects = () => {
       const project = List(name);
       projects.push(project);
     } else {
-      // const project = Object.assign(List(name), data);
       const project = List(name, data);
       projects.push(project);
     }

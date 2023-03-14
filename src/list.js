@@ -1,5 +1,6 @@
 const List = (name, existingTasks = []) => {
   const tasks = existingTasks || [];
+  console.log(`Create list ${name}`);
 
   const printTasks = () => {
     console.log(`${name} has ${tasks.length} tasks: `);
