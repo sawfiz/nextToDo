@@ -67,11 +67,11 @@ const updateProjectsDisplay = (projects, activeProject) => {
   const projectListEl = document.querySelector('.project-list');
   projectListEl.innerHTML = '';
   projects.projects.forEach((project, index) => {
-    const projectEl = createElement('div', ['project'], {});
+    const projectEl = createElement('div', ['project'], {'data-id': index });
     const projectNameEl = createElement(
       'div',
       ['project-name'],
-      { style: 'cursor: pointer', 'data-id': index },
+      { style: 'cursor: pointer'},
       `${project.name}`
     );
     projectEl.appendChild(projectNameEl);
@@ -88,87 +88,101 @@ const addNewProject = (projects) => {
   const inputEl = createElement('input', ['project-title'], {});
   projectListEl.appendChild(inputEl);
   inputEl.focus();
-  
+
   return new Promise((resolve) => {
     inputEl.addEventListener('change', () => {
       projects.addProject(inputEl.value);
       resolve();
-    })
+    });
   });
 };
 
 // Event listener for Projects List
 const projectListlickHandler = (e, projects) => {
+  console.log(
+    '🚀 ~ file: dom-projects.js:102 ~ projectListlickHandler ~ e:',
+    e
+  );
   let index;
   let activeProject;
   const parentEl = e.target.parentElement;
   const grandParentEl = parentEl.parentElement;
-  if (parentEl.classList.contains('project')) {
-    // id is stored as a string, need to convert it to a number to avoid issues
-    index = Number(e.target.dataset.id);
-    console.log(
-      '🚀 ~ file: dom-projects.js:111 ~ projectListlickHandler ~ index:',
-      index
-    );
-    // Use this check to avoid error message when user click on the input box
-    // for changing project name
-    // Do not use if (index), as the inbox's index is 0,
-    // this will cause a bug where inbox is ignored
-    if (index !== NaN) {
-      activeProject = projects.projects[index];
-      updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject);
-    }
-  } else if (parentEl.classList.contains('project-mini-menu')) {
-    // id is stored as a string, need to convert it to a number to avoid issues
-    index = Number(grandParentEl.children[0].dataset.id);
-    switch (e.target.dataset.btn) {
-      case 'up':
-        projects.swapProject(index, index - 1);
-        index--;
-        activeProject = projects.projects[index];
-        updateProjectsDisplay(projects, activeProject);
-        break;
-      case 'down':
-        projects.swapProject(index, index + 1);
-        index++;
-        activeProject = projects.projects[index];
-        updateProjectsDisplay(projects, activeProject);
-        break;
-      case 'edit':
-        const inputEl = createElement('input', [], {
-          type: 'text',
-          value: grandParentEl.children[0].textContent,
-        });
-        grandParentEl.removeChild(grandParentEl.children[0]);
-        grandParentEl.insertBefore(inputEl, grandParentEl.firstChild);
-        inputEl.focus();
-        inputEl.addEventListener('change', () => {
-          const projectNameEl = createElement(
-            'div',
-            'project-name',
-            { style: 'cursor: pointer', 'data-id': index },
-            inputEl.value
-          );
-          grandParentEl.removeChild(inputEl);
-          grandParentEl.insertBefore(projectNameEl, grandParentEl.firstChild);
-          activeProject = projects.projects[index];
-          projects.renameProject(activeProject, inputEl.value);
-          updateProjectsDisplay(projects, activeProject);
-        });
-        break;
-      case 'remove':
-        projects.removeProject(index);
-        index = 0;
-        activeProject = projects.projects[index];
-        updateProjectsDisplay(projects, activeProject);
-        break;
 
-      default:
-        break;
+  return new Promise((resolve) => {
+    if (parentEl.classList.contains('project')) {
+      // id is stored as a string, need to convert it to a number to avoid issues
+      index = Number(parentEl.dataset.id);
+      console.log(
+        '🚀 ~ file: dom-projects.js:111 ~ projectListlickHandler ~ index:',
+        index
+      );
+
+      // Use this check to ignore when user click on the input box
+      // for changing project name
+      if (e.target.tagName !== 'INPUT') {
+        activeProject = projects.projects[index];
+        updateTasksDisplay(projects, activeProject);
+        resolve(index);
+      }
+    } else if (parentEl.classList.contains('project-mini-menu')) {
+      // id is stored as a string, need to convert it to a number to avoid issues
+      index = Number(grandParentEl.dataset.id);
+      console.log("🚀 ~ file: dom-projects.js:130 ~ returnnewPromise ~ grandParentEl:", grandParentEl)
+      console.log(
+        '🚀 ~ file: dom-projects.js:127 ~ returnnewPromise ~ index:',
+        index
+      );
+      switch (e.target.dataset.btn) {
+        case 'up':
+          projects.swapProject(index, index - 1);
+          index--;
+          resolve(index);
+          break;
+        case 'down':
+          projects.swapProject(index, index + 1);
+          index++;
+          resolve(index);
+
+          break;
+        case 'edit':
+          const inputEl = createElement('input', [], {
+            type: 'text',
+            value: grandParentEl.children[0].textContent,
+            'data-id': index,
+          });
+            console.log("🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ index:", index)
+          grandParentEl.removeChild(grandParentEl.children[0]);
+          grandParentEl.insertBefore(inputEl, grandParentEl.firstChild);
+          inputEl.focus();
+          inputEl.addEventListener('change', () => {
+            const projectNameEl = createElement(
+              'div',
+              'project-name',
+              { style: 'cursor: pointer', 'data-id': index },
+              inputEl.value
+            );
+            activeProject = projects.projects[index];
+            console.log(
+              '🚀 ~ file: dom-projects.js:156 ~ inputEl.addEventListener ~ activeProject:',
+              activeProject
+            );
+            projects.renameProject(activeProject, inputEl.value);
+            grandParentEl.insertBefore(projectNameEl, grandParentEl.firstChild);
+            grandParentEl.removeChild(inputEl);
+            resolve(index);
+          });
+          break;
+        case 'remove':
+          projects.removeProject(index);
+          index = 0;
+          resolve(index);
+          break;
+
+        default:
+          break;
+      }
     }
-  }
-  return activeProject;
+  });
 };
 
 export { addNewProject, updateProjectsDisplay, projectListlickHandler };

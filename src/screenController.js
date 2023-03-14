@@ -40,7 +40,20 @@ const screenController = () => {
 
   const projectListEl = document.querySelector('.project-list');
   projectListEl.addEventListener('click', (e) => {
-    activeProject = projectListlickHandler(e, projects);
+    console.log(
+      '🚀 ~ file: screenController.js:49 ~ projectListlickHandler ~ activeProject:',
+      activeProject
+    );
+    projectListlickHandler(e, projects).then((index) => {
+      console.log(
+        '🚀 ~ file: screenController.js:44 ~ projectListlickHandler ~ index:',
+        index
+      );
+      if (index !== NaN) {
+        activeProject = projects.projects[index];
+        updateProjectsDisplay(projects, activeProject);
+      }
+    });
   });
 
   updateProjectsDisplay(projects, activeProject);
