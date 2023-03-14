@@ -1,8 +1,6 @@
 import List from './list';
 
 const Projects = () => {
-  console.log('Next To Do is great');
-
   // A list of projects that will each contain a list of tasks
   const projects = [];
 
