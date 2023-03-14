@@ -28,9 +28,15 @@ const Projects = () => {
     saveProjects();
   };
 
-  // Swap the order of 2 projects 
+  // Swap the order of 2 projects
   const swapProject = (x, y) => {
     [projects[x], projects[y]] = [projects[y], projects[x]];
+    saveProjects();
+  };
+
+  // Change the name of the project
+  const renameProject = (project, newName) => {
+    project.name = newName;
     saveProjects();
   };
 
@@ -46,6 +52,7 @@ const Projects = () => {
     removeProject,
     swapProject,
     saveProjects,
+    renameProject,
     get projects() {
       return projects;
     },

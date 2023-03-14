@@ -8,10 +8,13 @@ const screenController = () => {
   const projects = Projects();
   // Read saved projects data from local storage
   const data = JSON.parse(localStorage.getItem('projects'));
-  console.log("🚀 ~ file: screenController.js:11 ~ screenController ~ data:", data)
+  console.log(
+    '🚀 ~ file: screenController.js:11 ~ screenController ~ data:',
+    data
+  );
   if (!data) {
     // If no data exists, create an empty Inbox
-    console.log("Create Inbox")
+    console.log('Create Inbox');
     projects.addProject('Inbox');
   } else {
     // Otherwise, create a list of projects based on the stored names and tasks
@@ -21,7 +24,10 @@ const screenController = () => {
   }
 
   let activeProject = projects.projects[0]; // Inbox
-  console.log("🚀 ~ file: screenController.js:22 ~ screenController ~ activeProject:", activeProject)
+  console.log(
+    '🚀 ~ file: screenController.js:22 ~ screenController ~ activeProject:',
+    activeProject
+  );
   const projectsListEl = document.querySelector('.projects-list');
 
   // Function to update the tasks list part of the UI
@@ -150,12 +156,14 @@ const screenController = () => {
 
     projectsListEl.innerHTML = '';
     projects.projects.forEach((project, index) => {
-      const projectEl = createElement(
+      const projectEl = createElement('div', ['project'], {});
+      const projectNameEl = createElement(
         'div',
-        [],
+        ['project-name'],
         { style: 'cursor: pointer', 'data-id': index },
-        `${project.name} ${index}`
+        `${project.name}`
       );
+      projectEl.appendChild(projectNameEl);
       if (project === activeProject) {
         projectEl.classList.add('active-project');
         addProjectMiniMenu(projectEl, index);
@@ -183,49 +191,88 @@ const screenController = () => {
 
   // Event listener for Projects List
   projectsListEl.addEventListener('click', (e) => {
-    console.log(
-      '🚀 ~ file: screenController.js:258 ~ projectsListEl.addEventListener ~ e:',
-      e
-    );
     let index;
-    const parent = e.target.parentElement;
     console.log(
-      '🚀 ~ file: screenController.js:251 ~ projectsListEl.addEventListener ~ parent:',
-      parent
+      '🚀 ~ file: screenController.js:251 ~ projectsListEl.addEventListener ~ e.target:',
+      e.target
     );
-    if (parent.classList.contains('projects-list')) {
+    const parentEl = e.target.parentElement;
+    console.log("🚀 ~ file: screenController.js:200 ~ projectsListEl.addEventListener ~ parentEl:", parentEl)
+    const grandParentEl = parentEl.parentElement;
+    if (parentEl.classList.contains('project')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(e.target.dataset.id);
-      activeProject = projects.projects[index];
-      updateProjectsDisplay();
-      updateTasksDisplay(index);
-    } else if (parent.classList.contains('project-mini-menu')) {
+      console.log("🚀 ~ file: screenController.js:205 ~ projectsListEl.addEventListener ~ index:", index)
+      // Use this check to avoid error message when user click on the input box 
+      // for changing project name
+      // Do not use if (index), as the inbox's index is 0, 
+      // this will cause a bug where inbox is ignored
+      if (index !== undefined) {
+        activeProject = projects.projects[index];
+        console.log("🚀 ~ file: screenController.js:210 ~ projectsListEl.addEventListener ~ activeProject:", activeProject)
+        updateProjectsDisplay();
+        updateTasksDisplay(index);
+      }
+    } else if (parentEl.classList.contains('project-mini-menu')) {
       // id is stored as a string, need to convert it to a number to avoid issues
-      index = Number(parent.parentElement.dataset.id);
+      index = Number(grandParentEl.children[0].dataset.id);
       console.log(
-        '🚀 ~ file: screenController.js:269 ~ projectsListEl.addEventListener ~ parent.parent:',
-        parent.parentElement
+        '🚀 ~ file: screenController.js:269 ~ projectsListEl.addEventListener ~ grandParentEl:',
+        grandParentEl
       );
       switch (e.target.dataset.btn) {
         case 'up':
           projects.swapProject(index, index - 1);
           index--;
+          activeProject = projects.projects[index];
+          updateProjectsDisplay();
           break;
         case 'down':
           projects.swapProject(index, index + 1);
           index++;
+          activeProject = projects.projects[index];
+          updateProjectsDisplay();
+          break;
+        case 'edit':
+          const inputEl = createElement('input', [], {
+            type: 'text',
+            value: grandParentEl.children[0].textContent,
+          });
+          console.log(
+            '🚀 ~ file: screenController.js:255 ~ projectsListEl.addEventListener ~ grandParentEl.children[0].textContent:',
+            grandParentEl.children[0].textContent
+          );
+          grandParentEl.removeChild(grandParentEl.children[0]);
+          grandParentEl.insertBefore(inputEl, grandParentEl.firstChild);
+          inputEl.focus();
+          inputEl.addEventListener('change', () => {
+            const projectNameEl = createElement(
+              'div',
+              'project-name',
+              { style: 'cursor: pointer', 'data-id': index },
+              inputEl.value
+            );
+            grandParentEl.removeChild(inputEl);
+            grandParentEl.insertBefore(projectNameEl, grandParentEl.firstChild);
+            activeProject = projects.projects[index];
+            console.log(
+              '🚀 ~ file: screenController.js:249 ~ inputEl.addEventListener ~ activeProject.name:',
+              activeProject.name
+            );
+            projects.renameProject(activeProject, inputEl.value);
+            updateProjectsDisplay();
+          });
           break;
         case 'remove':
           projects.removeProject(index);
           index = 0;
+          activeProject = projects.projects[index];
+          updateProjectsDisplay();
           break;
 
         default:
           break;
       }
-      activeProject = projects.projects[index];
-      console.log("🚀 ~ file: screenController.js:225 ~ projectsListEl.addEventListener ~ activeProject.name:", activeProject.name)
-      updateProjectsDisplay();
     }
   });
 

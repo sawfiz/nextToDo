@@ -29,6 +29,10 @@ const List = (name, existingTasks = []) => {
     // printTasks();
   };
 
+  // const renameList = (newName) => {
+  //   name = newName;
+  // }
+
   return {
     get name() {
       return name;
@@ -43,6 +47,7 @@ const List = (name, existingTasks = []) => {
     removeTask,
     moveTask,
     printTasks,
+    // renameList,
   };
 };
 
