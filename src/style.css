@@ -56,7 +56,7 @@ h1 {
   height: 1.5rem;
   margin: 0 5%;
   display: grid;
-  grid-template-columns: 1fr 2fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 15fr 2fr 2fr;
   border-bottom: 1px solid darkgray;
 }
 
@@ -67,6 +67,6 @@ h1 {
 .new-task {
   margin: 5px 5%;
   display: grid;
-  grid-template-columns: 1fr 2fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 15fr 2fr 2fr;
   grid-template-rows: 1fr 1fr;
 }

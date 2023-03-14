@@ -1,8 +1,9 @@
-const Task = (title, description, dueDate, status) => ({
-  title,
-  description,
-  dueDate,
+const Task = (focus, status, description, startDate, dueDate) => ({
+  focus,
   status,
+  description,
+  startDate,
+  dueDate,
 });
 
 export default Task;
