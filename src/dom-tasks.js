@@ -93,14 +93,14 @@ const updateTasksDisplay = (projects, activeProject) => {
     }
     taskEl.appendChild(taskDueDateEl);
 
-    col++;
-    const placeHolderEl = createElement(
-      'div',
-      [],
-      { 'data-row': index, 'data-col': col },
-      ''
-    );
-    taskEl.appendChild(placeHolderEl);
+    // col++;
+    // const placeHolderEl = createElement(
+    //   'div',
+    //   [],
+    //   { 'data-row': index, 'data-col': col },
+    //   ''
+    // );
+    // taskEl.appendChild(placeHolderEl);
 
     tasksListEl.appendChild(taskEl);
   });
@@ -156,37 +156,14 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
   const taskEl = tasksListEl.children[row];
   taskEl.classList.add('active-task');
   return new Promise((resolve) => {
-    // The delete button
-    // Replace place holder with a del button
-    taskEl.removeChild(taskEl.children[5]);
-    const delBtn = createElement(
-      'button',
-      [],
-      { 'data-row': row, 'data-col': col },
-      '❌'
-    );
-    taskEl.appendChild(delBtn);
+    const editingTaskEl = createElement('div', ['editing-task'], {}, '');
 
-    delBtn.addEventListener('click', () => {
-      // Call from projects to delete the task
-      // so that the local storage is updated after the deletion
-      projects.deleteTaskFromProject(row, activeProject);
-      resolve();
-    });
-
-    // Toggle focus
+    // Focus button
     const focusIcon = taskEl.children[0].innerText;
     const focusEl = createElement('button', ['focus-btn'], {}, focusIcon);
-    taskEl.replaceChild(focusEl, taskEl.children[0]);
+    editingTaskEl.appendChild(focusEl);
 
-    focusEl.addEventListener('click', () => {
-      // Toggle focus icon
-      let value = focusIcon === '🫥' ? true : false;
-      projects.updateTaskinProject(activeProject, row, 'focus', value);
-      resolve();
-    });
-
-    // Update status
+    // Status pull down
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
     const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
@@ -197,36 +174,105 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     statusEl.appendChild(statusWaitEl);
     const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
     statusEl.appendChild(statusDoneEl);
-    taskEl.replaceChild(statusEl, taskEl.children[1]);
+    editingTaskEl.appendChild(statusEl);
 
-    // Update description
+    // Description text input
     const description = taskEl.children[2].innerText;
-    const descriptionEl = createElement('input', [], {value: description}, '');
-    taskEl.replaceChild(descriptionEl, taskEl.children[2]);
-    
-    descriptionEl.addEventListener('change', () => {
-      projects.updateTaskinProject(activeProject, row, 'description', descriptionEl.value);
-      resolve();
-    })
-    
-    // Update startDate
-    const startDateEl = createElement('input', [], {type: 'date', value: taskEl.children[3].innerText }, '')
-    taskEl.replaceChild(startDateEl, taskEl.children[3]);
-    
-    startDateEl.addEventListener('change', ()=>{
-      projects.updateTaskinProject(activeProject, row, 'startDate', startDateEl.value);
-      resolve();
-    })
+    const descriptionEl = createElement(
+      'input',
+      [],
+      { value: description },
+      ''
+    );
+    editingTaskEl.appendChild(descriptionEl);
+
+    // StartDate date input
+    const startDateEl = createElement(
+      'input',
+      [],
+      { type: 'date', value: taskEl.children[3].innerText },
+      ''
+    );
+    editingTaskEl.appendChild(startDateEl);
 
     // Update dueDate
-    const dueDateEl = createElement('input', [], {type: 'date', value: taskEl.children[4].innerText }, '')
-    taskEl.replaceChild(dueDateEl, taskEl.children[4]);
-    
-    dueDateEl.addEventListener('change', ()=>{
-      projects.updateTaskinProject(activeProject, row, 'dueDate', dueDateEl.value);
-      resolve();
-    })
+    const dueDateEl = createElement(
+      'input',
+      [],
+      { type: 'date', value: taskEl.children[4].innerText },
+      ''
+    );
+    editingTaskEl.appendChild(dueDateEl);
 
+    for (let i = 0; i < 4; i++) {
+      // make sure not to use 'div' here due to a check in screenController()
+      const element = createElement('p', [], {}, '');
+      editingTaskEl.appendChild(element);
+    }
+    // The delete button
+    const delBtn = createElement(
+      'button',
+      [],
+      { 'data-row': row, 'data-col': col },
+      '❌'
+    );
+    editingTaskEl.appendChild(delBtn);
+
+    tasksListEl.replaceChild(editingTaskEl, taskEl);
+
+    focusEl.addEventListener('click', () => {
+      // Toggle focus icon
+      let value = focusIcon === '🫥' ? true : false;
+      projects.updateTaskinProject(activeProject, row, 'focus', value);
+      resolve();
+    });
+
+    statusEl.addEventListener('change', () => {
+      projects.updateTaskinProject(
+        activeProject,
+        row,
+        'status',
+        status[statusEl.selectedIndex]
+      );
+      resolve();
+    });
+
+    descriptionEl.addEventListener('change', () => {
+      projects.updateTaskinProject(
+        activeProject,
+        row,
+        'description',
+        descriptionEl.value
+      );
+      resolve();
+    });
+
+    startDateEl.addEventListener('change', () => {
+      projects.updateTaskinProject(
+        activeProject,
+        row,
+        'startDate',
+        startDateEl.value
+      );
+      resolve();
+    });
+
+    dueDateEl.addEventListener('change', () => {
+      projects.updateTaskinProject(
+        activeProject,
+        row,
+        'dueDate',
+        dueDateEl.value
+      );
+      resolve();
+    });
+
+    delBtn.addEventListener('click', () => {
+      // Call from projects to delete the task
+      // so that the local storage is updated after the deletion
+      projects.deleteTaskFromProject(row, activeProject);
+      resolve();
+    });
   });
 };
 
