@@ -154,6 +154,10 @@ const addNewTask = (projects, activeProject) => {
 
 const taskListClickHandler = (row, col, projects, activeProject) => {
   const taskEl = tasksListEl.children[row];
+  console.log(
+    '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
+    taskEl
+  );
   taskEl.classList.add('active-task');
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -164,15 +168,23 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     editingTaskEl.appendChild(focusEl);
 
     // Status pull down
+    const targetIcon = taskEl.children[1].innerText;
+    const index = Object.entries(statusIcons).findIndex(
+      ([key, value]) => value === targetIcon
+    );
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
     const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
+    if (index === 0) statusToDoEl.selected = true;
     statusEl.appendChild(statusToDoEl);
     const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
+    if (index === 1) statusDoingEl.selected = true;
     statusEl.appendChild(statusDoingEl);
     const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
+    if (index === 2) statusWaitEl.selected = true;
     statusEl.appendChild(statusWaitEl);
     const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
+    if (index === 3) statusDoneEl.selected = true;
     statusEl.appendChild(statusDoneEl);
     editingTaskEl.appendChild(statusEl);
 
@@ -280,6 +292,10 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     });
 
     projectDropDownEl.addEventListener('change', () => {
+      console.log(
+        '🚀 ~ file: dom-tasks.js:290 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.selectedIndex:',
+        projectDropDownEl.selectedIndex
+      );
       projects.moveTasktoProject(
         activeProject,
         row,
