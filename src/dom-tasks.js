@@ -30,7 +30,15 @@ const addNewTask = (projects, activeProject) => {
   const tasksListEl = document.querySelector('.tasks-list');
   const taskEl = createElement('div', ['new-task'], {}, '');
   const focusEl = createElement('input', [], { type: 'checkbox' }, '');
-  const statusEl = createElement('input', [], { type: 'checkbox' }, '');
+  const statusEl = createElement('select', [], {}, '');
+  const statusToDoEl = createElement('option', [], {}, 'Todo');
+  statusEl.appendChild(statusToDoEl);
+  const statusDoingEl = createElement('option', [], {}, 'Doing');
+  statusEl.appendChild(statusDoingEl);
+  const statusWaitEl = createElement('option', [], {}, 'Wait');
+  statusEl.appendChild(statusWaitEl);
+  const statusDoneEl = createElement('option', [], {}, 'Done');
+  statusEl.appendChild(statusDoneEl);
   const descriptionEl = createElement('input', [], {}, '');
   const startDateEl = createElement('input', [], { type: 'date' }, '');
   const dueDateEl = createElement('input', [], { type: 'date' }, '');
@@ -50,8 +58,8 @@ const addNewTask = (projects, activeProject) => {
   return new Promise((resolve) => {
     submitBtn.addEventListener('click', () => {
       const task = Task(
-        focusEl.value,
-        statusEl.value,
+        focusEl.checked,
+        statusEl.options[statusEl.selectedIndex].value,
         descriptionEl.value,
         startDateEl.value,
         dueDateEl.value
