@@ -34,6 +34,15 @@ const List = (name, existingTasks = []) => {
       case 'focus':
         tasks[index].focus = value;
         break;
+      case 'description':
+        tasks[index].description = value;
+        break;
+      case 'startDate':
+        tasks[index].startDate = value;
+        break;
+      case 'dueDate':
+        tasks[index].dueDate = value;
+        break;
     
       default:
         break;

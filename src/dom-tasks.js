@@ -174,22 +174,59 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
       resolve();
     });
 
-    // Change focus
+    // Toggle focus
     const focusIcon = taskEl.children[0].innerText;
-    const focusEl = createElement('button', [], {}, focusIcon);
+    const focusEl = createElement('button', ['focus-btn'], {}, focusIcon);
     taskEl.replaceChild(focusEl, taskEl.children[0]);
 
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
       let value = focusIcon === '🫥' ? true : false;
-      projects.updateTaskinProject(
-        activeProject,
-        row,
-        'focus',
-        value
-      );
+      projects.updateTaskinProject(activeProject, row, 'focus', value);
       resolve();
     });
+
+    // Update status
+    const statusEl = createElement('select', [], {}, '');
+    // Option is from the statusIcons dictionary
+    const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
+    statusEl.appendChild(statusToDoEl);
+    const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
+    statusEl.appendChild(statusDoingEl);
+    const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
+    statusEl.appendChild(statusWaitEl);
+    const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
+    statusEl.appendChild(statusDoneEl);
+    taskEl.replaceChild(statusEl, taskEl.children[1]);
+
+    // Update description
+    const description = taskEl.children[2].innerText;
+    const descriptionEl = createElement('input', [], {value: description}, '');
+    taskEl.replaceChild(descriptionEl, taskEl.children[2]);
+    
+    descriptionEl.addEventListener('change', () => {
+      projects.updateTaskinProject(activeProject, row, 'description', descriptionEl.value);
+      resolve();
+    })
+    
+    // Update startDate
+    const startDateEl = createElement('input', [], {type: 'date', value: taskEl.children[3].innerText }, '')
+    taskEl.replaceChild(startDateEl, taskEl.children[3]);
+    
+    startDateEl.addEventListener('change', ()=>{
+      projects.updateTaskinProject(activeProject, row, 'startDate', startDateEl.value);
+      resolve();
+    })
+
+    // Update dueDate
+    const dueDateEl = createElement('input', [], {type: 'date', value: taskEl.children[4].innerText }, '')
+    taskEl.replaceChild(dueDateEl, taskEl.children[4]);
+    
+    dueDateEl.addEventListener('change', ()=>{
+      projects.updateTaskinProject(activeProject, row, 'dueDate', dueDateEl.value);
+      resolve();
+    })
+
   });
 };
 
