@@ -2,6 +2,14 @@ import './style.css';
 import createElement from './createElement';
 import Task from './task';
 
+const status = ['Todo', 'Doing', 'Wait', 'Done']
+const statusIcons = {
+  Todo: '⭕️',
+  Doing: '◐',
+  Wait: '⏳',
+  Done: '✅',
+}
+
 function compareDateWithToday(dateString) {
   // Parse the input date string into a Date object
   const inputDate = new Date(dateString);
@@ -32,11 +40,13 @@ const updateTasksDisplay = (projects, activeProject) => {
   activeProject.tasks.forEach((task) => {
     const taskEl = createElement('div', ['task'], {}, '');
     const taskFocusEl = createElement('div', [], {}, task.focus);
+    taskFocusEl.innerText = task.focus === true ? '🔆' : '🫥';
     taskEl.appendChild(taskFocusEl);
-    const taskStatusEl = createElement('div', [], {}, task.status);
+    const taskStatusEl = createElement('div', [], {}, statusIcons[task.status]);
     taskEl.appendChild(taskStatusEl);
     const taskDescriptionEl = createElement('div', [], {}, task.description);
-    if (task.status === "Done") {
+    console.log("🚀 ~ file: dom-tasks.js:48 ~ activeProject.tasks.forEach ~ task.status:", task.status)
+    if (task.status === 'Done') {
       taskDescriptionEl.classList.add('done')
     }
     taskEl.appendChild(taskDescriptionEl);
@@ -55,21 +65,18 @@ const updateTasksDisplay = (projects, activeProject) => {
 };
 
 const addNewTask = (projects, activeProject) => {
-  console.log(
-    '🚀 ~ file: dom-tasks.js:24 ~ addNewTask ~ activeProject:',
-    activeProject
-  );
   const tasksListEl = document.querySelector('.tasks-list');
   const taskEl = createElement('div', ['new-task'], {}, '');
   const focusEl = createElement('input', [], { type: 'checkbox' }, '');
   const statusEl = createElement('select', [], {}, '');
-  const statusToDoEl = createElement('option', [], {}, 'Todo');
+  // Option is from the statusIcons dictionary
+  const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
   statusEl.appendChild(statusToDoEl);
-  const statusDoingEl = createElement('option', [], {}, 'Doing');
+  const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']) ;
   statusEl.appendChild(statusDoingEl);
-  const statusWaitEl = createElement('option', [], {}, 'Wait');
+  const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
   statusEl.appendChild(statusWaitEl);
-  const statusDoneEl = createElement('option', [], {}, 'Done');
+  const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
   statusEl.appendChild(statusDoneEl);
   const descriptionEl = createElement('input', [], {}, '');
   const startDateEl = createElement('input', [], { type: 'date' }, '');
@@ -91,7 +98,8 @@ const addNewTask = (projects, activeProject) => {
     submitBtn.addEventListener('click', () => {
       const task = Task(
         focusEl.checked,
-        statusEl.options[statusEl.selectedIndex].value,
+        // status is from array ['Todo', 'Doing', 'Wait', 'Done']
+        status[statusEl.selectedIndex],
         descriptionEl.value,
         startDateEl.value,
         dueDateEl.value
