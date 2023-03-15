@@ -32,6 +32,15 @@ const screenController = () => {
   const addProjectBtn = document.querySelector('.add-project');
   const projectListEl = document.querySelector('.project-list');
   const taskListEl = document.querySelector('.task-list');
+  const bodyEl = document.querySelector('body');
+
+  bodyEl.addEventListener('click', (e) => {
+    const parentClassList = e.target.parentElement.classList;
+    if (parentClassList.contains('container') || parentClassList.contains('header')) {
+      updateProjectsDisplay(projects, activeProject);
+      updateTasksDisplay(projects, activeProject);
+    }
+  });
 
   addTaskBtn.addEventListener('click', () => {
     addProjectBtn.disabled = true;
@@ -84,10 +93,9 @@ const screenController = () => {
 
     updateTasksDisplay(projects, activeProject);
 
-    taskListClickHandler(row, col, projects, activeProject)
-      .then(() => {
-        updateTasksDisplay(projects, activeProject);
-      });
+    taskListClickHandler(row, col, projects, activeProject).then(() => {
+      updateTasksDisplay(projects, activeProject);
+    });
   });
 
   updateProjectsDisplay(projects, activeProject);
