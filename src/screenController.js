@@ -36,7 +36,7 @@ const screenController = () => {
 
   bodyEl.addEventListener('click', (e) => {
     const parentClassList = e.target.parentElement.classList;
-    if (parentClassList.contains('container') || parentClassList.contains('header')) {
+    if (parentClassList.contains('container')) {
       updateProjectsDisplay(projects, activeProject);
       updateTasksDisplay(projects, activeProject);
     }

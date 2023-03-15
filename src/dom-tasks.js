@@ -204,15 +204,27 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     );
     editingTaskEl.appendChild(dueDateEl);
 
-    for (let i = 0; i < 4; i++) {
+    // Place holders
+    for (let i = 0; i < 3; i++) {
       // make sure not to use 'div' here due to a check in screenController()
       const element = createElement('p', [], {}, '');
       editingTaskEl.appendChild(element);
     }
+
+    // The project list drop down
+    const projectDropDownEl = createElement('select', [], {}, '');
+    // Options are project names
+    projects.projects.forEach((project) => {
+      const projectEl = createElement('option', [], {}, project.name);
+      projectDropDownEl.appendChild(projectEl);
+    });
+
+    editingTaskEl.appendChild(projectDropDownEl);
+
     // The delete button
     const delBtn = createElement(
       'button',
-      [],
+      ['delete-btn'],
       { 'data-row': row, 'data-col': col },
       '❌'
     );
@@ -263,6 +275,15 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
         row,
         'dueDate',
         dueDateEl.value
+      );
+      resolve();
+    });
+
+    projectDropDownEl.addEventListener('change', () => {
+      projects.moveTasktoProject(
+        activeProject,
+        row,
+        projects.projects[projectDropDownEl.selectedIndex]
       );
       resolve();
     });

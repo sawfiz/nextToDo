@@ -96,3 +96,7 @@ h1 {
 .date-passed {
   color: red;
 }
+
+.delete-btn {
+  margin: 3px 30%;
+}

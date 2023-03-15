@@ -23,9 +23,9 @@ const List = (name, existingTasks = []) => {
     // printTasks();
   };
 
-  const moveTask = (task, newList) => {
-    removeTask(task);
-    newList.addTask(task);
+  const moveTask = (index, newList) => {
+    newList.addTask(tasks[index]);
+    removeTask(index);
     // printTasks();
   };
 
