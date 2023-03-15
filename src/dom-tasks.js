@@ -2,13 +2,14 @@ import './style.css';
 import createElement from './createElement';
 import Task from './task';
 
-const status = ['Todo', 'Doing', 'Wait', 'Done']
+const status = ['Todo', 'Doing', 'Wait', 'Done'];
 const statusIcons = {
-  Todo: '⭕️',
+  Todo: '️⃝',
   Doing: '◐',
   Wait: '⏳',
   Done: '✅',
-}
+};
+const tasksListEl = document.querySelector('.task-list');
 
 function compareDateWithToday(dateString) {
   // Parse the input date string into a Date object
@@ -31,48 +32,88 @@ function compareDateWithToday(dateString) {
   }
 }
 
-
 const updateTasksDisplay = (projects, activeProject) => {
-  const today = new Date();
   if (!activeProject) activeProject = projects.projects[0];
-  const tasksListEl = document.querySelector('.tasks-list');
+
   tasksListEl.innerHTML = '';
-  activeProject.tasks.forEach((task) => {
+  activeProject.tasks.forEach((task, index) => {
     const taskEl = createElement('div', ['task'], {}, '');
-    const taskFocusEl = createElement('div', [], {}, task.focus);
-    taskFocusEl.innerText = task.focus === true ? '🔆' : '🫥';
+    let col = 0;
+    const taskFocusEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      task.focus
+    );
+    taskFocusEl.innerText = task.focus === true ? '‼️' : '🫥';
     taskEl.appendChild(taskFocusEl);
-    const taskStatusEl = createElement('div', [], {}, statusIcons[task.status]);
+
+    col++;
+    const taskStatusEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      statusIcons[task.status]
+    );
     taskEl.appendChild(taskStatusEl);
-    const taskDescriptionEl = createElement('div', [], {}, task.description);
-    console.log("🚀 ~ file: dom-tasks.js:48 ~ activeProject.tasks.forEach ~ task.status:", task.status)
+
+    col++;
+    const taskDescriptionEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      task.description
+    );
     if (task.status === 'Done') {
-      taskDescriptionEl.classList.add('done')
+      taskDescriptionEl.classList.add('done');
     }
     taskEl.appendChild(taskDescriptionEl);
-    const taskStartDateEl = createElement('div', [], {}, task.startDate);
+
+    col++;
+    const taskStartDateEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      task.startDate
+    );
     if (compareDateWithToday(task.startDate)) {
-      taskStartDateEl.classList.add('date-passed')
+      taskStartDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskStartDateEl);
-    const taskDueDateEl = createElement('div', [], {}, task.dueDate);
+
+    col++;
+    const taskDueDateEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      task.dueDate
+    );
     if (compareDateWithToday(task.dueDate)) {
-      taskDueDateEl.classList.add('date-passed')
+      taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);
+
+    col++;
+    const placeHolderEl = createElement(
+      'div',
+      [],
+      { 'data-row': index, 'data-col': col },
+      ''
+    );
+    taskEl.appendChild(placeHolderEl);
+
     tasksListEl.appendChild(taskEl);
   });
 };
 
 const addNewTask = (projects, activeProject) => {
-  const tasksListEl = document.querySelector('.tasks-list');
   const taskEl = createElement('div', ['new-task'], {}, '');
   const focusEl = createElement('input', [], { type: 'checkbox' }, '');
   const statusEl = createElement('select', [], {}, '');
   // Option is from the statusIcons dictionary
   const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
   statusEl.appendChild(statusToDoEl);
-  const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']) ;
+  const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
   statusEl.appendChild(statusDoingEl);
   const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
   statusEl.appendChild(statusWaitEl);
@@ -111,4 +152,25 @@ const addNewTask = (projects, activeProject) => {
   });
 };
 
-export { addNewTask, updateTasksDisplay };
+const taskListClickHandler = (row, col, projects, activeProject) => {
+  const taskEl = tasksListEl.children[row];
+  taskEl.classList.add('active-task');
+  return new Promise((resolve) => {
+    // Replace place holder with a del button
+    taskEl.removeChild(taskEl.children[5]);
+    const delBtn = createElement(
+      'button',
+      [],
+      { 'data-row': row, 'data-col': col },
+      '❌'
+    );
+    taskEl.appendChild(delBtn);
+
+    delBtn.addEventListener('click', () => {
+      projects.deleteTaskFromProject(row, activeProject);
+      resolve();
+    });
+  });
+};
+
+export { addNewTask, updateTasksDisplay, taskListClickHandler };

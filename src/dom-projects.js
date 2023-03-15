@@ -18,7 +18,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
           'button',
           ['project-mini-menu-button'],
           { 'data-btn': 'up' },
-          '^'
+          '🔼'
         )
       );
     } else {
@@ -33,7 +33,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
           'button',
           ['project-mini-menu-button'],
           { 'data-btn': 'down' },
-          'v'
+          '🔽'
         )
       );
     } else {
@@ -45,7 +45,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
         'button',
         ['project-mini-menu-button'],
         { 'data-btn': 'edit' },
-        'E'
+        '✍️'
       )
     );
     menuEl.appendChild(
@@ -53,7 +53,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
         'button',
         ['project-mini-menu-button'],
         { 'data-btn': 'remove' },
-        'X'
+        '❌'
       )
     );
   }
@@ -67,11 +67,11 @@ const updateProjectsDisplay = (projects, activeProject) => {
   const projectListEl = document.querySelector('.project-list');
   projectListEl.innerHTML = '';
   projects.projects.forEach((project, index) => {
-    const projectEl = createElement('div', ['project'], {'data-id': index });
+    const projectEl = createElement('div', ['project'], { 'data-id': index });
     const projectNameEl = createElement(
       'div',
       ['project-name'],
-      { style: 'cursor: pointer'},
+      { style: 'cursor: pointer' },
       `${project.name}`
     );
     projectEl.appendChild(projectNameEl);
@@ -96,19 +96,15 @@ const addNewProject = (projects) => {
     });
     inputEl.addEventListener('keydown', (e) => {
       if (e.keyCode === 27) {
-        projectListEl.removeChild(inputEl)
+        projectListEl.removeChild(inputEl);
         reject();
       }
-    })
+    });
   });
 };
 
 // Event listener for Projects List
-const projectListlickHandler = (e, projects) => {
-  console.log(
-    '🚀 ~ file: dom-projects.js:102 ~ projectListlickHandler ~ e:',
-    e
-  );
+const projectListClickHandler = (e, projects) => {
   let index;
   let activeProject;
   const parentEl = e.target.parentElement;
@@ -118,10 +114,6 @@ const projectListlickHandler = (e, projects) => {
     if (parentEl.classList.contains('project')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
-      console.log(
-        '🚀 ~ file: dom-projects.js:111 ~ projectListlickHandler ~ index:',
-        index
-      );
 
       // Use this check to ignore when user click on the input box
       // for changing project name
@@ -133,11 +125,7 @@ const projectListlickHandler = (e, projects) => {
     } else if (parentEl.classList.contains('project-mini-menu')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(grandParentEl.dataset.id);
-      console.log("🚀 ~ file: dom-projects.js:130 ~ returnnewPromise ~ grandParentEl:", grandParentEl)
-      console.log(
-        '🚀 ~ file: dom-projects.js:127 ~ returnnewPromise ~ index:',
-        index
-      );
+
       switch (e.target.dataset.btn) {
         case 'up':
           projects.swapProject(index, index - 1);
@@ -156,7 +144,7 @@ const projectListlickHandler = (e, projects) => {
             value: grandParentEl.children[0].textContent,
             'data-id': index,
           });
-            console.log("🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ index:", index)
+
           grandParentEl.removeChild(grandParentEl.children[0]);
           grandParentEl.insertBefore(inputEl, grandParentEl.firstChild);
           inputEl.focus();
@@ -168,10 +156,7 @@ const projectListlickHandler = (e, projects) => {
               inputEl.value
             );
             activeProject = projects.projects[index];
-            console.log(
-              '🚀 ~ file: dom-projects.js:156 ~ inputEl.addEventListener ~ activeProject:',
-              activeProject
-            );
+
             projects.renameProject(activeProject, inputEl.value);
             grandParentEl.insertBefore(projectNameEl, grandParentEl.firstChild);
             grandParentEl.removeChild(inputEl);
@@ -191,4 +176,4 @@ const projectListlickHandler = (e, projects) => {
   });
 };
 
-export { addNewProject, updateProjectsDisplay, projectListlickHandler };
+export { addNewProject, updateProjectsDisplay, projectListClickHandler};

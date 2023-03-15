@@ -26,6 +26,11 @@ const Projects = () => {
     saveProjects();
   };
 
+  const deleteTaskFromProject = (index, project) => {
+    project.removeTask(index);
+    saveProjects();
+  }
+
   // Swap the order of 2 projects
   const swapProject = (x, y) => {
     [projects[x], projects[y]] = [projects[y], projects[x]];
@@ -47,6 +52,7 @@ const Projects = () => {
   return {
     addProject,
     addTaskToProject,
+    deleteTaskFromProject,
     removeProject,
     swapProject,
     saveProjects,

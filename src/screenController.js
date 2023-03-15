@@ -1,10 +1,14 @@
 import Projects from './projects';
 
-import { addNewTask, updateTasksDisplay } from './dom-tasks';
+import {
+  addNewTask,
+  updateTasksDisplay,
+  taskListClickHandler,
+} from './dom-tasks';
 import {
   addNewProject,
   updateProjectsDisplay,
-  projectListlickHandler,
+  projectListClickHandler,
 } from './dom-projects';
 
 const screenController = () => {
@@ -27,6 +31,7 @@ const screenController = () => {
   const addTaskBtn = document.querySelector('.add-task');
   const addProjectBtn = document.querySelector('.add-project');
   const projectListEl = document.querySelector('.project-list');
+  const taskListEl = document.querySelector('.task-list');
 
   addTaskBtn.addEventListener('click', () => {
     addProjectBtn.disabled = true;
@@ -60,21 +65,29 @@ const screenController = () => {
   projectListEl.addEventListener('click', (e) => {
     addProjectBtn.disabled = false;
     addTaskBtn.disabled = false;
-    console.log(
-      '🚀 ~ file: screenController.js:49 ~ projectListlickHandler ~ activeProject:',
-      activeProject
-    );
-    projectListlickHandler(e, projects).then((index) => {
-      console.log(
-        '🚀 ~ file: screenController.js:44 ~ projectListlickHandler ~ index:',
-        index
-      );
+    projectListClickHandler(e, projects).then((index) => {
       if (index !== NaN) {
         activeProject = projects.projects[index];
         updateProjectsDisplay(projects, activeProject);
         updateTasksDisplay(projects, activeProject);
       }
     });
+  });
+
+  taskListEl.addEventListener('click', (e) => {
+    const { row } = e.target.dataset;
+    const { col } = e.target.dataset;
+    // Do nothing if delete button is being clicked
+    // It should be handled by it's own event listner
+    // This prevents a task be higlighted after a task is deleted
+    if (e.target.tagName === 'BUTTON') return;
+
+    updateTasksDisplay(projects, activeProject);
+
+    taskListClickHandler(row, col, projects, activeProject)
+      .then(() => {
+        updateTasksDisplay(projects, activeProject);
+      });
   });
 
   updateProjectsDisplay(projects, activeProject);

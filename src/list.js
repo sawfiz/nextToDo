@@ -14,8 +14,8 @@ const List = (name, existingTasks = []) => {
     // printTasks();
   };
 
-  const removeTask = (task) => {
-    const index = tasks.indexOf(task);
+  const removeTask = (index) => {
+    console.log(`Remove task ${index}`);
     if (index !== -1) {
       // Make sure the task exists in the list
       tasks.splice(index, 1);
