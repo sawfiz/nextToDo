@@ -86,9 +86,10 @@ const screenController = () => {
   taskListEl.addEventListener('click', (e) => {
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
-    // Do nothing if delete button is being clicked
+    // Ignore is clicked on the margin of a task
+    if (!row || !col) return;
+    // Do nothing if any element in the task editing element is clicked
     // It should be handled by it's own event listner
-    // This prevents a task be higlighted after a task is deleted
     if (e.target.tagName !== 'DIV') return;
 
     updateTasksDisplay(projects, activeProject);

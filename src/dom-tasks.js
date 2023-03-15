@@ -153,6 +153,7 @@ const addNewTask = (projects, activeProject) => {
 };
 
 const taskListClickHandler = (row, col, projects, activeProject) => {
+  console.log("🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:", row, col)
   const taskEl = tasksListEl.children[row];
   console.log(
     '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
