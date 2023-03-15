@@ -89,11 +89,17 @@ const addNewProject = (projects) => {
   projectListEl.appendChild(inputEl);
   inputEl.focus();
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     inputEl.addEventListener('change', () => {
       projects.addProject(inputEl.value);
       resolve();
     });
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.keyCode === 27) {
+        projectListEl.removeChild(inputEl)
+        reject();
+      }
+    })
   });
 };
 

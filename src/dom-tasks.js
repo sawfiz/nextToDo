@@ -23,11 +23,14 @@ const updateTasksDisplay = (projects, activeProject) => {
 };
 
 const addNewTask = (projects, activeProject) => {
-  console.log("🚀 ~ file: dom-tasks.js:24 ~ addNewTask ~ activeProject:", activeProject)
+  console.log(
+    '🚀 ~ file: dom-tasks.js:24 ~ addNewTask ~ activeProject:',
+    activeProject
+  );
   const tasksListEl = document.querySelector('.tasks-list');
   const taskEl = createElement('div', ['new-task'], {}, '');
-  const focusEl = createElement('input', [], {type: 'checkbox'}, '');
-  const statusEl = createElement('input', [], {type: 'checkbox'}, '');
+  const focusEl = createElement('input', [], { type: 'checkbox' }, '');
+  const statusEl = createElement('input', [], { type: 'checkbox' }, '');
   const descriptionEl = createElement('input', [], {}, '');
   const startDateEl = createElement('input', [], { type: 'date' }, '');
   const dueDateEl = createElement('input', [], { type: 'date' }, '');
@@ -44,17 +47,20 @@ const addNewTask = (projects, activeProject) => {
   tasksListEl.appendChild(taskEl);
   descriptionEl.focus();
 
-  submitBtn.addEventListener('click', () => {
-    const task = Task(
-      focusEl.value,
-      statusEl.value,
-      descriptionEl.value,
-      startDateEl.value,
-      dueDateEl.value,
-    );
-    projects.addTaskToProject(task, activeProject);
-    updateTasksDisplay(projects, activeProject);
+  return new Promise((resolve) => {
+    submitBtn.addEventListener('click', () => {
+      const task = Task(
+        focusEl.value,
+        statusEl.value,
+        descriptionEl.value,
+        startDateEl.value,
+        dueDateEl.value
+      );
+      projects.addTaskToProject(task, activeProject);
+      updateTasksDisplay(projects, activeProject);
+      resolve();
+    });
   });
 };
 
-export {addNewTask, updateTasksDisplay}
+export { addNewTask, updateTasksDisplay };

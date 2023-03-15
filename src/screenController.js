@@ -25,21 +25,41 @@ const screenController = () => {
   let activeProject = projects.projects[0]; // Inbox
 
   const addTaskBtn = document.querySelector('.add-task');
-  addTaskBtn.addEventListener('click', () => {
-    addNewTask(projects, activeProject);
-  });
-
   const addProjectBtn = document.querySelector('.add-project');
-  addProjectBtn.addEventListener('click', () => {
-    addNewProject(projects).then(() => {
-      activeProject = projects.projects[projects.projects.length - 1];
-      updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject);
+  const projectListEl = document.querySelector('.project-list');
+
+  addTaskBtn.addEventListener('click', () => {
+    addProjectBtn.disabled = true;
+    addTaskBtn.disabled = true;
+    // projectListEl.disabled = true;
+    addNewTask(projects, activeProject).then(() => {
+      addProjectBtn.disabled = false;
+      addTaskBtn.disabled = false;
     });
   });
 
-  const projectListEl = document.querySelector('.project-list');
+  addProjectBtn.addEventListener('click', () => {
+    addProjectBtn.disabled = true;
+    addTaskBtn.disabled = true;
+    // projectListEl.disabled = true;
+    addNewProject(projects)
+      .then(() => {
+        activeProject = projects.projects[projects.projects.length - 1];
+        updateProjectsDisplay(projects, activeProject);
+        updateTasksDisplay(projects, activeProject);
+        addProjectBtn.disabled = false;
+        addTaskBtn.disabled = false;
+      })
+      .catch(() => {
+        console.log('ESC pressed');
+        addProjectBtn.disabled = false;
+        addTaskBtn.disabled = false;
+      });
+  });
+
   projectListEl.addEventListener('click', (e) => {
+    addProjectBtn.disabled = false;
+    addTaskBtn.disabled = false;
     console.log(
       '🚀 ~ file: screenController.js:49 ~ projectListlickHandler ~ activeProject:',
       activeProject
@@ -52,6 +72,7 @@ const screenController = () => {
       if (index !== NaN) {
         activeProject = projects.projects[index];
         updateProjectsDisplay(projects, activeProject);
+        updateTasksDisplay(projects, activeProject);
       }
     });
   });
