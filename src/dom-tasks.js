@@ -2,7 +2,30 @@ import './style.css';
 import createElement from './createElement';
 import Task from './task';
 
+function compareDateWithToday(dateString) {
+  // Parse the input date string into a Date object
+  const inputDate = new Date(dateString);
+
+  // Get today's date
+  const today = new Date();
+
+  // Set the time part of both dates to 00:00:00 to compare only the dates
+  inputDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  // Compare the dates
+  if (inputDate < today) {
+    return true;
+  } else if (inputDate > today) {
+    return false;
+  } else {
+    return false;
+  }
+}
+
+
 const updateTasksDisplay = (projects, activeProject) => {
+  const today = new Date();
   if (!activeProject) activeProject = projects.projects[0];
   const tasksListEl = document.querySelector('.tasks-list');
   tasksListEl.innerHTML = '';
@@ -13,10 +36,19 @@ const updateTasksDisplay = (projects, activeProject) => {
     const taskStatusEl = createElement('div', [], {}, task.status);
     taskEl.appendChild(taskStatusEl);
     const taskDescriptionEl = createElement('div', [], {}, task.description);
+    if (task.status === "Done") {
+      taskDescriptionEl.classList.add('done')
+    }
     taskEl.appendChild(taskDescriptionEl);
-    const taskstartDateEl = createElement('div', [], {}, task.startDate);
-    taskEl.appendChild(taskstartDateEl);
+    const taskStartDateEl = createElement('div', [], {}, task.startDate);
+    if (compareDateWithToday(task.startDate)) {
+      taskStartDateEl.classList.add('date-passed')
+    }
+    taskEl.appendChild(taskStartDateEl);
     const taskDueDateEl = createElement('div', [], {}, task.dueDate);
+    if (compareDateWithToday(task.dueDate)) {
+      taskDueDateEl.classList.add('date-passed')
+    }
     taskEl.appendChild(taskDueDateEl);
     tasksListEl.appendChild(taskEl);
   });

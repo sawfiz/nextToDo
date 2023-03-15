@@ -70,3 +70,11 @@ h1 {
   grid-template-columns: 1fr 1fr 15fr 2fr 2fr;
   grid-template-rows: 1fr 1fr;
 }
+
+.done {
+  text-decoration: line-through
+}
+
+.date-passed {
+  color: red;
+}
