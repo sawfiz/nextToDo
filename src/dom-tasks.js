@@ -156,6 +156,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
   const taskEl = tasksListEl.children[row];
   taskEl.classList.add('active-task');
   return new Promise((resolve) => {
+    // The delete button
     // Replace place holder with a del button
     taskEl.removeChild(taskEl.children[5]);
     const delBtn = createElement(
@@ -167,7 +168,26 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     taskEl.appendChild(delBtn);
 
     delBtn.addEventListener('click', () => {
+      // Call from projects to delete the task
+      // so that the local storage is updated after the deletion
       projects.deleteTaskFromProject(row, activeProject);
+      resolve();
+    });
+
+    // Change focus
+    const focusIcon = taskEl.children[0].innerText;
+    const focusEl = createElement('button', [], {}, focusIcon);
+    taskEl.replaceChild(focusEl, taskEl.children[0]);
+
+    focusEl.addEventListener('click', () => {
+      // Toggle focus icon
+      let value = focusIcon === '🫥' ? true : false;
+      projects.updateTaskinProject(
+        activeProject,
+        row,
+        'focus',
+        value
+      );
       resolve();
     });
   });

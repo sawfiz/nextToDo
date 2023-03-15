@@ -80,7 +80,7 @@ const screenController = () => {
     // Do nothing if delete button is being clicked
     // It should be handled by it's own event listner
     // This prevents a task be higlighted after a task is deleted
-    if (e.target.tagName === 'BUTTON') return;
+    if (e.target.tagName !== 'DIV') return;
 
     updateTasksDisplay(projects, activeProject);
 

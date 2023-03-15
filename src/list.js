@@ -29,6 +29,17 @@ const List = (name, existingTasks = []) => {
     // printTasks();
   };
 
+  const updateTask = (index, attribute, value) => {
+    switch (attribute) {
+      case 'focus':
+        tasks[index].focus = value;
+        break;
+    
+      default:
+        break;
+    }
+  }
+
   // const renameList = (newName) => {
   //   name = newName;
   // }
@@ -44,6 +55,7 @@ const List = (name, existingTasks = []) => {
       return tasks;
     },
     addTask,
+    updateTask,
     removeTask,
     moveTask,
     printTasks,
