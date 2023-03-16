@@ -72,6 +72,11 @@ h1 {
   border: 1px red solid;
 }
 
+.main {
+  border: 1px red solid;
+  
+}
+
 .tasks-list-header, .task {
   height: 1.5rem;
   margin: 0 1%;
@@ -82,6 +87,11 @@ h1 {
 
 .tasks-list-header {
   height: 2rem;
+}
+
+.task-list {
+  border: 1px blue solid;
+
 }
 
 .active-task {

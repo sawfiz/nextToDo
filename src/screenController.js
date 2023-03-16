@@ -26,6 +26,9 @@ const screenController = () => {
     });
   }
 
+  let showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
+  if (!showCompleted) showCompleted = false;
+
   let activeProject = projects.projects[0]; // Inbox
 
   const addTaskBtn = document.querySelector('.add-task');
@@ -34,30 +37,35 @@ const screenController = () => {
   const taskListEl = document.querySelector('.task-list');
   const bodyEl = document.querySelector('body');
   const showCompletedCheckbox = document.querySelector('#show-completed');
-
-  let showCompleted = false;
+  showCompletedCheckbox.checked = showCompleted;
 
   showCompletedCheckbox.addEventListener('change', () => {
     showCompleted = showCompletedCheckbox.checked;
     localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
-    updateTasksDisplay(projects, activeProject)
+    updateTasksDisplay(projects, activeProject);
   });
 
   bodyEl.addEventListener('click', (e) => {
+    console.log(e.target)
     const parentClassList = e.target.parentElement.classList;
     if (parentClassList.contains('container')) {
       updateProjectsDisplay(projects, activeProject);
       updateTasksDisplay(projects, activeProject);
+      addProjectBtn.disabled = false;
+      addTaskBtn.disabled = false;
+      showCompletedCheckbox.disabled = false;
     }
   });
 
   addTaskBtn.addEventListener('click', () => {
     addProjectBtn.disabled = true;
     addTaskBtn.disabled = true;
+    showCompletedCheckbox.disabled = true;
     // projectListEl.disabled = true;
     addNewTask(projects, activeProject).then(() => {
       addProjectBtn.disabled = false;
       addTaskBtn.disabled = false;
+      showCompletedCheckbox.disabled = false;
     });
   });
 
@@ -96,7 +104,10 @@ const screenController = () => {
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
     // Ignore is clicked on the margin of a task
-    if (!row || !col) return;
+    console.log(row, col);
+    if (!row || !col) {
+      return;
+    }
     // Do nothing if any element in the task editing element is clicked
     // It should be handled by it's own event listner
     if (e.target.tagName !== 'DIV') return;
