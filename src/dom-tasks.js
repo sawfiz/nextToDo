@@ -35,14 +35,20 @@ function compareDateWithToday(dateString) {
 const updateTasksDisplay = (projects, activeProject) => {
   if (!activeProject) activeProject = projects.projects[0];
 
+  const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
   tasksListEl.innerHTML = '';
+  let row = 0;
   activeProject.tasks.forEach((task, index) => {
-    const taskEl = createElement('div', ['task'], {}, '');
+
+    if (!showCompleted && task.status === 'Done') return;
+
+ 
+    const taskEl = createElement('div', ['task'], { 'data-index': index}, '');
     let col = 0;
     const taskFocusEl = createElement(
       'div',
       [],
-      { 'data-row': index, 'data-col': col },
+      { 'data-row': row, 'data-col': col },
       task.focus
     );
     taskFocusEl.innerText = task.focus === true ? '‼️' : '🫥';
@@ -52,7 +58,7 @@ const updateTasksDisplay = (projects, activeProject) => {
     const taskStatusEl = createElement(
       'div',
       [],
-      { 'data-row': index, 'data-col': col },
+      { 'data-row': row, 'data-col': col },
       statusIcons[task.status]
     );
     taskEl.appendChild(taskStatusEl);
@@ -61,7 +67,7 @@ const updateTasksDisplay = (projects, activeProject) => {
     const taskDescriptionEl = createElement(
       'div',
       [],
-      { 'data-row': index, 'data-col': col },
+      { 'data-row': row, 'data-col': col },
       task.description
     );
     if (task.status === 'Done') {
@@ -73,7 +79,7 @@ const updateTasksDisplay = (projects, activeProject) => {
     const taskStartDateEl = createElement(
       'div',
       [],
-      { 'data-row': index, 'data-col': col },
+      { 'data-row': row, 'data-col': col },
       task.startDate
     );
     if (compareDateWithToday(task.startDate)) {
@@ -85,22 +91,14 @@ const updateTasksDisplay = (projects, activeProject) => {
     const taskDueDateEl = createElement(
       'div',
       [],
-      { 'data-row': index, 'data-col': col },
+      { 'data-row': row, 'data-col': col },
       task.dueDate
     );
     if (compareDateWithToday(task.dueDate)) {
       taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);
-
-    // col++;
-    // const placeHolderEl = createElement(
-    //   'div',
-    //   [],
-    //   { 'data-row': index, 'data-col': col },
-    //   ''
-    // );
-    // taskEl.appendChild(placeHolderEl);
+    row++;
 
     tasksListEl.appendChild(taskEl);
   });
@@ -153,13 +151,20 @@ const addNewTask = (projects, activeProject) => {
 };
 
 const taskListClickHandler = (row, col, projects, activeProject) => {
-  console.log("🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:", row, col)
+  console.log(
+    '🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:',
+    row,
+    col
+  );
   const taskEl = tasksListEl.children[row];
   console.log(
     '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
     taskEl
   );
   taskEl.classList.add('active-task');
+  const index = taskEl.getAttribute('data-index');
+  console.log("🚀 ~ file: dom-tasks.js:182 ~ returnnewPromise ~ index:", index)
+
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
 
@@ -170,22 +175,22 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
 
     // Status pull down
     const targetIcon = taskEl.children[1].innerText;
-    const index = Object.entries(statusIcons).findIndex(
+    const selectedIndex = Object.entries(statusIcons).findIndex(
       ([key, value]) => value === targetIcon
     );
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
     const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
-    if (index === 0) statusToDoEl.selected = true;
+    if (selectedIndex === 0) statusToDoEl.selected = true;
     statusEl.appendChild(statusToDoEl);
     const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
-    if (index === 1) statusDoingEl.selected = true;
+    if (selectedIndex === 1) statusDoingEl.selected = true;
     statusEl.appendChild(statusDoingEl);
     const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
-    if (index === 2) statusWaitEl.selected = true;
+    if (selectedIndex === 2) statusWaitEl.selected = true;
     statusEl.appendChild(statusWaitEl);
     const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
-    if (index === 3) statusDoneEl.selected = true;
+    if (selectedIndex === 3) statusDoneEl.selected = true;
     statusEl.appendChild(statusDoneEl);
     editingTaskEl.appendChild(statusEl);
 
@@ -248,14 +253,14 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
       let value = focusIcon === '🫥' ? true : false;
-      projects.updateTaskinProject(activeProject, row, 'focus', value);
+      projects.updateTaskinProject(activeProject, index, 'focus', value);
       resolve();
     });
 
     statusEl.addEventListener('change', () => {
       projects.updateTaskinProject(
         activeProject,
-        row,
+        index,
         'status',
         status[statusEl.selectedIndex]
       );
@@ -265,7 +270,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     descriptionEl.addEventListener('change', () => {
       projects.updateTaskinProject(
         activeProject,
-        row,
+        index,
         'description',
         descriptionEl.value
       );
@@ -285,7 +290,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     dueDateEl.addEventListener('change', () => {
       projects.updateTaskinProject(
         activeProject,
-        row,
+        index,
         'dueDate',
         dueDateEl.value
       );
@@ -299,7 +304,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
       );
       projects.moveTasktoProject(
         activeProject,
-        row,
+        index,
         projects.projects[projectDropDownEl.selectedIndex]
       );
       resolve();
@@ -308,7 +313,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     delBtn.addEventListener('click', () => {
       // Call from projects to delete the task
       // so that the local storage is updated after the deletion
-      projects.deleteTaskFromProject(row, activeProject);
+      projects.deleteTaskFromProject(index, activeProject);
       resolve();
     });
   });

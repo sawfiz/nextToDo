@@ -33,6 +33,15 @@ const screenController = () => {
   const projectListEl = document.querySelector('.project-list');
   const taskListEl = document.querySelector('.task-list');
   const bodyEl = document.querySelector('body');
+  const showCompletedCheckbox = document.querySelector('#show-completed');
+
+  let showCompleted = false;
+
+  showCompletedCheckbox.addEventListener('change', () => {
+    showCompleted = showCompletedCheckbox.checked;
+    localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
+    updateTasksDisplay(projects, activeProject)
+  });
 
   bodyEl.addEventListener('click', (e) => {
     const parentClassList = e.target.parentElement.classList;
