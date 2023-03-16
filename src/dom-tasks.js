@@ -66,7 +66,7 @@ const updateTasksDisplay = (projects, activeProject) => {
     col++;
     const taskDescriptionEl = createElement(
       'div',
-      [],
+      ['limited-text'],
       { 'data-row': row, 'data-col': col },
       task.description
     );
@@ -277,17 +277,17 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
       resolve();
     });
 
-    startDateEl.addEventListener('change', () => {
+    startDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
         activeProject,
-        row,
+        index,
         'startDate',
         startDateEl.value
       );
       resolve();
     });
 
-    dueDateEl.addEventListener('change', () => {
+    dueDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
         activeProject,
         index,
