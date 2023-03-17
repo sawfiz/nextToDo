@@ -72,6 +72,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     col
   );
   const taskEl = global.tasksListEl.children[row];
+  console.log("🚀 ~ file: dom-tasks.js:75 ~ taskListClickHandler ~ global.tasksListEl:", global.tasksListEl)
   console.log(
     '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
     taskEl

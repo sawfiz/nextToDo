@@ -54,7 +54,7 @@ h1 {
   grid-template-columns: 6fr 1fr;
 }
 
-.active-project {
+.active-view, .active-project {
   background-color: yellow;
 }
 

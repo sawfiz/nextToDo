@@ -3,7 +3,7 @@ import createElement from './createElement';
 import * as global from './globalConstants';
 import { isBefore } from './utils';
 
-const updateTasksDisplay = (projects, taskList, showProject) => {
+const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
   // Display the tasks list header
@@ -33,7 +33,10 @@ const updateTasksDisplay = (projects, taskList, showProject) => {
   global.tasksListEl.innerHTML = '';
   let row = 0;
   taskList.forEach((task, index) => {
-    if (!showCompleted && task.status === 'Done') return;
+    // In case of the Completed view, show completed tasks anyways
+    if (!completedView) {
+      if (!showCompleted && task.status === 'Done') return;
+    }
 
     const taskEl = createElement('div', ['task'], { 'data-index': index }, '');
     if (showProject) {

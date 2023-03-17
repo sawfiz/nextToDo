@@ -1,7 +1,12 @@
 import * as global from './globalConstants';
 import Projects from './projects';
 import updateTasksDisplay from './dom-updateTasksDisplay';
-import { todayClickHandler, next7daysClickHandler, completedClickHandler, allTasksClickHandler } from './dom-views';
+import {
+  todayClickHandler,
+  next7daysClickHandler,
+  completedClickHandler,
+  allTasksClickHandler,
+} from './dom-views';
 import { addNewTask, taskListClickHandler } from './dom-tasks';
 import {
   addNewProject,
@@ -56,6 +61,15 @@ const screenController = () => {
     showCompletedCheckbox.disabled = false;
   };
 
+  const updateCurrentView = () => {
+    if (showView) {
+      list = JSON.parse(localStorage.getItem('list'));
+      updateTasksDisplay(projects, list, showView, showView === 'completed');
+    } else {
+      updateTasksDisplay(projects, activeProject.tasks);
+    }
+  };
+
   // The body
   const bodyEl = document.querySelector('body');
   bodyEl.addEventListener('click', (e) => {
@@ -64,10 +78,9 @@ const screenController = () => {
     // This dismisses any open add task, edit task and add project forms
     // Also enables add task, add project and show completed setting buttons/checkbox
     if (e.target.classList.contains('dismiss')) {
-      updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject.tasks);
+      // Dismiss any task being edited
+      updateCurrentView();
       enableButtons();
-      console.log('yes');
     }
   });
 
@@ -142,18 +155,33 @@ const screenController = () => {
     disableButtons();
 
     // Dismiss any task being edited
-    if (showView) {
-      list = JSON.parse(localStorage.getItem('list'));
-      updateTasksDisplay(projects, list, showView)
-    }
-    else {
-
-      updateTasksDisplay(projects, activeProject.tasks);
-    }
-
+    updateCurrentView();
 
     taskListClickHandler(row, col, projects, activeProject).then(() => {
-      updateTasksDisplay(projects, activeProject.tasks);
+      if (showView) {
+        // Update list, otherwise edits are not visible
+        switch (showView) {
+          case 'today':
+            todayClickHandler(projects);
+            break;
+          case 'next7days':
+            next7daysClickHandler(projects);
+            break;
+          case 'completed':
+            completedClickHandler(projects);
+            break;
+          case 'allTasks':
+            allTasksClickHandler(projects);
+            break;
+
+          default:
+            break;
+        }
+        list = JSON.parse(localStorage.getItem('list'));
+        updateTasksDisplay(projects, list, showView, showView === 'completed');
+      } else {
+        updateTasksDisplay(projects, activeProject.tasks);
+      }
       enableButtons();
     });
   });
@@ -162,39 +190,57 @@ const screenController = () => {
   showCompletedCheckbox.addEventListener('change', () => {
     showCompleted = showCompletedCheckbox.checked;
     localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
-    updateTasksDisplay(projects, activeProject);
+    updateCurrentView();
   });
-  
-  // The views event listeners
+
+  // Views
   const todayEl = document.querySelector('#today');
+  const next7daysEl = document.querySelector('#next7days');
+  const completedEl = document.querySelector('#completed');
+  const allTasksEl = document.querySelector('#all-tasks');
+
+  // Clear highlight in Views
+  const removeViewHighlight = () => {
+    todayEl.classList.remove('active-view');
+    next7daysEl.classList.remove('active-view');
+    completedEl.classList.remove('active-view');
+    allTasksEl.classList.remove('active-view');
+  };
+
+  // The views event listeners
   todayEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
-    showView = true;
+    removeViewHighlight();
+    todayEl.classList.add('active-view');
+    showView = 'today';
     todayClickHandler(projects);
   });
 
-  const next7daysEl = document.querySelector('#next7days');
   next7daysEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
-    showView = true;
+    removeViewHighlight();
+    next7daysEl.classList.add('active-view');
+    showView = 'next7days';
     next7daysClickHandler(projects);
   });
 
-  const completedEl = document.querySelector('#completed');
   completedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
-    showView = true;
+    removeViewHighlight();
+    completedEl.classList.add('active-view');
+    showView = 'completed';
     completedClickHandler(projects);
   });
 
-  const allTasksEl = document.querySelector('#all-tasks');
   allTasksEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
-    showView = true;
+    removeViewHighlight();
+    allTasksEl.classList.add('active-view');
+    showView = 'allTaks';
     allTasksClickHandler(projects);
   });
 

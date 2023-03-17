@@ -37,7 +37,7 @@ const completedClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(projects, list, true, true);
 };
 
 const allTasksClickHandler = (projects) => {
