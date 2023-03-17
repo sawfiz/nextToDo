@@ -1,150 +1,63 @@
 import './style.css';
+import * as global from './globalConstants';
 import createElement from './createElement';
 import Task from './task';
+// import updateTasksDisplay from './updateTasksDisplay';
 
-const status = ['Todo', 'Doing', 'Wait', 'Done'];
-const statusIcons = {
-  Todo: '️⃝',
-  Doing: '◐',
-  Wait: '⏳',
-  Done: '✅',
-};
-const tasksListEl = document.querySelector('.task-list');
-
-function compareDateWithToday(dateString) {
-  // Parse the input date string into a Date object
-  const inputDate = new Date(dateString);
-
-  // Get today's date
-  const today = new Date();
-
-  // Set the time part of both dates to 00:00:00 to compare only the dates
-  inputDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  // Compare the dates
-  if (inputDate < today) {
-    return true;
-  } else if (inputDate > today) {
-    return false;
-  } else {
-    return false;
-  }
-}
-
-const updateTasksDisplay = (projects, activeProject) => {
-  if (!activeProject) activeProject = projects.projects[0];
-
-  const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  tasksListEl.innerHTML = '';
-  let row = 0;
-  activeProject.tasks.forEach((task, index) => {
-
-    if (!showCompleted && task.status === 'Done') return;
-
- 
-    const taskEl = createElement('div', ['task'], { 'data-index': index}, '');
-    let col = 0;
-    const taskFocusEl = createElement(
-      'div',
-      [],
-      { 'data-row': row, 'data-col': col },
-      task.focus
-    );
-    taskFocusEl.innerText = task.focus === true ? '‼️' : '🫥';
-    taskEl.appendChild(taskFocusEl);
-
-    col++;
-    const taskStatusEl = createElement(
-      'div',
-      [],
-      { 'data-row': row, 'data-col': col },
-      statusIcons[task.status]
-    );
-    taskEl.appendChild(taskStatusEl);
-
-    col++;
-    const taskDescriptionEl = createElement(
-      'div',
-      ['limited-text'],
-      { 'data-row': row, 'data-col': col },
-      task.description
-    );
-    if (task.status === 'Done') {
-      taskDescriptionEl.classList.add('done');
-    }
-    taskEl.appendChild(taskDescriptionEl);
-
-    col++;
-    const taskStartDateEl = createElement(
-      'div',
-      [],
-      { 'data-row': row, 'data-col': col },
-      task.startDate
-    );
-    if (compareDateWithToday(task.startDate)) {
-      taskStartDateEl.classList.add('date-passed');
-    }
-    taskEl.appendChild(taskStartDateEl);
-
-    col++;
-    const taskDueDateEl = createElement(
-      'div',
-      [],
-      { 'data-row': row, 'data-col': col },
-      task.dueDate
-    );
-    if (compareDateWithToday(task.dueDate)) {
-      taskDueDateEl.classList.add('date-passed');
-    }
-    taskEl.appendChild(taskDueDateEl);
-    row++;
-
-    tasksListEl.appendChild(taskEl);
-  });
-};
-
+// Function for adding a new task
 const addNewTask = (projects, activeProject) => {
+  // Create a new task element
   const taskEl = createElement('div', ['new-task'], {}, '');
+
+  // Create each part of a task elelment
   const focusEl = createElement('input', [], { type: 'checkbox' }, '');
-  const statusEl = createElement('select', [], {}, '');
-  // Option is from the statusIcons dictionary
-  const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
-  statusEl.appendChild(statusToDoEl);
-  const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
-  statusEl.appendChild(statusDoingEl);
-  const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
-  statusEl.appendChild(statusWaitEl);
-  const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
-  statusEl.appendChild(statusDoneEl);
-  const descriptionEl = createElement('input', [], {}, '');
-  const startDateEl = createElement('input', [], { type: 'date' }, '');
-  const dueDateEl = createElement('input', [], { type: 'date' }, '');
-  const submitBtn = createElement('button', [], {}, 'Submit');
   taskEl.appendChild(focusEl);
+
+  const statusEl = createElement('select', [], {}, '');
+  const statusToDoEl = createElement('option', [], {}, global.statusIcons['Todo']);
+  statusEl.appendChild(statusToDoEl);
+  const statusDoingEl = createElement('option', [], {}, global.statusIcons['Doing']);
+  statusEl.appendChild(statusDoingEl);
+  const statusWaitEl = createElement('option', [], {}, global.statusIcons['Wait']);
+  statusEl.appendChild(statusWaitEl);
+  const statusDoneEl = createElement('option', [], {}, global.statusIcons['Done']);
+  statusEl.appendChild(statusDoneEl);
   taskEl.appendChild(statusEl);
+
+  const descriptionEl = createElement('input', [], {}, '');
   taskEl.appendChild(descriptionEl);
+
+  const startDateEl = createElement('input', [], { type: 'date' }, '');
   taskEl.appendChild(startDateEl);
+
+  const dueDateEl = createElement('input', [], { type: 'date' }, '');
   taskEl.appendChild(dueDateEl);
+
+  // Make placeholders so the Submit button shows up at the end
   for (let i = 0; i < 4; i++) {
     taskEl.appendChild(createElement('div', [], {}, ''));
   }
+  const submitBtn = createElement('button', [], {}, 'Submit');
   taskEl.appendChild(submitBtn);
-  tasksListEl.appendChild(taskEl);
+
+  // Attach the new task element to the tasksList element
+  global.tasksListEl.appendChild(taskEl);
+
+  // Focus on the description so the user can start entering text
   descriptionEl.focus();
 
+  // Wait for the submit button to be clicked on
   return new Promise((resolve) => {
     submitBtn.addEventListener('click', () => {
       const task = Task(
         focusEl.checked,
         // status is from array ['Todo', 'Doing', 'Wait', 'Done']
-        status[statusEl.selectedIndex],
+        global.status[statusEl.selectedIndex],
         descriptionEl.value,
         startDateEl.value,
         dueDateEl.value
       );
       projects.addTaskToProject(task, activeProject);
-      updateTasksDisplay(projects, activeProject);
       resolve();
     });
   });
@@ -156,14 +69,14 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     row,
     col
   );
-  const taskEl = tasksListEl.children[row];
+  const taskEl = global.tasksListEl.children[row];
   console.log(
     '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
     taskEl
   );
   taskEl.classList.add('active-task');
   const index = taskEl.getAttribute('data-index');
-  console.log("🚀 ~ file: dom-tasks.js:182 ~ returnnewPromise ~ index:", index)
+  console.log('🚀 ~ file: dom-tasks.js:182 ~ returnnewPromise ~ index:', index);
 
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -175,21 +88,21 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
 
     // Status pull down
     const targetIcon = taskEl.children[1].innerText;
-    const selectedIndex = Object.entries(statusIcons).findIndex(
+    const selectedIndex = Object.entries(global.statusIcons).findIndex(
       ([key, value]) => value === targetIcon
     );
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
-    const statusToDoEl = createElement('option', [], {}, statusIcons['Todo']);
+    const statusToDoEl = createElement('option', [], {}, global.statusIcons['Todo']);
     if (selectedIndex === 0) statusToDoEl.selected = true;
     statusEl.appendChild(statusToDoEl);
-    const statusDoingEl = createElement('option', [], {}, statusIcons['Doing']);
+    const statusDoingEl = createElement('option', [], {}, global.statusIcons['Doing']);
     if (selectedIndex === 1) statusDoingEl.selected = true;
     statusEl.appendChild(statusDoingEl);
-    const statusWaitEl = createElement('option', [], {}, statusIcons['Wait']);
+    const statusWaitEl = createElement('option', [], {}, global.statusIcons['Wait']);
     if (selectedIndex === 2) statusWaitEl.selected = true;
     statusEl.appendChild(statusWaitEl);
-    const statusDoneEl = createElement('option', [], {}, statusIcons['Done']);
+    const statusDoneEl = createElement('option', [], {}, global.statusIcons['Done']);
     if (selectedIndex === 3) statusDoneEl.selected = true;
     statusEl.appendChild(statusDoneEl);
     editingTaskEl.appendChild(statusEl);
@@ -248,7 +161,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     );
     editingTaskEl.appendChild(delBtn);
 
-    tasksListEl.replaceChild(editingTaskEl, taskEl);
+    global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
@@ -319,4 +232,4 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
   });
 };
 
-export { addNewTask, updateTasksDisplay, taskListClickHandler };
+export { addNewTask, taskListClickHandler };

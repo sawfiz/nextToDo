@@ -1,4 +1,5 @@
-import { updateTasksDisplay } from './dom-tasks';
+import * as global from './globalConstants';
+import updateTasksDisplay from './updateTasksDisplay';
 import createElement from './createElement';
 
 const addProjectMiniMenu = (projects, projectEl, index) => {
@@ -64,8 +65,7 @@ const updateProjectsDisplay = (projects, activeProject) => {
     activeProject = projects.projects[0];
   }
 
-  const projectListEl = document.querySelector('.project-list');
-  projectListEl.innerHTML = '';
+  global.projectListEl.innerHTML = '';
   projects.projects.forEach((project, index) => {
     const projectEl = createElement('div', ['project'], { 'data-id': index });
     const projectNameEl = createElement(
@@ -79,7 +79,7 @@ const updateProjectsDisplay = (projects, activeProject) => {
       projectEl.classList.add('active-project');
       addProjectMiniMenu(projects, projectEl, index);
     }
-    projectListEl.appendChild(projectEl);
+    global.projectListEl.appendChild(projectEl);
   });
 };
 
@@ -111,18 +111,16 @@ const projectListClickHandler = (e, projects) => {
   const grandParentEl = parentEl.parentElement;
 
   return new Promise((resolve) => {
-    if (parentEl.classList.contains('project')) {
+    // Clicked on a project-name
+    if (e.target.classList.contains('project-name')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
-
-      // Use this check to ignore when user click on the input box
-      // for changing project name
-      if (e.target.tagName !== 'INPUT') {
-        activeProject = projects.projects[index];
-        updateTasksDisplay(projects, activeProject);
-        resolve(index);
-      }
-    } else if (parentEl.classList.contains('project-mini-menu')) {
+      activeProject = projects.projects[index];
+      updateTasksDisplay(projects, activeProject);
+      resolve(index);
+    }
+    // Clicked on a mini menu
+    else if (parentEl.classList.contains('project-mini-menu')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(grandParentEl.dataset.id);
 
@@ -176,4 +174,4 @@ const projectListClickHandler = (e, projects) => {
   });
 };
 
-export { addNewProject, updateProjectsDisplay, projectListClickHandler};
+export { addNewProject, updateProjectsDisplay, projectListClickHandler };
