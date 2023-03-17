@@ -118,6 +118,12 @@ h1 {
   grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
   grid-template-rows: 1fr 1fr;
 }
+.new-task-with-project {
+  margin: 0 1%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr;
+  grid-template-rows: 1fr 1fr;
+}
 
 .editing-task {
   background-color: yellow;

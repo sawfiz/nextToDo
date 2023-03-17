@@ -94,9 +94,8 @@ const screenController = () => {
     // This prevents multiple elements added on screen
     disableButtons();
     // Wait until a new Task is added
-    addNewTask(projects, activeProject).then(() => {
-      updateTasksDisplay(projects, activeProject);
-      console.log('New task added');
+    addNewTask(projects, activeProject, showView !== false).then(() => {
+      updateCurrentView();
       // After a new task is created, re- enable these disabled elements
       enableButtons();
     });

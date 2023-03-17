@@ -5,7 +5,7 @@ import Task from './task';
 // import updateTasksDisplay from './updateTasksDisplay';
 
 // Function for adding a new task
-const addNewTask = (projects, activeProject) => {
+const addNewTask = (projects, activeProject, showView) => {
   // Create a new task element
   const taskEl = createElement('div', ['new-task'], {}, '');
 
@@ -47,6 +47,17 @@ const addNewTask = (projects, activeProject) => {
   const descriptionEl = createElement('input', [], {}, '');
   taskEl.appendChild(descriptionEl);
 
+  const projectEl = createElement('select', [], {}, '');
+  if (showView) {
+    projects.projects.forEach((project) => {
+      const optionEl = createElement('option', [], {}, project.name);
+      projectEl.appendChild(optionEl);
+    });
+    taskEl.appendChild(projectEl);
+    taskEl.classList.remove('new-task');
+    taskEl.classList.add('new-task-with-project');
+  }
+
   const startDateEl = createElement('input', [], { type: 'date' }, '');
   taskEl.appendChild(startDateEl);
 
@@ -54,7 +65,8 @@ const addNewTask = (projects, activeProject) => {
   taskEl.appendChild(dueDateEl);
 
   // Make placeholders so the Submit button shows up at the end
-  for (let i = 0; i < 4; i++) {
+  let skip = showView ? 5 : 4;
+  for (let i = 0; i < skip; i++) {
     taskEl.appendChild(createElement('div', [], {}, ''));
   }
   const submitBtn = createElement('button', [], {}, 'Submit');
@@ -69,6 +81,10 @@ const addNewTask = (projects, activeProject) => {
   // Wait for the submit button to be clicked on
   return new Promise((resolve) => {
     submitBtn.addEventListener('click', () => {
+      const projectIndex =
+        showView === true
+          ? projectEl.selectedIndex
+          : projects.projects.indexOf(activeProject);
       const task = Task(
         focusEl.checked,
         // status is from array ['Todo', 'Doing', 'Wait', 'Done']
@@ -76,12 +92,19 @@ const addNewTask = (projects, activeProject) => {
         descriptionEl.value,
         startDateEl.value,
         dueDateEl.value,
-        projects.projects.indexOf(activeProject),
+        projectIndex,
         activeProject.tasks.length
       );
-      
-      console.log("🚀 ~ file: dom-tasks.js:86 ~ submitBtn.addEventListener ~ activeProject.tasks.length:", activeProject.tasks.length)
-      projects.addTaskToProject(task, activeProject);
+
+      console.log(
+        '🚀 ~ file: dom-tasks.js:85 ~ submitBtn.addEventListener ~ projectIndex:',
+        projectIndex
+      );
+      console.log(
+        '🚀 ~ file: dom-tasks.js:86 ~ submitBtn.addEventListener ~ activeProject.tasks.length:',
+        activeProject.tasks.length
+      );
+      projects.addTaskToProject(task, projects.projects[projectIndex]);
       resolve();
     });
   });
@@ -222,8 +245,11 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     editingTaskEl.appendChild(delBtn);
 
     const thisProject =
-    showView === true ? projects.projects[projectIndex] : activeProject;
-    console.log("🚀 ~ file: dom-tasks.js:225 ~ returnnewPromise ~ thisProject:", thisProject)
+      showView === true ? projects.projects[projectIndex] : activeProject;
+    console.log(
+      '🚀 ~ file: dom-tasks.js:225 ~ returnnewPromise ~ thisProject:',
+      thisProject
+    );
     global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
     focusEl.addEventListener('click', () => {
