@@ -239,7 +239,7 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     const delBtn = createElement(
       'button',
       ['delete-btn'],
-      { 'data-row': row, 'data-col': col },
+      { },
       '❌'
     );
     editingTaskEl.appendChild(delBtn);
