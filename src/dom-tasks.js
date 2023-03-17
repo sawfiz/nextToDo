@@ -63,6 +63,7 @@ const addNewTask = (projects, activeProject) => {
   });
 };
 
+// Handles a valid click on the tasks list
 const taskListClickHandler = (row, col, projects, activeProject) => {
   console.log(
     '🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:',
@@ -190,16 +191,18 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
       resolve();
     });
 
+    // Use blur instead of change, so it does not fire too soon
     startDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
         activeProject,
         index,
         'startDate',
         startDateEl.value
-      );
+        );
       resolve();
     });
-
+    
+    // Use blur instead of change, so it does not fire too soon
     dueDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
         activeProject,

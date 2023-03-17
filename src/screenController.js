@@ -124,18 +124,16 @@ const screenController = () => {
     
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
-    // Ignore is clicked on the margin of a task
-    // This gets triggered if the empty space or the submit button of add task is clicked on
+    // Ignores:
+    // - click on the margin of a task
+    // - click on the empty space or the submit button of add task
+    // - click on input fileds of editing a task
     console.log(row, col);
     if (!row || !col) {
       return;
     }
 
     disableButtons();
-
-    // Do nothing if any element in the task editing element is clicked
-    // It should be handled by it's own event listner
-    if (e.target.tagName !== 'DIV') return;
 
     updateTasksDisplay(projects, activeProject);
 
