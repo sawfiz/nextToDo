@@ -14,13 +14,33 @@ const addNewTask = (projects, activeProject) => {
   taskEl.appendChild(focusEl);
 
   const statusEl = createElement('select', [], {}, '');
-  const statusToDoEl = createElement('option', [], {}, global.statusIcons['Todo']);
+  const statusToDoEl = createElement(
+    'option',
+    [],
+    {},
+    global.statusIcons['Todo']
+  );
   statusEl.appendChild(statusToDoEl);
-  const statusDoingEl = createElement('option', [], {}, global.statusIcons['Doing']);
+  const statusDoingEl = createElement(
+    'option',
+    [],
+    {},
+    global.statusIcons['Doing']
+  );
   statusEl.appendChild(statusDoingEl);
-  const statusWaitEl = createElement('option', [], {}, global.statusIcons['Wait']);
+  const statusWaitEl = createElement(
+    'option',
+    [],
+    {},
+    global.statusIcons['Wait']
+  );
   statusEl.appendChild(statusWaitEl);
-  const statusDoneEl = createElement('option', [], {}, global.statusIcons['Done']);
+  const statusDoneEl = createElement(
+    'option',
+    [],
+    {},
+    global.statusIcons['Done']
+  );
   statusEl.appendChild(statusDoneEl);
   taskEl.appendChild(statusEl);
 
@@ -56,8 +76,11 @@ const addNewTask = (projects, activeProject) => {
         descriptionEl.value,
         startDateEl.value,
         dueDateEl.value,
-        projects.projects.indexOf(activeProject)
+        projects.projects.indexOf(activeProject),
+        activeProject.tasks.length
       );
+      
+      console.log("🚀 ~ file: dom-tasks.js:86 ~ submitBtn.addEventListener ~ activeProject.tasks.length:", activeProject.tasks.length)
       projects.addTaskToProject(task, activeProject);
       resolve();
     });
@@ -65,21 +88,32 @@ const addNewTask = (projects, activeProject) => {
 };
 
 // Handles a valid click on the tasks list
-const taskListClickHandler = (row, col, projects, activeProject) => {
+const taskListClickHandler = (row, col, projects, activeProject, showView) => {
   console.log(
     '🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:',
     row,
     col
   );
   const taskEl = global.tasksListEl.children[row];
-  console.log("🚀 ~ file: dom-tasks.js:75 ~ taskListClickHandler ~ global.tasksListEl:", global.tasksListEl)
+  console.log(
+    '🚀 ~ file: dom-tasks.js:75 ~ taskListClickHandler ~ global.tasksListEl:',
+    global.tasksListEl
+  );
   console.log(
     '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
     taskEl
   );
   taskEl.classList.add('active-task');
-  const index = taskEl.getAttribute('data-index');
-  console.log('🚀 ~ file: dom-tasks.js:182 ~ returnnewPromise ~ index:', index);
+  const projectIndex = taskEl.getAttribute('data-projectIndex');
+  console.log(
+    '🚀 ~ file: dom-tasks.js:82 ~ taskListClickHandler ~ projectIndex:',
+    projectIndex
+  );
+  const taskIndex = taskEl.getAttribute('data-taskIndex');
+  console.log(
+    '🚀 ~ file: dom-tasks.js:84 ~ taskListClickHandler ~ taskIndex:',
+    taskIndex
+  );
 
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -96,16 +130,36 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     );
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
-    const statusToDoEl = createElement('option', [], {}, global.statusIcons['Todo']);
+    const statusToDoEl = createElement(
+      'option',
+      [],
+      {},
+      global.statusIcons['Todo']
+    );
     if (selectedIndex === 0) statusToDoEl.selected = true;
     statusEl.appendChild(statusToDoEl);
-    const statusDoingEl = createElement('option', [], {}, global.statusIcons['Doing']);
+    const statusDoingEl = createElement(
+      'option',
+      [],
+      {},
+      global.statusIcons['Doing']
+    );
     if (selectedIndex === 1) statusDoingEl.selected = true;
     statusEl.appendChild(statusDoingEl);
-    const statusWaitEl = createElement('option', [], {}, global.statusIcons['Wait']);
+    const statusWaitEl = createElement(
+      'option',
+      [],
+      {},
+      global.statusIcons['Wait']
+    );
     if (selectedIndex === 2) statusWaitEl.selected = true;
     statusEl.appendChild(statusWaitEl);
-    const statusDoneEl = createElement('option', [], {}, global.statusIcons['Done']);
+    const statusDoneEl = createElement(
+      'option',
+      [],
+      {},
+      global.statusIcons['Done']
+    );
     if (selectedIndex === 3) statusDoneEl.selected = true;
     statusEl.appendChild(statusDoneEl);
     editingTaskEl.appendChild(statusEl);
@@ -167,19 +221,22 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     );
     editingTaskEl.appendChild(delBtn);
 
+    const thisProject =
+    showView === true ? projects.projects[projectIndex] : activeProject;
+    console.log("🚀 ~ file: dom-tasks.js:225 ~ returnnewPromise ~ thisProject:", thisProject)
     global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
       let value = focusIcon === '🫥' ? true : false;
-      projects.updateTaskinProject(activeProject, index, 'focus', value);
+      projects.updateTaskinProject(thisProject, taskIndex, 'focus', value);
       resolve();
     });
 
     statusEl.addEventListener('change', () => {
       projects.updateTaskinProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         'status',
         global.status[statusEl.selectedIndex]
       );
@@ -188,8 +245,8 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
 
     descriptionEl.addEventListener('change', () => {
       projects.updateTaskinProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         'description',
         descriptionEl.value
       );
@@ -199,19 +256,19 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     // Use blur instead of change, so it does not fire too soon
     startDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         'startDate',
         startDateEl.value
-        );
+      );
       resolve();
     });
-    
+
     // Use blur instead of change, so it does not fire too soon
     dueDateEl.addEventListener('blur', () => {
       projects.updateTaskinProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         'dueDate',
         dueDateEl.value
       );
@@ -224,15 +281,15 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
         projectDropDownEl.selectedIndex
       );
       projects.updateTaskinProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         'projectIndex',
         projectDropDownEl.selectedIndex
       );
 
       projects.moveTasktoProject(
-        activeProject,
-        index,
+        thisProject,
+        taskIndex,
         projects.projects[projectDropDownEl.selectedIndex]
       );
       resolve();
@@ -241,7 +298,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     delBtn.addEventListener('click', () => {
       // Call from projects to delete the task
       // so that the local storage is updated after the deletion
-      projects.deleteTaskFromProject(index, activeProject);
+      projects.deleteTaskFromProject(taskIndex, thisProject);
       resolve();
     });
   });

@@ -4,8 +4,9 @@ import { isBefore } from './utils';
 const todayClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
-    project.tasks.forEach((task) => {
+    project.tasks.forEach((task, index) => {
       if (isBefore(task.startDate, 0) || isBefore(task.dueDate, 0)) {
+        task.taskIndex = index;
         list.push(task);
       }
     });
@@ -17,8 +18,9 @@ const todayClickHandler = (projects) => {
 const next7daysClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
-    project.tasks.forEach((task) => {
+    project.tasks.forEach((task, index) => {
       if (isBefore(task.startDate, 7) || isBefore(task.dueDate, 7)) {
+        task.taskIndex = index;
         list.push(task);
       }
     });
@@ -30,8 +32,9 @@ const next7daysClickHandler = (projects) => {
 const completedClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
-    project.tasks.forEach((task) => {
+    project.tasks.forEach((task, index) => {
       if (task.status === 'Done') {
+        task.taskIndex = index;
         list.push(task);
       }
     });
@@ -43,7 +46,8 @@ const completedClickHandler = (projects) => {
 const allTasksClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
-    project.tasks.forEach((task) => {
+    project.tasks.forEach((task, index) => {
+      task.taskIndex = index;
       list.push(task);
     });
   });

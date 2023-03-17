@@ -157,8 +157,15 @@ const screenController = () => {
     // Dismiss any task being edited
     updateCurrentView();
 
-    taskListClickHandler(row, col, projects, activeProject).then(() => {
+    taskListClickHandler(
+      row,
+      col,
+      projects,
+      activeProject,
+      showView !== false
+    ).then(() => {
       if (showView) {
+        console.log("🚀 ~ file: screenController.js:168 ~ ).then ~ showView:", showView)
         // Update list, otherwise edits are not visible
         switch (showView) {
           case 'today':
@@ -172,16 +179,14 @@ const screenController = () => {
             break;
           case 'allTasks':
             allTasksClickHandler(projects);
+            console.log('update all tasks list');
             break;
 
           default:
             break;
         }
-        list = JSON.parse(localStorage.getItem('list'));
-        updateTasksDisplay(projects, list, showView, showView === 'completed');
-      } else {
-        updateTasksDisplay(projects, activeProject.tasks);
       }
+      updateCurrentView();
       enableButtons();
     });
   });
@@ -240,7 +245,7 @@ const screenController = () => {
     updateProjectsDisplay(projects);
     removeViewHighlight();
     allTasksEl.classList.add('active-view');
-    showView = 'allTaks';
+    showView = 'allTasks';
     allTasksClickHandler(projects);
   });
 

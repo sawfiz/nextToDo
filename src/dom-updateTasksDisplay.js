@@ -32,13 +32,21 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   // Display the tasks list body
   global.tasksListEl.innerHTML = '';
   let row = 0;
-  taskList.forEach((task, index) => {
+  taskList.forEach((task) => {
     // In case of the Completed view, show completed tasks anyways
     if (!completedView) {
       if (!showCompleted && task.status === 'Done') return;
     }
 
-    const taskEl = createElement('div', ['task'], { 'data-index': index }, '');
+    const taskEl = createElement(
+      'div',
+      ['task'],
+      {
+        'data-projectIndex': task.projectIndex,
+        'data-taskIndex': task.taskIndex,
+      },
+      ''
+    );
     if (showProject) {
       taskEl.classList.add('show-project-name');
     } else {
