@@ -28,6 +28,10 @@ const screenController = () => {
   // Make Inbox the activeProject
   let activeProject = projects.projects[0];
 
+  // Default to show Inbox
+  let showView = false;
+  let list = [];
+
   // Read the show completed tasks setting from local storage
   let showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
   if (!showCompleted) showCompleted = false;
@@ -110,7 +114,8 @@ const screenController = () => {
     projectListClickHandler(e, projects).then((index) => {
       activeProject = projects.projects[index];
       updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject.tasks);
+      showView = false;
+      updateTasksDisplay(projects, activeProject.tasks, showView);
     });
   });
 
@@ -136,7 +141,16 @@ const screenController = () => {
 
     disableButtons();
 
-    updateTasksDisplay(projects, activeProject.tasks);
+    // Dismiss any task being edited
+    if (showView) {
+      list = JSON.parse(localStorage.getItem('list'));
+      updateTasksDisplay(projects, list, showView)
+    }
+    else {
+
+      updateTasksDisplay(projects, activeProject.tasks);
+    }
+
 
     taskListClickHandler(row, col, projects, activeProject).then(() => {
       updateTasksDisplay(projects, activeProject.tasks);
@@ -151,10 +165,12 @@ const screenController = () => {
     updateTasksDisplay(projects, activeProject);
   });
   
+  // The views event listeners
   const todayEl = document.querySelector('#today');
   todayEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
+    showView = true;
     todayClickHandler(projects);
   });
 
@@ -162,6 +178,7 @@ const screenController = () => {
   next7daysEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
+    showView = true;
     next7daysClickHandler(projects);
   });
 
@@ -169,6 +186,7 @@ const screenController = () => {
   completedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
+    showView = true;
     completedClickHandler(projects);
   });
 
@@ -176,11 +194,12 @@ const screenController = () => {
   allTasksEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
+    showView = true;
     allTasksClickHandler(projects);
   });
 
   updateProjectsDisplay(projects, activeProject);
-  updateTasksDisplay(projects, activeProject.tasks);
+  updateTasksDisplay(projects, activeProject.tasks, showView);
 };
 
 export default screenController;

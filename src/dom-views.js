@@ -10,6 +10,7 @@ const todayClickHandler = (projects) => {
       }
     });
   });
+  localStorage.setItem('list', JSON.stringify(list));
   updateTasksDisplay(projects, list, true);
 };
 
@@ -22,6 +23,7 @@ const next7daysClickHandler = (projects) => {
       }
     });
   });
+  localStorage.setItem('list', JSON.stringify(list));
   updateTasksDisplay(projects, list, true);
 };
 
@@ -34,20 +36,24 @@ const completedClickHandler = (projects) => {
       }
     });
   });
+  localStorage.setItem('list', JSON.stringify(list));
   updateTasksDisplay(projects, list, true);
-}
+};
 
 const allTasksClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
     project.tasks.forEach((task) => {
-
-        list.push(task);
-
+      list.push(task);
     });
   });
+  localStorage.setItem('list', JSON.stringify(list));
   updateTasksDisplay(projects, list, true);
-}
+};
 
-
-export { todayClickHandler, next7daysClickHandler, completedClickHandler, allTasksClickHandler };
+export {
+  todayClickHandler,
+  next7daysClickHandler,
+  completedClickHandler,
+  allTasksClickHandler,
+};
