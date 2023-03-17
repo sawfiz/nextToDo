@@ -2,16 +2,21 @@ import * as global from './globalConstants';
 import updateTasksDisplay from './updateTasksDisplay';
 import createElement from './createElement';
 
+// Add mini menu to the active project
 const addProjectMiniMenu = (projects, projectEl, index) => {
-  // Add mini menu
-  // Do not show mini menu for Inbox
+  // Only add the mini menu for projects other than Inbox
   if (index > 0) {
+    // Make project and project name visually unclickable
     projectEl.style.cursor = 'default';
+    projectEl.children[0].style.cursor = 'default';
+
+    // Create mini menu
     const menuEl = createElement('div', ['project-mini-menu'], {}, '');
     projectEl.appendChild(menuEl);
+    // Add a place holder in the front so the buttons are on the right
     menuEl.appendChild(createElement('div', [], {}, ''));
 
-    // Show the up arrow
+    // The up arrow
     // Do not show for the project just below Inbox
     if (index > 1) {
       menuEl.appendChild(
@@ -41,6 +46,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
       menuEl.appendChild(createElement('div', [], {}, ''));
     }
 
+    // The edit button
     menuEl.appendChild(
       createElement(
         'button',
@@ -49,6 +55,8 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
         '✍️'
       )
     );
+    
+    // The delete button
     menuEl.appendChild(
       createElement(
         'button',
@@ -60,12 +68,12 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
   }
 };
 
+// Redraws the projects list
 const updateProjectsDisplay = (projects, activeProject) => {
-  if (!activeProject) {
-    activeProject = projects.projects[0];
-  }
-
+  // Empty the content of the projects list
   global.projectListEl.innerHTML = '';
+
+  // Go through each project in projects[]
   projects.projects.forEach((project, index) => {
     const projectEl = createElement('div', ['project'], { 'data-id': index });
     const projectNameEl = createElement(
@@ -75,28 +83,33 @@ const updateProjectsDisplay = (projects, activeProject) => {
       `${project.name}`
     );
     projectEl.appendChild(projectNameEl);
+
+    // Highlight the active project, and add a mini menu
     if (project === activeProject) {
       projectEl.classList.add('active-project');
       addProjectMiniMenu(projects, projectEl, index);
     }
+
     global.projectListEl.appendChild(projectEl);
   });
 };
 
+// Add a new project
 const addNewProject = (projects) => {
-  const projectListEl = document.querySelector('.project-list');
   const inputEl = createElement('input', ['project-title'], {});
-  projectListEl.appendChild(inputEl);
+  global.projectListEl.appendChild(inputEl);
   inputEl.focus();
 
   return new Promise((resolve, reject) => {
+    // Get a name for the new project
     inputEl.addEventListener('change', () => {
       projects.addProject(inputEl.value);
       resolve();
     });
+    // Listen for the Esc key
     inputEl.addEventListener('keydown', (e) => {
       if (e.keyCode === 27) {
-        projectListEl.removeChild(inputEl);
+        global.projectListEl.removeChild(inputEl);
         reject();
       }
     });
@@ -134,18 +147,18 @@ const projectListClickHandler = (e, projects) => {
           projects.swapProject(index, index + 1);
           index++;
           resolve(index);
-
           break;
         case 'edit':
+          // Replace project name with an input 
           const inputEl = createElement('input', [], {
             type: 'text',
             value: grandParentEl.children[0].textContent,
             'data-id': index,
           });
-
-          grandParentEl.removeChild(grandParentEl.children[0]);
-          grandParentEl.insertBefore(inputEl, grandParentEl.firstChild);
+          grandParentEl.replaceChild(inputEl, grandParentEl.children[0])
           inputEl.focus();
+
+          // Listen for change in the input
           inputEl.addEventListener('change', () => {
             const projectNameEl = createElement(
               'div',
@@ -153,11 +166,11 @@ const projectListClickHandler = (e, projects) => {
               { style: 'cursor: pointer', 'data-id': index },
               inputEl.value
             );
+            // Rename project in the database
             activeProject = projects.projects[index];
-
             projects.renameProject(activeProject, inputEl.value);
-            grandParentEl.insertBefore(projectNameEl, grandParentEl.firstChild);
-            grandParentEl.removeChild(inputEl);
+            // Replace the input with the new project name
+            grandParentEl.replaceChild(projectNameEl, inputEl)
             resolve(index);
           });
           break;
