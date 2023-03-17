@@ -55,7 +55,8 @@ const addNewTask = (projects, activeProject) => {
         global.status[statusEl.selectedIndex],
         descriptionEl.value,
         startDateEl.value,
-        dueDateEl.value
+        dueDateEl.value,
+        projects.projects.indexOf(activeProject)
       );
       projects.addTaskToProject(task, activeProject);
       resolve();
@@ -148,6 +149,9 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
     // Options are project names
     projects.projects.forEach((project) => {
       const projectEl = createElement('option', [], {}, project.name);
+      if (project === activeProject) {
+        projectEl.selected = true;
+      }
       projectDropDownEl.appendChild(projectEl);
     });
 
@@ -176,7 +180,7 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
         activeProject,
         index,
         'status',
-        status[statusEl.selectedIndex]
+        global.status[statusEl.selectedIndex]
       );
       resolve();
     });
@@ -218,6 +222,13 @@ const taskListClickHandler = (row, col, projects, activeProject) => {
         '🚀 ~ file: dom-tasks.js:290 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.selectedIndex:',
         projectDropDownEl.selectedIndex
       );
+      projects.updateTaskinProject(
+        activeProject,
+        index,
+        'projectIndex',
+        projectDropDownEl.selectedIndex
+      );
+
       projects.moveTasktoProject(
         activeProject,
         index,

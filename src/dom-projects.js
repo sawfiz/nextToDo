@@ -1,5 +1,5 @@
 import * as global from './globalConstants';
-import updateTasksDisplay from './updateTasksDisplay';
+import updateTasksDisplay from './dom-updateTasksDisplay';
 import createElement from './createElement';
 
 // Add mini menu to the active project
@@ -55,7 +55,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
         '✍️'
       )
     );
-    
+
     // The delete button
     menuEl.appendChild(
       createElement(
@@ -129,7 +129,7 @@ const projectListClickHandler = (e, projects) => {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
       activeProject = projects.projects[index];
-      updateTasksDisplay(projects, activeProject);
+      updateTasksDisplay(projects, activeProject.tasks);
       resolve(index);
     }
     // Clicked on a mini menu
@@ -149,13 +149,13 @@ const projectListClickHandler = (e, projects) => {
           resolve(index);
           break;
         case 'edit':
-          // Replace project name with an input 
+          // Replace project name with an input
           const inputEl = createElement('input', [], {
             type: 'text',
             value: grandParentEl.children[0].textContent,
             'data-id': index,
           });
-          grandParentEl.replaceChild(inputEl, grandParentEl.children[0])
+          grandParentEl.replaceChild(inputEl, grandParentEl.children[0]);
           inputEl.focus();
 
           // Listen for change in the input
@@ -170,7 +170,7 @@ const projectListClickHandler = (e, projects) => {
             activeProject = projects.projects[index];
             projects.renameProject(activeProject, inputEl.value);
             // Replace the input with the new project name
-            grandParentEl.replaceChild(projectNameEl, inputEl)
+            grandParentEl.replaceChild(projectNameEl, inputEl);
             resolve(index);
           });
           break;

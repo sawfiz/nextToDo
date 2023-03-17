@@ -1,6 +1,7 @@
 import * as global from './globalConstants';
 import Projects from './projects';
-import updateTasksDisplay from './updateTasksDisplay';
+import updateTasksDisplay from './dom-updateTasksDisplay';
+import { todayClickHandler, next7daysClickHandler, completedClickHandler, allTasksClickHandler } from './dom-views';
 import { addNewTask, taskListClickHandler } from './dom-tasks';
 import {
   addNewProject,
@@ -45,7 +46,7 @@ const screenController = () => {
   };
 
   const enableButtons = () => {
-    console.log("Enable buttons");
+    console.log('Enable buttons');
     addProjectBtn.disabled = false;
     addTaskBtn.disabled = false;
     showCompletedCheckbox.disabled = false;
@@ -60,7 +61,7 @@ const screenController = () => {
     // Also enables add task, add project and show completed setting buttons/checkbox
     if (e.target.classList.contains('dismiss')) {
       updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject);
+      updateTasksDisplay(projects, activeProject.tasks);
       enableButtons();
       console.log('yes');
     }
@@ -78,7 +79,7 @@ const screenController = () => {
     // Wait until a new Task is added
     addNewTask(projects, activeProject).then(() => {
       updateTasksDisplay(projects, activeProject);
-      console.log("New task added");
+      console.log('New task added');
       // After a new task is created, re- enable these disabled elements
       enableButtons();
     });
@@ -95,7 +96,7 @@ const screenController = () => {
       .then(() => {
         activeProject = projects.projects[projects.projects.length - 1];
         updateProjectsDisplay(projects, activeProject);
-        updateTasksDisplay(projects, activeProject);
+        updateTasksDisplay(projects, activeProject.tasks);
         enableButtons();
       })
       .catch(() => {
@@ -109,7 +110,7 @@ const screenController = () => {
     projectListClickHandler(e, projects).then((index) => {
       activeProject = projects.projects[index];
       updateProjectsDisplay(projects, activeProject);
-      updateTasksDisplay(projects, activeProject);
+      updateTasksDisplay(projects, activeProject.tasks);
     });
   });
 
@@ -121,7 +122,7 @@ const screenController = () => {
   global.tasksListEl.addEventListener('click', (e) => {
     // Refresh the project list, in case an add project form is open
     updateProjectsDisplay(projects, activeProject);
-    
+
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
     // Ignores:
@@ -135,10 +136,10 @@ const screenController = () => {
 
     disableButtons();
 
-    updateTasksDisplay(projects, activeProject);
+    updateTasksDisplay(projects, activeProject.tasks);
 
     taskListClickHandler(row, col, projects, activeProject).then(() => {
-      updateTasksDisplay(projects, activeProject);
+      updateTasksDisplay(projects, activeProject.tasks);
       enableButtons();
     });
   });
@@ -149,9 +150,37 @@ const screenController = () => {
     localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
     updateTasksDisplay(projects, activeProject);
   });
+  
+  const todayEl = document.querySelector('#today');
+  todayEl.addEventListener('click', () => {
+    // Remove highlight of active project, by updating without activeProject
+    updateProjectsDisplay(projects);
+    todayClickHandler(projects);
+  });
+
+  const next7daysEl = document.querySelector('#next7days');
+  next7daysEl.addEventListener('click', () => {
+    // Remove highlight of active project, by updating without activeProject
+    updateProjectsDisplay(projects);
+    next7daysClickHandler(projects);
+  });
+
+  const completedEl = document.querySelector('#completed');
+  completedEl.addEventListener('click', () => {
+    // Remove highlight of active project, by updating without activeProject
+    updateProjectsDisplay(projects);
+    completedClickHandler(projects);
+  });
+
+  const allTasksEl = document.querySelector('#all-tasks');
+  allTasksEl.addEventListener('click', () => {
+    // Remove highlight of active project, by updating without activeProject
+    updateProjectsDisplay(projects);
+    allTasksClickHandler(projects);
+  });
 
   updateProjectsDisplay(projects, activeProject);
-  updateTasksDisplay(projects, activeProject);
+  updateTasksDisplay(projects, activeProject.tasks);
 };
 
 export default screenController;
