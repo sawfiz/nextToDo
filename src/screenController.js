@@ -45,6 +45,7 @@ const screenController = () => {
   };
 
   const enableButtons = () => {
+    console.log("Enable buttons");
     addProjectBtn.disabled = false;
     addTaskBtn.disabled = false;
     showCompletedCheckbox.disabled = false;
@@ -77,6 +78,7 @@ const screenController = () => {
     // Wait until a new Task is added
     addNewTask(projects, activeProject).then(() => {
       updateTasksDisplay(projects, activeProject);
+      console.log("New task added");
       // After a new task is created, re- enable these disabled elements
       enableButtons();
     });
@@ -94,9 +96,7 @@ const screenController = () => {
         activeProject = projects.projects[projects.projects.length - 1];
         updateProjectsDisplay(projects, activeProject);
         updateTasksDisplay(projects, activeProject);
-        addProjectBtn.disabled = false;
-        addTaskBtn.disabled = false;
-        showCompletedCheckbox.disabled = true;
+        enableButtons();
       })
       .catch(() => {
         console.log('ESC pressed');
@@ -121,16 +121,18 @@ const screenController = () => {
   global.tasksListEl.addEventListener('click', (e) => {
     // Refresh the project list, in case an add project form is open
     updateProjectsDisplay(projects, activeProject);
-
-    disableButtons();
-
+    
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
     // Ignore is clicked on the margin of a task
+    // This gets triggered if the empty space or the submit button of add task is clicked on
     console.log(row, col);
     if (!row || !col) {
       return;
     }
+
+    disableButtons();
+
     // Do nothing if any element in the task editing element is clicked
     // It should be handled by it's own event listner
     if (e.target.tagName !== 'DIV') return;
