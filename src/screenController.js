@@ -4,6 +4,7 @@ import updateTasksDisplay from './dom-updateTasksDisplay';
 import {
   todayClickHandler,
   next7daysClickHandler,
+  undatedClickHandler,
   completedClickHandler,
   allTasksClickHandler,
 } from './dom-views';
@@ -173,14 +174,15 @@ const screenController = () => {
           case 'next7days':
             next7daysClickHandler(projects);
             break;
+          case 'undated':
+            undatedClickHandler(projects);
+            break;
           case 'completed':
             completedClickHandler(projects);
             break;
           case 'allTasks':
             allTasksClickHandler(projects);
-            console.log('update all tasks list');
             break;
-
           default:
             break;
         }
@@ -200,6 +202,7 @@ const screenController = () => {
   // Views
   const todayEl = document.querySelector('#today');
   const next7daysEl = document.querySelector('#next7days');
+  const undatedEl = document.querySelector('#undated');
   const completedEl = document.querySelector('#completed');
   const allTasksEl = document.querySelector('#all-tasks');
 
@@ -207,6 +210,7 @@ const screenController = () => {
   const removeViewHighlight = () => {
     todayEl.classList.remove('active-view');
     next7daysEl.classList.remove('active-view');
+    undatedEl.classList.remove('active-view');
     completedEl.classList.remove('active-view');
     allTasksEl.classList.remove('active-view');
   };
@@ -228,6 +232,15 @@ const screenController = () => {
     next7daysEl.classList.add('active-view');
     showView = 'next7days';
     next7daysClickHandler(projects);
+  });
+
+  undatedEl.addEventListener('click', () => {
+    // Remove highlight of active project, by updating without activeProject
+    updateProjectsDisplay(projects);
+    removeViewHighlight();
+    undatedEl.classList.add('active-view');
+    showView = 'undated';
+    undatedClickHandler(projects);
   });
 
   completedEl.addEventListener('click', () => {

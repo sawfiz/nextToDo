@@ -29,6 +29,20 @@ const next7daysClickHandler = (projects) => {
   updateTasksDisplay(projects, list, true);
 };
 
+const undatedClickHandler = (projects) => {
+  const list = [];
+  projects.projects.forEach((project) => {
+    project.tasks.forEach((task, index) => {
+      if (!task.startDate && !task.dueDate) {
+        task.taskIndex = index;
+        list.push(task);
+      }
+    });
+  });
+  localStorage.setItem('list', JSON.stringify(list));
+  updateTasksDisplay(projects, list, true, true);
+};
+
 const completedClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
@@ -58,6 +72,7 @@ const allTasksClickHandler = (projects) => {
 export {
   todayClickHandler,
   next7daysClickHandler,
+  undatedClickHandler,
   completedClickHandler,
   allTasksClickHandler,
 };
