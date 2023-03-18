@@ -115,10 +115,11 @@ const screenController = () => {
     addNewProject(projects)
       .then(() => {
         activeProject = projects.projects[projects.projects.length - 1];
-        updateProjectsDisplay(projects, activeProject);
-        updateTasksDisplay(projects, activeProject.tasks);
         removeViewHighlight();
         showView = false;
+        updateProjectsDisplay(projects, activeProject);
+        updateTasksListHeader(projects, activeProject, showView);
+        updateTasksDisplay(projects, activeProject.tasks);
         enableButtons();
       })
       .catch(() => {
