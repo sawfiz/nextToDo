@@ -3,31 +3,149 @@ import createElement from './createElement';
 import * as global from './globalConstants';
 import { isBefore } from './utils';
 
-const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
-  const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
+let focusAscend = true;
+let statusAscend = true;
+let descriptionAscend = true;
+let projectAscend = true;
+let startDateAscend = true;
+let dueDateAscend = true;
 
+const getList = (activeProject, showProject) => {
+  if (showProject) {
+    return JSON.parse(localStorage.getItem('list'));
+  } else {
+    return activeProject.tasks;
+  }
+};
+
+const sortByKey = (array, key, sortAscend) => {
+  return array.sort((a, b) => {
+    if (sortAscend) {
+      return a[key] < b[key] ? -1 : 1;
+    }
+    return a[key] > b[key] ? -1 : 1;
+  });
+};
+
+const updateTasksListHeader = (projects, activeProject, showProject) => {
   // Display the tasks list header
   const taskListHeaderEl = document.querySelector('.tasks-list-header');
   taskListHeaderEl.innerHTML = '';
-  taskListHeaderEl.classList.remove('show-project-name');
-  taskListHeaderEl.classList.add('not-show-project-name');
-
-  for (let i = 0; i < 2; i++) {
-    const element = createElement('div', [], {}, '');
-    taskListHeaderEl.appendChild(element);
-  }
-  const headerDescriptionEl = createElement('div', [], {}, 'Description');
-  taskListHeaderEl.appendChild(headerDescriptionEl);
   if (showProject) {
     taskListHeaderEl.classList.remove('not-show-project-name');
     taskListHeaderEl.classList.add('show-project-name');
-    const headerProjectNameEl = createElement('div', [], {}, 'Project');
-    taskListHeaderEl.appendChild(headerProjectNameEl);
+  } else {
+    taskListHeaderEl.classList.remove('show-project-name');
+    taskListHeaderEl.classList.add('not-show-project-name');
   }
-  const headerStartDateEl = createElement('div', [], {}, 'Start Date');
+
+  const sortByFocusBtn = createElement(
+    'btn',
+    [],
+    { style: 'cursor: pointer' },
+    '↕️'
+  );
+  taskListHeaderEl.appendChild(sortByFocusBtn);
+  sortByFocusBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    focusAscend = focusAscend ? false : true;
+    const sortedList = sortByKey(list, 'focus', focusAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+
+  const sortByStatusBtn = createElement(
+    'btn',
+    [],
+    { style: 'cursor: pointer' },
+    '↕️'
+  );
+  taskListHeaderEl.appendChild(sortByStatusBtn);
+  sortByStatusBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    statusAscend = statusAscend ? false : true;
+    // Todo: should sort by status index, not "Doing, Done, Todo, Wait"
+    const sortedList = sortByKey(list, 'status', statusAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+
+  const headerDescriptionEl = createElement('div', [], {}, 'Description ');
+  taskListHeaderEl.appendChild(headerDescriptionEl);
+  const sortByDescriptionBtn = createElement(
+    'btn',
+    [],
+    { style: 'cursor: pointer' },
+    '↕️'
+  );
+  headerDescriptionEl.appendChild(sortByDescriptionBtn);
+  sortByDescriptionBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    descriptionAscend = descriptionAscend ? false : true;
+    const sortedList = sortByKey(list, 'description', descriptionAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+
+  if (showProject) {
+    taskListHeaderEl.classList.remove('not-show-project-name');
+    taskListHeaderEl.classList.add('show-project-name');
+    const headerProjectNameEl = createElement('div', [], {}, 'Project ');
+    taskListHeaderEl.appendChild(headerProjectNameEl);
+    const sortByProjectBtn = createElement(
+      'btn',
+      [],
+      { style: 'cursor: pointer' },
+      '↕️'
+    );
+    headerProjectNameEl.appendChild(sortByProjectBtn);
+    sortByProjectBtn.addEventListener('click', () => {
+      const list = getList(activeProject, showProject);
+      projectAscend = projectAscend ? false : true;
+      // Todo: should sort by project name, not project index
+      const sortedList = sortByKey(list, 'projectIndex', projectAscend);
+      localStorage.setItem('list', JSON.stringify(sortedList));
+      updateTasksDisplay(projects, sortedList, showProject, false);
+    });
+  }
+
+  const headerStartDateEl = createElement('div', [], {}, 'Start Date ');
   taskListHeaderEl.appendChild(headerStartDateEl);
+  const sortByStartDateBtn = createElement(
+    'btn',
+    [],
+    { style: 'cursor: pointer' },
+    '↕️'
+  );
+  headerStartDateEl.appendChild(sortByStartDateBtn);
+  sortByStartDateBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    startDateAscend = startDateAscend ? false : true;
+    const sortedList = sortByKey(list, 'startDate', startDateAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+
   const headerDueDateEl = createElement('div', [], {}, 'Due Date');
   taskListHeaderEl.appendChild(headerDueDateEl);
+  const sortByDueDateBtn = createElement(
+    'btn',
+    [],
+    { style: 'cursor: pointer' },
+    '↕️'
+  );
+  headerDueDateEl.appendChild(sortByDueDateBtn);
+  sortByDueDateBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    dueDateAscend = dueDateAscend ? false : true;
+    const sortedList = sortByKey(list, 'dueDate', dueDateAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+};
+
+const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
+  const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
   // Display the tasks list body
   global.tasksListEl.innerHTML = '';
@@ -129,4 +247,4 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   });
 };
 
-export default updateTasksDisplay;
+export { updateTasksListHeader, updateTasksDisplay };

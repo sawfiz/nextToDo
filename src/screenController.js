@@ -1,6 +1,9 @@
 import * as global from './globalConstants';
 import Projects from './projects';
-import updateTasksDisplay from './dom-updateTasksDisplay';
+import {
+  updateTasksListHeader,
+  updateTasksDisplay,
+} from './dom-updateTasksDisplay';
 import {
   todayClickHandler,
   next7daysClickHandler,
@@ -129,6 +132,7 @@ const screenController = () => {
       updateProjectsDisplay(projects, activeProject);
       showView = false;
       removeViewHighlight();
+      updateTasksListHeader(projects, activeProject, showView !== false);
       updateTasksDisplay(projects, activeProject.tasks, showView);
     });
   });
@@ -166,7 +170,10 @@ const screenController = () => {
       showView !== false
     ).then(() => {
       if (showView) {
-        console.log("🚀 ~ file: screenController.js:168 ~ ).then ~ showView:", showView)
+        console.log(
+          '🚀 ~ file: screenController.js:168 ~ ).then ~ showView:',
+          showView
+        );
         // Update list, otherwise edits are not visible
         switch (showView) {
           case 'today':
@@ -224,46 +231,52 @@ const screenController = () => {
     removeViewHighlight();
     todayEl.classList.add('active-view');
     showView = 'today';
+    updateTasksListHeader(projects, activeProject, showView !== false);
     todayClickHandler(projects);
   });
-
+  
   next7daysEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
     next7daysEl.classList.add('active-view');
     showView = 'next7days';
+    updateTasksListHeader(projects, activeProject, showView !== false);
     next7daysClickHandler(projects);
   });
-
+  
   undatedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
     undatedEl.classList.add('active-view');
     showView = 'undated';
+    updateTasksListHeader(projects, activeProject, showView !== false);
     undatedClickHandler(projects);
   });
-
+  
   completedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
     completedEl.classList.add('active-view');
     showView = 'completed';
+    updateTasksListHeader(projects, activeProject, showView !== false);
     completedClickHandler(projects);
   });
-
+  
   allTasksEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
     allTasksEl.classList.add('active-view');
     showView = 'allTasks';
+    updateTasksListHeader(projects, activeProject, showView !== false);
     allTasksClickHandler(projects);
   });
 
   updateProjectsDisplay(projects, activeProject);
+  updateTasksListHeader(projects, activeProject, showView !== false);
   updateTasksDisplay(projects, activeProject.tasks, showView);
 };
 

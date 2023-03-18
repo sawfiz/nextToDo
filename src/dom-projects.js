@@ -1,5 +1,8 @@
 import * as global from './globalConstants';
-import updateTasksDisplay from './dom-updateTasksDisplay';
+import {
+  updateTasksListHeader,
+  updateTasksDisplay,
+} from './dom-updateTasksDisplay';
 import createElement from './createElement';
 
 // Add mini menu to the active project

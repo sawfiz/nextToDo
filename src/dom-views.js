@@ -1,4 +1,7 @@
-import updateTasksDisplay from './dom-updateTasksDisplay';
+import {
+  updateTasksListHeader,
+  updateTasksDisplay,
+} from './dom-updateTasksDisplay';
 import { isBefore } from './utils';
 
 const todayClickHandler = (projects) => {
