@@ -128,6 +128,7 @@ const screenController = () => {
       activeProject = projects.projects[index];
       updateProjectsDisplay(projects, activeProject);
       showView = false;
+      removeViewHighlight();
       updateTasksDisplay(projects, activeProject.tasks, showView);
     });
   });
@@ -218,6 +219,7 @@ const screenController = () => {
   // The views event listeners
   todayEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
+    activeProject = null;
     updateProjectsDisplay(projects);
     removeViewHighlight();
     todayEl.classList.add('active-view');

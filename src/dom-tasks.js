@@ -81,6 +81,7 @@ const addNewTask = (projects, activeProject, showView) => {
   // Wait for the submit button to be clicked on
   return new Promise((resolve) => {
     submitBtn.addEventListener('click', () => {
+      console.log("🚀 ~ file: dom-tasks.js:87 ~ submitBtn.addEventListener ~ projectEl.selectedIndex:", projectEl.selectedIndex)
       const projectIndex =
         showView === true
           ? projectEl.selectedIndex
@@ -93,16 +94,12 @@ const addNewTask = (projects, activeProject, showView) => {
         startDateEl.value,
         dueDateEl.value,
         projectIndex,
-        activeProject.tasks.length
+        projects.projects[projectIndex].tasks.length
       );
 
       console.log(
         '🚀 ~ file: dom-tasks.js:85 ~ submitBtn.addEventListener ~ projectIndex:',
         projectIndex
-      );
-      console.log(
-        '🚀 ~ file: dom-tasks.js:86 ~ submitBtn.addEventListener ~ activeProject.tasks.length:',
-        activeProject.tasks.length
       );
       projects.addTaskToProject(task, projects.projects[projectIndex]);
       resolve();
