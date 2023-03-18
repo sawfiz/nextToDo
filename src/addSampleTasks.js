@@ -165,6 +165,20 @@ const addSampleTasks = (projects) => {
   );
   projects.addTaskToProject(task, project);
 
+  // Task 5
+  startDate = getDateFromDaysOffset(20);
+  dueDate = getDateFromDaysOffset(30);
+  task = Task(
+    true,
+    'dDone',
+    'A future buy 5',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
   // Create Project 2
   projects.addProject('The Odin Project');
   project = projects.projects[2];
@@ -232,6 +246,20 @@ const addSampleTasks = (projects) => {
     true,
     'dDone',
     'Watch video 4',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 5
+  startDate = getDateFromDaysOffset(10);
+  dueDate = getDateFromDaysOffset(17);
+  task = Task(
+    true,
+    'dDone',
+    'A future project 5',
     startDate,
     dueDate,
     projects.projects.indexOf(project),
