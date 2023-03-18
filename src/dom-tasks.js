@@ -69,7 +69,7 @@ const addNewTask = (projects, activeProject, showView) => {
           : projects.projects.indexOf(activeProject);
       const task = Task(
         focusEl.checked,
-        // status is from array ['Todo', 'Doing', 'Wait', 'Done']
+        // status is from array ['aTodo', 'bDoing', 'cWait', 'dDone']
         global.status[statusEl.selectedIndex],
         descriptionEl.value,
         startDateEl.value,

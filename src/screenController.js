@@ -19,6 +19,7 @@ import {
   updateProjectsDisplay,
   projectListClickHandler,
 } from './dom-projects';
+import addSampleTasks from './addSampleTasks';
 
 const screenController = () => {
   // Create a Projects object with an empty list of projects
@@ -28,6 +29,7 @@ const screenController = () => {
   if (!data) {
     // If no data exists, create an empty Inbox
     projects.addProject('Inbox');
+    addSampleTasks(projects);
   } else {
     // Otherwise, rebuild the projects[] by creating a list of project objects
     // based on the stored names and tasks
@@ -45,7 +47,9 @@ const screenController = () => {
 
   // Read the show completed tasks setting from local storage
   let showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  if (!showCompleted) showCompleted = false;
+  console.log("🚀 ~ file: screenController.js:50 ~ screenController ~ showCompleted:", showCompleted)
+  if (showCompleted === null) showCompleted = true;
+  localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
 
   // Event listners
   // --- the elements ---
