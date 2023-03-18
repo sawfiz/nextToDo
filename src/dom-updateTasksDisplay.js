@@ -149,6 +149,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
 
 const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
+  console.log("🚀 ~ file: dom-updateTasksDisplay.js:152 ~ updateTasksDisplay ~ showCompleted:", showCompleted)
 
   // Display the tasks list body
   global.tasksListEl.innerHTML = '';
@@ -156,7 +157,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   taskList.forEach((task) => {
     // In case of the Completed view, show completed tasks anyways
     if (!completedView) {
-      if (!showCompleted && task.status === 'Done') return;
+      if (!showCompleted && task.status === 'dDone') return;
     }
 
     const taskEl = createElement(
