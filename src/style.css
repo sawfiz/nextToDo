@@ -14,12 +14,55 @@ body {
 
 .header {
   display: grid;
-  grid-template-columns: 5fr 1fr 20fr;
-  border: 1px solid red;
+  grid-template-columns: 250px 50px 250px auto;
+  gap: 5px;
+  border-bottom: 5px solid gray;
+
 }
 
 h1 {
+  margin: 0.5rem;
   color: red;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.add-task-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.add-task {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.quote {
+  margin: 1rem;
+  display: grid;
+  grid-template-rows: 1fr 2fr 1fr;
+  gap: 5px;
+  border: 1px gray dashed;
+  padding: 5px 10px;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.quote-text {
+  font-style: italic;
+  display: flex;
+  align-items: center;
+}
+
+.quotee {
+  text-align: right;
 }
 
 .container {
@@ -40,6 +83,8 @@ h1 {
 
 h2 {
   margin-bottom: 0.5rem;
+  color: #444;
+  text-shadow: 1px 1px rgba(0, 0, 0, 1);
 }
 
 .views-container, .projects-container {
@@ -58,6 +103,18 @@ h2 {
   grid-template-columns: 6fr 1fr;
 }
 
+.add-project {
+  height: 30px;
+  width: 30px;
+  font-size: 1.2rem;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.project-title {
+  width: 230px;
+  font-size: 1.2rem;
+}
+
 .project-name {
   max-width: 200px; /* Set the maximum width of the div */
   overflow: hidden; /* Hide the content that exceeds the max-width */
@@ -66,7 +123,7 @@ h2 {
 }
 
 .active-view, .active-project {
-  color: blue;
+  color: red;
   background-color: aliceblue;
 }
 
@@ -89,7 +146,9 @@ h2 {
 }
 
 .main {
+  margin: 5px;
   border-left: 1px red solid;
+
 }
 
 .tasks-list-header, .task {
@@ -98,9 +157,10 @@ h2 {
 
 .tasks-list-header {
   height: 2.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
   padding-top: 0.5rem;
-  border-bottom: 3px darkgray solid;
+  border-bottom: 3px red solid;
 }
 
 .not-show-project-name {
@@ -175,4 +235,9 @@ h2 {
 
 .delete-btn {
   margin: 3px 30%;
+}
+
+footer {
+  text-align: center;
+  border-top: 3px gray solid;
 }

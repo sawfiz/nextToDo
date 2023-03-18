@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable comma-dangle */
-// import "@mdi/font/css/materialdesignicons.min.css";
+import "@mdi/font/css/materialdesignicons.min.css";
 import * as global from './globalConstants';
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
 import createElement from './createElement';
