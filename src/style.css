@@ -1,3 +1,12 @@
+:root {
+  /* Victor Verion */
+  /* --darker-color: #fa4659; */
+  --darker-color: #ff0000;
+  --dark-color: #11cbd7;
+  --light-color: #c6f1e7;
+  --lighter-color: #f0fff3;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,12 +26,12 @@ body {
   grid-template-columns: 250px 50px 250px auto;
   gap: 5px;
   border-bottom: 5px solid gray;
-
+  background-color: var(--dark-color);
 }
 
 h1 {
   margin: 0.5rem;
-  color: red;
+  color: var(--darker-color);
   display: flex;
   justify-content: left;
   align-items: center;
@@ -79,6 +88,7 @@ h1 {
   margin: 5px 2%;
   display: grid;
   grid-template-rows: 11.5rem auto 50px;
+  background-color: var(--light-color);
 }
 
 h2 {
@@ -123,8 +133,8 @@ h2 {
 }
 
 .active-view, .active-project {
-  color: red;
-  background-color: aliceblue;
+  color: var(--darker-color);
+  background-color: var(--dark-color);
 }
 
 .project-mini-menu {
@@ -147,8 +157,8 @@ h2 {
 
 .main {
   margin: 5px;
-  border-left: 1px red solid;
-
+  border-left: 3px var(--darker-color) solid;
+  background-color: var(--lighter-color);
 }
 
 .tasks-list-header, .task {
@@ -160,7 +170,7 @@ h2 {
   font-size: 1rem;
   font-weight: bold;
   padding-top: 0.5rem;
-  border-bottom: 3px red solid;
+  border-bottom: 3px var(--darker-color) solid;
 }
 
 .not-show-project-name {
@@ -206,7 +216,7 @@ h2 {
 }
 
 .editing-task {
-  background-color: lightgray;
+  background-color: var(--dark-color);
   margin: 0 1%;
   display: grid;
   grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
@@ -240,4 +250,5 @@ h2 {
 footer {
   text-align: center;
   border-top: 3px gray solid;
+  background-color: var(--dark-color);
 }

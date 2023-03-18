@@ -165,80 +165,79 @@ const addSampleTasks = (projects) => {
   );
   projects.addTaskToProject(task, project);
 
-// Create Project 2
-projects.addProject('The Odin Project');
-project = projects.projects[2];
+  // Create Project 2
+  projects.addProject('The Odin Project');
+  project = projects.projects[2];
 
-// Task 0
-startDate = getDateFromDaysOffset(0);
-dueDate = getDateFromDaysOffset(0);
-task = Task(
-  true,
-  'aTodo',
-  'Feature 0',
-  startDate,
-  dueDate,
-  projects.projects.indexOf(project),
-  project.tasks.length
-);
-projects.addTaskToProject(task, project);
+  // Task 0
+  startDate = getDateFromDaysOffset(0);
+  dueDate = getDateFromDaysOffset(0);
+  task = Task(
+    true,
+    'aTodo',
+    'Feature 0',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 
-// Task 1
-startDate = getDateFromDaysOffset(-7);
-dueDate = getDateFromDaysOffset(7);
-task = Task(
-  false,
-  'bDoing',
-  'Fix bug 1',
-  startDate,
-  dueDate,
-  projects.projects.indexOf(project),
-  project.tasks.length
-);
-projects.addTaskToProject(task, project);
+  // Task 1
+  startDate = getDateFromDaysOffset(-7);
+  dueDate = getDateFromDaysOffset(7);
+  task = Task(
+    false,
+    'bDoing',
+    'Fix bug 1',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 
-// Task 2
-startDate = getDateFromDaysOffset(1);
-dueDate = getDateFromDaysOffset(7);
-task = Task(
-  false,
-  'cWait',
-  'Read topic 2',
-  startDate,
-  dueDate,
-  projects.projects.indexOf(project),
-  project.tasks.length
-);
-projects.addTaskToProject(task, project);
+  // Task 2
+  startDate = getDateFromDaysOffset(1);
+  dueDate = getDateFromDaysOffset(7);
+  task = Task(
+    false,
+    'cWait',
+    'Read topic 2',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 
-// Task 3
-startDate = '';
-dueDate = '';
-task = Task(
-  false,
-  'dDone',
-  'Bug fix 3',
-  startDate,
-  dueDate,
-  projects.projects.indexOf(project),
-  project.tasks.length
-);
-projects.addTaskToProject(task, project);
+  // Task 3
+  startDate = '';
+  dueDate = '';
+  task = Task(
+    false,
+    'dDone',
+    'Bug fix 3',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 
-// Task 4
-startDate = getDateFromDaysOffset(-5);
-dueDate = getDateFromDaysOffset(-1);
-task = Task(
-  true,
-  'dDone',
-  'Watch video 4',
-  startDate,
-  dueDate,
-  projects.projects.indexOf(project),
-  project.tasks.length
-);
-projects.addTaskToProject(task, project);
-
+  // Task 4
+  startDate = getDateFromDaysOffset(-5);
+  dueDate = getDateFromDaysOffset(-1);
+  task = Task(
+    true,
+    'dDone',
+    'Watch video 4',
+    startDate,
+    dueDate,
+    projects.projects.indexOf(project),
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 };
 
 export default addSampleTasks;
