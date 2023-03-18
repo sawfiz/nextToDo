@@ -1,9 +1,8 @@
+/* eslint-disable no-param-reassign */
 const List = (name, existingTasks = []) => {
   const tasks = existingTasks || [];
-  console.log(`Create list ${name}`);
 
   const printTasks = () => {
-    console.log(`${name} has ${tasks.length} tasks: `);
     tasks.forEach((task) => {
       console.log(task.title);
     });
@@ -15,7 +14,6 @@ const List = (name, existingTasks = []) => {
   };
 
   const removeTask = (index) => {
-    console.log(`Remove task ${index}`);
     if (index !== -1) {
       // Make sure the task exists in the list
       tasks.splice(index, 1);
@@ -49,11 +47,11 @@ const List = (name, existingTasks = []) => {
       case 'projectIndex':
         tasks[index].projectIndex = value;
         break;
-    
+
       default:
         break;
     }
-  }
+  };
 
   // const renameList = (newName) => {
   //   name = newName;

@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable comma-dangle */
 import * as global from './globalConstants';
 import Projects from './projects';
 import {
@@ -59,7 +61,6 @@ const screenController = () => {
   };
 
   const enableButtons = () => {
-    console.log('Enable buttons');
     addProjectBtn.disabled = false;
     addTaskBtn.disabled = false;
     showCompletedCheckbox.disabled = false;
@@ -77,7 +78,6 @@ const screenController = () => {
   // The body
   const bodyEl = document.querySelector('body');
   bodyEl.addEventListener('click', (e) => {
-    console.log(e.target);
     // Clicking on any element with 'dismiss' will refresh the projects and tasks list
     // This dismisses any open add task, edit task and add project forms
     // Also enables add task, add project and show completed setting buttons/checkbox
@@ -120,7 +120,6 @@ const screenController = () => {
         enableButtons();
       })
       .catch(() => {
-        console.log('ESC pressed');
         enableButtons();
       });
   });
@@ -152,7 +151,6 @@ const screenController = () => {
     // - click on the margin of a task
     // - click on the empty space or the submit button of add task
     // - click on input fileds of editing a task
-    console.log(row, col);
     if (!row || !col) {
       return;
     }
@@ -170,10 +168,6 @@ const screenController = () => {
       showView !== false
     ).then(() => {
       if (showView) {
-        console.log(
-          '🚀 ~ file: screenController.js:168 ~ ).then ~ showView:',
-          showView
-        );
         // Update list, otherwise edits are not visible
         switch (showView) {
           case 'today':
@@ -234,7 +228,7 @@ const screenController = () => {
     updateTasksListHeader(projects, activeProject, showView !== false);
     todayClickHandler(projects);
   });
-  
+
   next7daysEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
@@ -244,7 +238,7 @@ const screenController = () => {
     updateTasksListHeader(projects, activeProject, showView !== false);
     next7daysClickHandler(projects);
   });
-  
+
   undatedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
@@ -254,7 +248,7 @@ const screenController = () => {
     updateTasksListHeader(projects, activeProject, showView !== false);
     undatedClickHandler(projects);
   });
-  
+
   completedEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
@@ -264,7 +258,7 @@ const screenController = () => {
     updateTasksListHeader(projects, activeProject, showView !== false);
     completedClickHandler(projects);
   });
-  
+
   allTasksEl.addEventListener('click', () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);

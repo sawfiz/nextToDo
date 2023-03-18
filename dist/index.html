@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next To Do</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
 <script defer src="runtime.js"></script><script defer src="main.js"></script></head>
 
 <body>
@@ -19,11 +20,11 @@
     <div class="sidebar">
       <div class="views-container dismiss">
         <h2 class="dismiss">Views</h2>
-        <div class="view" id="today">Today</div>
-        <div class="view" id="next7days">Next 7 days</div>
-        <div class="view" id="undated">Undated</div>
-        <div class="view" id="completed">Completed</div>
-        <div class="view" id="all-tasks">All tasks</div>
+        <div class="view mdi mdi-calendar-today" id="today"> Today</div>
+        <div class="view mdi mdi-calendar-range" id="next7days"> Next 7 days</div>
+        <div class="view mdi mdi-calendar-blank" id="undated"> Undated</div>
+        <div class="view mdi mdi-check-circle-outline" id="completed"> Completed</div>
+        <div class="view mdi mdi-calendar-month" id="all-tasks"> All tasks</div>
       </div>
 
       <div class="projects-container dismiss">
@@ -42,7 +43,6 @@
       <div class="tasks-list-header dismiss">
       </div>
       <div class="task-list dismiss"></div>
-      <button id="sort-by-focus">sort</button>
     </div>
   </div>
 </body>

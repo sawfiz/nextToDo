@@ -1,7 +1,11 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-use-before-define */
 import './style.css';
 import createElement from './createElement';
 import * as global from './globalConstants';
-import { isBefore } from './utils';
+import isBefore from './utils';
 
 let focusAscend = true;
 let statusAscend = true;
@@ -42,7 +46,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   const sortByFocusBtn = createElement(
     'btn',
     [],
-    { style: 'cursor: pointer' },
+    { style: 'cursor: pointer; display: flex; justify-content: center' },
     '↕️'
   );
   taskListHeaderEl.appendChild(sortByFocusBtn);
@@ -57,14 +61,13 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   const sortByStatusBtn = createElement(
     'btn',
     [],
-    { style: 'cursor: pointer' },
+    { style: 'cursor: pointer; display: flex; justify-content: center' },
     '↕️'
   );
   taskListHeaderEl.appendChild(sortByStatusBtn);
   sortByStatusBtn.addEventListener('click', () => {
     const list = getList(activeProject, showProject);
     statusAscend = statusAscend ? false : true;
-    // Todo: should sort by status index, not "Doing, Done, Todo, Wait"
     const sortedList = sortByKey(list, 'status', statusAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
     updateTasksDisplay(projects, sortedList, showProject, false);
@@ -126,7 +129,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     updateTasksDisplay(projects, sortedList, showProject, false);
   });
 
-  const headerDueDateEl = createElement('div', [], {}, 'Due Date');
+  const headerDueDateEl = createElement('div', [], {}, 'Due Date ');
   taskListHeaderEl.appendChild(headerDueDateEl);
   const sortByDueDateBtn = createElement(
     'btn',
@@ -175,18 +178,29 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const taskFocusEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col },
-      task.focus
+      { 'data-row': row, 'data-col': col, style: 'color: red; text-align: center'},
+      ''
     );
-    taskFocusEl.innerText = task.focus === true ? '‼️' : '🫥';
+    // if (task.focus) {
+    //   taskFocusEl.classList.add('mdi', 'mdi-weather-sunny');
+    //   taskFocusEl.style.color = 'red';
+    // } else {
+    //   taskFocusEl.classList.add('mdi', 'mdi-blur');
+    // }
+    taskFocusEl.innerText = task.focus ? '‼️' : '🫥';
     taskEl.appendChild(taskFocusEl);
 
     col++;
     const taskStatusEl = createElement(
       'div',
-      [],
-      { 'data-row': row, 'data-col': col },
-      global.statusIcons[task.status]
+      ['mdi', global.statusIcons[task.status]],
+      {
+        'data-row': row,
+        'data-col': col,
+        'data-statusindex': global.status.indexOf(task.status),
+        style: 'text-align: center'
+      },
+      ''
     );
     taskEl.appendChild(taskStatusEl);
 
@@ -197,7 +211,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       { 'data-row': row, 'data-col': col },
       task.description
     );
-    if (task.status === 'Done') {
+    if (task.status === 'dDone') {
       taskDescriptionEl.classList.add('done');
     }
     taskEl.appendChild(taskDescriptionEl);

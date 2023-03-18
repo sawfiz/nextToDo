@@ -1,5 +1,4 @@
 export default function createElement(type, classArray, attrObj, text) {
-
   const element = document.createElement(type);
   element.classList.add(...classArray);
 

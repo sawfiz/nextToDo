@@ -19,11 +19,8 @@ function isBefore(dateString, days) {
   // Compare the dates
   if (inputDate < daysLater) {
     return true;
-  } else if (inputDate > daysLater) {
-    return false;
-  } else {
-    return false;
   }
+  return false;
 }
 
-export { isBefore };
+export default isBefore;

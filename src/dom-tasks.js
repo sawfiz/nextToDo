@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-plusplus */
 import './style.css';
 import * as global from './globalConstants';
 import createElement from './createElement';
@@ -14,33 +16,13 @@ const addNewTask = (projects, activeProject, showView) => {
   taskEl.appendChild(focusEl);
 
   const statusEl = createElement('select', [], {}, '');
-  const statusToDoEl = createElement(
-    'option',
-    [],
-    {},
-    global.statusIcons['Todo']
-  );
+  const statusToDoEl = createElement('option', [], {}, 'To do');
   statusEl.appendChild(statusToDoEl);
-  const statusDoingEl = createElement(
-    'option',
-    [],
-    {},
-    global.statusIcons['Doing']
-  );
+  const statusDoingEl = createElement('option', [], {}, 'Doing');
   statusEl.appendChild(statusDoingEl);
-  const statusWaitEl = createElement(
-    'option',
-    [],
-    {},
-    global.statusIcons['Wait']
-  );
+  const statusWaitEl = createElement('option', [], {}, 'Waiting');
   statusEl.appendChild(statusWaitEl);
-  const statusDoneEl = createElement(
-    'option',
-    [],
-    {},
-    global.statusIcons['Done']
-  );
+  const statusDoneEl = createElement('option', [], {}, 'Done');
   statusEl.appendChild(statusDoneEl);
   taskEl.appendChild(statusEl);
 
@@ -65,7 +47,7 @@ const addNewTask = (projects, activeProject, showView) => {
   taskEl.appendChild(dueDateEl);
 
   // Make placeholders so the Submit button shows up at the end
-  let skip = showView ? 5 : 4;
+  const skip = showView ? 5 : 4;
   for (let i = 0; i < skip; i++) {
     taskEl.appendChild(createElement('div', [], {}, ''));
   }
@@ -81,7 +63,6 @@ const addNewTask = (projects, activeProject, showView) => {
   // Wait for the submit button to be clicked on
   return new Promise((resolve) => {
     submitBtn.addEventListener('click', () => {
-      console.log("🚀 ~ file: dom-tasks.js:87 ~ submitBtn.addEventListener ~ projectEl.selectedIndex:", projectEl.selectedIndex)
       const projectIndex =
         showView === true
           ? projectEl.selectedIndex
@@ -97,10 +78,6 @@ const addNewTask = (projects, activeProject, showView) => {
         projects.projects[projectIndex].tasks.length
       );
 
-      console.log(
-        '🚀 ~ file: dom-tasks.js:85 ~ submitBtn.addEventListener ~ projectIndex:',
-        projectIndex
-      );
       projects.addTaskToProject(task, projects.projects[projectIndex]);
       resolve();
     });
@@ -144,42 +121,20 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     editingTaskEl.appendChild(focusEl);
 
     // Status pull down
-    const targetIcon = taskEl.children[1].innerText;
-    const selectedIndex = Object.entries(global.statusIcons).findIndex(
-      ([key, value]) => value === targetIcon
-    );
+    const selectedIndex = Number(taskEl.children[1].dataset.statusindex);
+
     const statusEl = createElement('select', [], {}, '');
     // Option is from the statusIcons dictionary
-    const statusToDoEl = createElement(
-      'option',
-      [],
-      {},
-      global.statusIcons['Todo']
-    );
+    const statusToDoEl = createElement('option', [], {}, 'To do');
     if (selectedIndex === 0) statusToDoEl.selected = true;
     statusEl.appendChild(statusToDoEl);
-    const statusDoingEl = createElement(
-      'option',
-      [],
-      {},
-      global.statusIcons['Doing']
-    );
+    const statusDoingEl = createElement('option', [], {}, 'Doing');
     if (selectedIndex === 1) statusDoingEl.selected = true;
     statusEl.appendChild(statusDoingEl);
-    const statusWaitEl = createElement(
-      'option',
-      [],
-      {},
-      global.statusIcons['Wait']
-    );
+    const statusWaitEl = createElement('option', [], {}, 'Waiting');
     if (selectedIndex === 2) statusWaitEl.selected = true;
     statusEl.appendChild(statusWaitEl);
-    const statusDoneEl = createElement(
-      'option',
-      [],
-      {},
-      global.statusIcons['Done']
-    );
+    const statusDoneEl = createElement('option', [], {}, 'Done');
     if (selectedIndex === 3) statusDoneEl.selected = true;
     statusEl.appendChild(statusDoneEl);
     editingTaskEl.appendChild(statusEl);
@@ -233,12 +188,7 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     editingTaskEl.appendChild(projectDropDownEl);
 
     // The delete button
-    const delBtn = createElement(
-      'button',
-      ['delete-btn'],
-      { },
-      '❌'
-    );
+    const delBtn = createElement('button', ['delete-btn'], {}, '❌');
     editingTaskEl.appendChild(delBtn);
 
     const thisProject =

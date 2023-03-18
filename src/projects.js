@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import List from './list';
 
 const Projects = () => {
@@ -29,17 +30,17 @@ const Projects = () => {
   const deleteTaskFromProject = (index, project) => {
     project.removeTask(index);
     saveProjects();
-  }
+  };
 
-  const updateTaskinProject = (project, index, attribute, value ) => {
-    project.updateTask(index, attribute, value)
+  const updateTaskinProject = (project, index, attribute, value) => {
+    project.updateTask(index, attribute, value);
     saveProjects();
-  }
+  };
 
   const moveTasktoProject = (project, index, otherProject) => {
-    project.moveTask(index, otherProject)
+    project.moveTask(index, otherProject);
     saveProjects();
-  }
+  };
 
   // Swap the order of 2 projects
   const swapProject = (x, y) => {

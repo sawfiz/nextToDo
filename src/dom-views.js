@@ -1,8 +1,6 @@
-import {
-  updateTasksListHeader,
-  updateTasksDisplay,
-} from './dom-updateTasksDisplay';
-import { isBefore } from './utils';
+/* eslint-disable no-param-reassign */
+import { updateTasksDisplay } from './dom-updateTasksDisplay';
+import isBefore  from './utils';
 
 const todayClickHandler = (projects) => {
   const list = [];
@@ -50,7 +48,7 @@ const completedClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
     project.tasks.forEach((task, index) => {
-      if (task.status === 'Done') {
+      if (task.status === 'dDone') {
         task.taskIndex = index;
         list.push(task);
       }

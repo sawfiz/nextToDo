@@ -1,10 +1,10 @@
 // Constants related to task status
-const status = ['Todo', 'Doing', 'Wait', 'Done'];
+const status = ['aTodo', 'bDoing', 'cWait', 'dDone'];
 const statusIcons = {
-  Todo: '️⃝',
-  Doing: '◐',
-  Wait: '⏳',
-  Done: '✅',
+  aTodo: 'mdi-checkbox-blank-circle-outline',
+  bDoing: 'mdi-circle-half-full',
+  cWait: 'mdi-timer-sand',
+  dDone: 'mdi-checkbox-marked-circle',
 };
 
 // Global elements referred to in multiple js files

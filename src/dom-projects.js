@@ -1,8 +1,8 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable comma-dangle */
+// import "@mdi/font/css/materialdesignicons.min.css";
 import * as global from './globalConstants';
-import {
-  updateTasksListHeader,
-  updateTasksDisplay,
-} from './dom-updateTasksDisplay';
+import { updateTasksDisplay } from './dom-updateTasksDisplay';
 import createElement from './createElement';
 
 // Add mini menu to the active project
@@ -25,9 +25,9 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
       menuEl.appendChild(
         createElement(
           'button',
-          ['project-mini-menu-button'],
+          ['project-mini-menu-button', 'mdi', 'mdi-chevron-up'],
           { 'data-btn': 'up' },
-          '🔼'
+          ''
         )
       );
     } else {
@@ -40,9 +40,9 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
       menuEl.appendChild(
         createElement(
           'button',
-          ['project-mini-menu-button'],
+          ['project-mini-menu-button', 'mdi', 'mdi-chevron-down'],
           { 'data-btn': 'down' },
-          '🔽'
+          ''
         )
       );
     } else {
@@ -53,9 +53,9 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
     menuEl.appendChild(
       createElement(
         'button',
-        ['project-mini-menu-button'],
+        ['project-mini-menu-button', 'mdi', 'mdi-square-edit-outline'],
         { 'data-btn': 'edit' },
-        '✍️'
+        ''
       )
     );
 
@@ -63,9 +63,9 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
     menuEl.appendChild(
       createElement(
         'button',
-        ['project-mini-menu-button'],
-        { 'data-btn': 'remove' },
-        '❌'
+        ['project-mini-menu-button', 'mdi', 'mdi-close'],
+        { 'data-btn': 'remove', style: 'color: red' },
+        ''
       )
     );
   }
@@ -81,9 +81,9 @@ const updateProjectsDisplay = (projects, activeProject) => {
     const projectEl = createElement('div', ['project'], { 'data-id': index });
     const projectNameEl = createElement(
       'div',
-      ['project-name'],
+      ['project-name', 'mdi', 'mdi-list-box-outline'],
       { style: 'cursor: pointer' },
-      `${project.name}`
+      ` ${project.name}`
     );
     projectEl.appendChild(projectNameEl);
 
