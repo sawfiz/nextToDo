@@ -5,7 +5,7 @@
 import './style.css';
 import createElement from './createElement';
 import * as global from './globalConstants';
-import { isBefore, getDateText } from './utils';
+import { isOnOrBefore, getDateText } from './utils';
 
 let focusAscend = true;
 let statusAscend = true;
@@ -248,7 +248,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       { 'data-row': row, 'data-col': col, 'data-date': task.startDate},
       startDateText
     );
-    if (isBefore(task.startDate, 0)) {
+    if (isOnOrBefore(task.startDate, 0)) {
       taskStartDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskStartDateEl);
@@ -261,7 +261,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       { 'data-row': row, 'data-col': col, 'data-date': task.dueDate},
       dueDateText
     );
-    if (isBefore(task.dueDate, 0)) {
+    if (isOnOrBefore(task.dueDate, 0)) {
       taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);

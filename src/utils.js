@@ -1,4 +1,4 @@
-function isBefore(dateString, days) {
+function isOnOrBefore(dateString, days) {
   // Parse the input date string into a Date object
   const inputDate = new Date(dateString);
   if (!inputDate) return false;
@@ -8,16 +8,15 @@ function isBefore(dateString, days) {
 
   const currentTimestamp = today.getTime();
 
-  const futureDate = currentTimestamp + days * 24 * 60 * 60 * 1000;
-
-  const daysLater = new Date(futureDate);
+  const dateToCompare = new Date(currentTimestamp + days * 24 * 60 * 60 * 1000);
 
   // Set the time part of both dates to 00:00:00 to compare only the dates
-  daysLater.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
+  
+  inputDate.setHours(0, 0, 0, 0);
+  dateToCompare.setHours(0, 0, 0, 0);
 
   // Compare the dates
-  if (inputDate < daysLater) {
+  if (inputDate.getTime() <= dateToCompare.getTime()) {
     return true;
   }
   return false;
@@ -51,4 +50,4 @@ function getDateText(dateString) {
   return `In ${days} day${s}`;
 }
 
-export { isBefore, getDateText };
+export { isOnOrBefore, getDateText };

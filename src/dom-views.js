@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
-import {isBefore} from './utils';
+import { isOnOrBefore } from './utils';
 
 const todayClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
     project.tasks.forEach((task, index) => {
-      if (isBefore(task.startDate, 0) || isBefore(task.dueDate, 0)) {
+      if (isOnOrBefore(task.startDate, 0) || isOnOrBefore(task.dueDate, 0)) {
         task.taskIndex = index;
         list.push(task);
       }
@@ -20,7 +20,7 @@ const next7daysClickHandler = (projects) => {
   const list = [];
   projects.projects.forEach((project) => {
     project.tasks.forEach((task, index) => {
-      if (isBefore(task.startDate, 7) || isBefore(task.dueDate, 7)) {
+      if (isOnOrBefore(task.startDate, 7) || isOnOrBefore(task.dueDate, 7)) {
         task.taskIndex = index;
         list.push(task);
       }
