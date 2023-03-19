@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable comma-dangle */
-import "@mdi/font/css/materialdesignicons.min.css";
+import '@mdi/font/css/materialdesignicons.min.css';
 import * as global from './globalConstants';
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
 import createElement from './createElement';
@@ -126,7 +126,7 @@ const projectListClickHandler = (e, projects) => {
   const parentEl = e.target.parentElement;
   const grandParentEl = parentEl.parentElement;
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     // Clicked on a project-name
     if (e.target.classList.contains('project-name')) {
       // id is stored as a string, need to convert it to a number to avoid issues
@@ -153,7 +153,7 @@ const projectListClickHandler = (e, projects) => {
           break;
         case 'edit':
           // Replace project name with an input
-          const inputEl = createElement('input', [], {
+          const inputEl = createElement('input', ['input'], {
             type: 'text',
             value: grandParentEl.children[0].textContent,
             'data-id': index,
@@ -175,6 +175,14 @@ const projectListClickHandler = (e, projects) => {
             // Replace the input with the new project name
             grandParentEl.replaceChild(projectNameEl, inputEl);
             resolve(index);
+          });
+
+          // Listen for the Esc key
+          inputEl.addEventListener('keydown', (e) => {
+            if (e.keyCode === 27) {
+              // global.projectListEl.removeChild(inputEl);
+              reject();
+            }
           });
           break;
         case 'remove':

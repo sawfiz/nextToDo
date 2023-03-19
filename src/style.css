@@ -95,6 +95,7 @@ h2 {
   margin-bottom: 0.5rem;
   color: #444;
   text-shadow: 1px 1px rgba(0, 0, 0, 1);
+  font-size: 1.2rem;
 }
 
 .views-container, .projects-container {
@@ -102,10 +103,9 @@ h2 {
 }
 
 .view, .project {
-  /* margin-left: 0.5rem; */
   cursor: pointer;
-  font-size: 1.2rem;
-  margin: 0.2rem 0;
+  font-size: 1rem;
+  padding: 3px;
 }
 
 .projects-header {
@@ -123,6 +123,7 @@ h2 {
 .project-title {
   width: 230px;
   font-size: 1.2rem;
+  padding: 15px;
 }
 
 .project-name {
@@ -188,7 +189,7 @@ h2 {
   padding-top: 0.5rem;
   margin: 0 1%;
   border-bottom: 1px solid darkgray;
-  font-size: 1rem;
+ font-size: 0.9rem;
 }
 
 
@@ -228,6 +229,10 @@ h2 {
   overflow: hidden; /* Hide the content that exceeds the max-width */
   white-space: nowrap; /* Prevent the text from wrapping to a new line */
   text-overflow: ellipsis; /* Add ellipsis (...) to indicate the text is truncated */
+}
+
+.input {
+  font-size: 1rem;
 }
 
 .focus-btn {

@@ -45,9 +45,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
 
   const sortByFocusBtn = createElement(
     'btn',
-    [],
+    ['mdi', 'mdi-sort-bool-ascending'],
     { style: 'cursor: pointer; display: flex; justify-content: center' },
-    '↕️'
+    ''
   );
   taskListHeaderEl.appendChild(sortByFocusBtn);
   sortByFocusBtn.addEventListener('click', () => {
@@ -60,9 +60,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
 
   const sortByStatusBtn = createElement(
     'btn',
-    [],
+    ['mdi', 'mdi-sort-bool-ascending-variant'],
     { style: 'cursor: pointer; display: flex; justify-content: center' },
-    '↕️'
+    ''
   );
   taskListHeaderEl.appendChild(sortByStatusBtn);
   sortByStatusBtn.addEventListener('click', () => {
@@ -77,9 +77,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   taskListHeaderEl.appendChild(headerDescriptionEl);
   const sortByDescriptionBtn = createElement(
     'btn',
-    [],
+    ['mdi', 'mdi-sort-ascending'],
     { style: 'cursor: pointer' },
-    '↕️'
+    ''
   );
   headerDescriptionEl.appendChild(sortByDescriptionBtn);
   sortByDescriptionBtn.addEventListener('click', () => {
@@ -97,9 +97,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     taskListHeaderEl.appendChild(headerProjectNameEl);
     const sortByProjectBtn = createElement(
       'btn',
-      [],
+      ['mdi', 'mdi-sort-ascending'],
       { style: 'cursor: pointer' },
-      '↕️'
+      ''
     );
     headerProjectNameEl.appendChild(sortByProjectBtn);
     sortByProjectBtn.addEventListener('click', () => {
@@ -116,9 +116,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   taskListHeaderEl.appendChild(headerStartDateEl);
   const sortByStartDateBtn = createElement(
     'btn',
-    [],
+    ['mdi', 'mdi-sort-calendar-ascending'],
     { style: 'cursor: pointer' },
-    '↕️'
+    ''
   );
   headerStartDateEl.appendChild(sortByStartDateBtn);
   sortByStartDateBtn.addEventListener('click', () => {
@@ -133,9 +133,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   taskListHeaderEl.appendChild(headerDueDateEl);
   const sortByDueDateBtn = createElement(
     'btn',
-    [],
+    ['mdi', 'mdi-sort-calendar-ascending'],
     { style: 'cursor: pointer' },
-    '↕️'
+    ''
   );
   headerDueDateEl.appendChild(sortByDueDateBtn);
   sortByDueDateBtn.addEventListener('click', () => {

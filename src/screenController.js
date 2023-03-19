@@ -47,7 +47,10 @@ const screenController = () => {
 
   // Read the show completed tasks setting from local storage
   let showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  console.log("🚀 ~ file: screenController.js:50 ~ screenController ~ showCompleted:", showCompleted)
+  console.log(
+    '🚀 ~ file: screenController.js:50 ~ screenController ~ showCompleted:',
+    showCompleted
+  );
   if (showCompleted === null) showCompleted = true;
   localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
 
@@ -133,14 +136,18 @@ const screenController = () => {
 
   // The projects list
   global.projectListEl.addEventListener('click', (e) => {
-    projectListClickHandler(e, projects).then((index) => {
-      activeProject = projects.projects[index];
-      updateProjectsDisplay(projects, activeProject);
-      showView = false;
-      removeViewHighlight();
-      updateTasksListHeader(projects, activeProject, showView !== false);
-      updateTasksDisplay(projects, activeProject.tasks, showView);
-    });
+    projectListClickHandler(e, projects)
+      .then((index) => {
+        activeProject = projects.projects[index];
+        updateProjectsDisplay(projects, activeProject);
+        showView = false;
+        removeViewHighlight();
+        updateTasksListHeader(projects, activeProject, showView !== false);
+        updateTasksDisplay(projects, activeProject.tasks, showView);
+      })
+      .catch(() => {
+        updateProjectsDisplay(projects, activeProject);
+      });
   });
 
   // The tasks llist

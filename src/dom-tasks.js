@@ -26,7 +26,7 @@ const addNewTask = (projects, activeProject, showView) => {
   statusEl.appendChild(statusDoneEl);
   taskEl.appendChild(statusEl);
 
-  const descriptionEl = createElement('input', [], {}, '');
+  const descriptionEl = createElement('input', ['input'], {}, '');
   taskEl.appendChild(descriptionEl);
 
   const projectEl = createElement('select', [], {}, '');
