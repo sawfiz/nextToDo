@@ -90,7 +90,9 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
   const taskEl = global.tasksListEl.children[row];
   taskEl.classList.add('active-task');
   const projectIndex = taskEl.getAttribute('data-projectIndex');
+  console.log("🚀 ~ file: dom-tasks.js:93 ~ taskListClickHandler ~ projectIndex:", projectIndex)
   const taskIndex = taskEl.getAttribute('data-taskIndex');
+  console.log("🚀 ~ file: dom-tasks.js:95 ~ taskListClickHandler ~ taskIndex:", taskIndex)
 
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -177,6 +179,8 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
       showView === true ? projects.projects[projectIndex] : activeProject;
     global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
+    console.log("🚀 ~ file: dom-tasks.js:192 ~ focusEl.addEventListener ~ thisProject:", thisProject.name)
+    console.log("🚀 ~ file: dom-tasks.js:193 ~ focusEl.addEventListener ~ taskIndex:", taskIndex)
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
       projects.updateTaskinProject(

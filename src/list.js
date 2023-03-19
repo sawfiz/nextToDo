@@ -28,6 +28,7 @@ const List = (name, existingTasks = []) => {
   };
 
   const updateTask = (index, attribute, value) => {
+    console.log("🚀 ~ file: list.js:31 ~ updateTask ~ index:", index)
     switch (attribute) {
       case 'focus':
         tasks[index].focus = value;

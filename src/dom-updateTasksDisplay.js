@@ -223,7 +223,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     if (showProject) {
       col++;
       let projectName = 'not assigned';
-      if (Number.isNaN(task.projectIndex)) {
+      if (!Number.isNaN(task.projectIndex)) {
         projectName = projects.projects[task.projectIndex].name;
       }
       const projectNameEl = createElement(
