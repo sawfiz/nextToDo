@@ -12,6 +12,7 @@ import {
   undatedClickHandler,
   completedClickHandler,
   allTasksClickHandler,
+  searchClickHandler,
 } from './dom-views';
 import { addNewTask, taskListClickHandler } from './dom-tasks';
 import {
@@ -136,6 +137,7 @@ const screenController = () => {
 
   // The projects list
   global.projectListEl.addEventListener('click', (e) => {
+    searchInputEl.value = '';
     projectListClickHandler(e, projects)
       .then((index) => {
         activeProject = projects.projects[index];
@@ -221,6 +223,7 @@ const screenController = () => {
   const undatedEl = document.querySelector('#undated');
   const completedEl = document.querySelector('#completed');
   const allTasksEl = document.querySelector('#all-tasks');
+  const searchInputEl = document.querySelector('.search-input');
 
   // Clear highlight in Views
   const removeViewHighlight = () => {
@@ -229,6 +232,8 @@ const screenController = () => {
     undatedEl.classList.remove('active-view');
     completedEl.classList.remove('active-view');
     allTasksEl.classList.remove('active-view');
+    searchInputEl.classList.remove('active-view');
+
   };
 
   // The views event listeners
@@ -237,6 +242,7 @@ const screenController = () => {
     activeProject = null;
     updateProjectsDisplay(projects);
     removeViewHighlight();
+    searchInputEl.value = '';
     todayEl.classList.add('active-view');
     showView = 'today';
     updateTasksListHeader(projects, activeProject, showView !== false);
@@ -247,6 +253,7 @@ const screenController = () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
+    searchInputEl.value = '';
     next7daysEl.classList.add('active-view');
     showView = 'next7days';
     updateTasksListHeader(projects, activeProject, showView !== false);
@@ -257,6 +264,7 @@ const screenController = () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
+    searchInputEl.value = '';
     undatedEl.classList.add('active-view');
     showView = 'undated';
     updateTasksListHeader(projects, activeProject, showView !== false);
@@ -267,6 +275,7 @@ const screenController = () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
+    searchInputEl.value = '';
     completedEl.classList.add('active-view');
     showView = 'completed';
     updateTasksListHeader(projects, activeProject, showView !== false);
@@ -277,10 +286,20 @@ const screenController = () => {
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
+    searchInputEl.value = '';
     allTasksEl.classList.add('active-view');
     showView = 'allTasks';
     updateTasksListHeader(projects, activeProject, showView !== false);
     allTasksClickHandler(projects);
+  });
+
+  searchInputEl.addEventListener('change', () => {
+    updateProjectsDisplay(projects);
+    removeViewHighlight();
+    searchInputEl.classList.add('active-view');
+    showView = 'search';
+    updateTasksListHeader(projects, activeProject, showView !== false);
+    searchClickHandler(projects, searchInputEl.value);
   });
 
   updateProjectsDisplay(projects, activeProject);

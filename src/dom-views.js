@@ -70,10 +70,22 @@ const allTasksClickHandler = (projects) => {
   updateTasksDisplay(projects, list, true);
 };
 
+const searchClickHandler = (projects, text) => {
+  const list = [];
+  projects.projects.forEach((project) => {
+    project.tasks.forEach((task) => {
+      if (task.description.toLowerCase().includes(text.toLowerCase())) list.push(task);
+    });
+  });
+  localStorage.setItem('list', JSON.stringify(list));
+  updateTasksDisplay(projects, list, true);
+};
+
 export {
   todayClickHandler,
   next7daysClickHandler,
   undatedClickHandler,
   completedClickHandler,
   allTasksClickHandler,
+  searchClickHandler
 };
