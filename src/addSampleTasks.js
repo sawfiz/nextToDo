@@ -50,7 +50,7 @@ const addSampleTasks = (projects) => {
   projects.addTaskToProject(task, project);
 
   // Task 2
-  startDate = getDateFromDaysOffset(1);
+  startDate = getDateFromDaysOffset(3);
   dueDate = getDateFromDaysOffset(7);
   task = Task(
     true,
@@ -124,7 +124,7 @@ const addSampleTasks = (projects) => {
   projects.addTaskToProject(task, project);
 
   // Task 2
-  startDate = getDateFromDaysOffset(1);
+  startDate = getDateFromDaysOffset(2);
   dueDate = getDateFromDaysOffset(7);
   task = Task(
     false,
