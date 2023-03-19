@@ -11,7 +11,7 @@ function isOnOrBefore(dateString, days) {
   const dateToCompare = new Date(currentTimestamp + days * 24 * 60 * 60 * 1000);
 
   // Set the time part of both dates to 00:00:00 to compare only the dates
-  
+
   inputDate.setHours(0, 0, 0, 0);
   dateToCompare.setHours(0, 0, 0, 0);
 
@@ -43,7 +43,7 @@ function getDateText(dateString) {
     return `${days} day${s} ago`;
   }
   if (inputDate.getTime() === today.getTime()) {
-    return `Today`;
+    return 'Today';
   }
   days = (inputDate.getTime() - today.getTime()) / (24 * 60 * 60 * 1000);
   s = days === 1 ? '' : 's';

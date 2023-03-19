@@ -48,10 +48,6 @@ const screenController = () => {
 
   // Read the show completed tasks setting from local storage
   let showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  console.log(
-    '🚀 ~ file: screenController.js:50 ~ screenController ~ showCompleted:',
-    showCompleted
-  );
   if (showCompleted === null) showCompleted = true;
   localStorage.setItem('showCompleted', JSON.stringify(showCompleted));
 
@@ -233,7 +229,6 @@ const screenController = () => {
     completedEl.classList.remove('active-view');
     allTasksEl.classList.remove('active-view');
     searchInputEl.classList.remove('active-view');
-
   };
 
   // The views event listeners

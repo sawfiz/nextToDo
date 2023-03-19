@@ -17,9 +17,8 @@ let dueDateAscend = true;
 const getList = (activeProject, showProject) => {
   if (showProject) {
     return JSON.parse(localStorage.getItem('list'));
-  } else {
-    return activeProject.tasks;
   }
+  return activeProject.tasks;
 };
 
 const sortByKey = (array, key, sortAscend) => {
@@ -112,7 +111,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     });
   }
 
-  const headerStartDateEl = createElement('div', [], {}, 'Start Date ');
+  const headerStartDateEl = createElement('div', [], {}, 'Start ');
   taskListHeaderEl.appendChild(headerStartDateEl);
   const sortByStartDateBtn = createElement(
     'btn',
@@ -129,7 +128,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     updateTasksDisplay(projects, sortedList, showProject, false);
   });
 
-  const headerDueDateEl = createElement('div', [], {}, 'Due Date ');
+  const headerDueDateEl = createElement('div', [], {}, 'Due ');
   taskListHeaderEl.appendChild(headerDueDateEl);
   const sortByDueDateBtn = createElement(
     'btn',
@@ -149,10 +148,6 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
 
 const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  console.log(
-    '🚀 ~ file: dom-updateTasksDisplay.js:152 ~ updateTasksDisplay ~ showCompleted:',
-    showCompleted
-  );
 
   // Display the tasks list body
   global.tasksListEl.innerHTML = '';
@@ -228,7 +223,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     if (showProject) {
       col++;
       let projectName = 'not assigned';
-      if (!isNaN(Number(task.projectIndex))) {
+      if (Number.isNaN(task.projectIndex)) {
         projectName = projects.projects[task.projectIndex].name;
       }
       const projectNameEl = createElement(
@@ -245,7 +240,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const taskStartDateEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col, 'data-date': task.startDate},
+      { 'data-row': row, 'data-col': col, 'data-date': task.startDate },
       startDateText
     );
     if (isOnOrBefore(task.startDate, 0)) {
@@ -258,7 +253,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const taskDueDateEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col, 'data-date': task.dueDate},
+      { 'data-row': row, 'data-col': col, 'data-date': task.dueDate },
       dueDateText
     );
     if (isOnOrBefore(task.dueDate, 0)) {

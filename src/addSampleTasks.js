@@ -1,5 +1,5 @@
+/* eslint-disable comma-dangle */
 import Task from './task';
-import Projects from './projects';
 
 function formatDate(date) {
   const year = date.getFullYear();

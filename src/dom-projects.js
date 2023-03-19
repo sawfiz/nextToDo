@@ -151,7 +151,7 @@ const projectListClickHandler = (e, projects) => {
           index++;
           resolve(index);
           break;
-        case 'edit':
+        case 'edit': {
           // Replace project name with an input
           const inputEl = createElement('input', ['input'], {
             type: 'text',
@@ -178,13 +178,14 @@ const projectListClickHandler = (e, projects) => {
           });
 
           // Listen for the Esc key
-          inputEl.addEventListener('keydown', (e) => {
+          inputEl.addEventListener('keydown', () => {
             if (e.keyCode === 27) {
               // global.projectListEl.removeChild(inputEl);
               reject();
             }
           });
           break;
+        }
         case 'remove':
           projects.removeProject(index);
           index = 0;

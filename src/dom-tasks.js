@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-plusplus */
 import './style.css';
@@ -86,31 +87,10 @@ const addNewTask = (projects, activeProject, showView) => {
 
 // Handles a valid click on the tasks list
 const taskListClickHandler = (row, col, projects, activeProject, showView) => {
-  console.log(
-    '🚀 ~ file: dom-tasks.js:156 ~ taskListClickHandler ~ row, col:',
-    row,
-    col
-  );
   const taskEl = global.tasksListEl.children[row];
-  console.log(
-    '🚀 ~ file: dom-tasks.js:75 ~ taskListClickHandler ~ global.tasksListEl:',
-    global.tasksListEl
-  );
-  console.log(
-    '🚀 ~ file: dom-tasks.js:157 ~ taskListClickHandler ~ taskEl:',
-    taskEl
-  );
   taskEl.classList.add('active-task');
   const projectIndex = taskEl.getAttribute('data-projectIndex');
-  console.log(
-    '🚀 ~ file: dom-tasks.js:82 ~ taskListClickHandler ~ projectIndex:',
-    projectIndex
-  );
   const taskIndex = taskEl.getAttribute('data-taskIndex');
-  console.log(
-    '🚀 ~ file: dom-tasks.js:84 ~ taskListClickHandler ~ taskIndex:',
-    taskIndex
-  );
 
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -195,16 +175,16 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
 
     const thisProject =
       showView === true ? projects.projects[projectIndex] : activeProject;
-    console.log(
-      '🚀 ~ file: dom-tasks.js:225 ~ returnnewPromise ~ thisProject:',
-      thisProject
-    );
     global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
-      let value = focusIcon === '🫥' ? true : false;
-      projects.updateTaskinProject(thisProject, taskIndex, 'focus', value);
+      projects.updateTaskinProject(
+        thisProject,
+        taskIndex,
+        'focus',
+        focusIcon === '🫥'
+      );
       resolve();
     });
 
@@ -251,10 +231,6 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     });
 
     projectDropDownEl.addEventListener('change', () => {
-      console.log(
-        '🚀 ~ file: dom-tasks.js:290 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.selectedIndex:',
-        projectDropDownEl.selectedIndex
-      );
       projects.updateTaskinProject(
         thisProject,
         taskIndex,

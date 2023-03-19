@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-param-reassign */
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
 import { isOnOrBefore } from './utils';
