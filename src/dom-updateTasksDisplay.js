@@ -5,7 +5,7 @@
 import './style.css';
 import createElement from './createElement';
 import * as global from './globalConstants';
-import isBefore from './utils';
+import { isBefore, getDateText } from './utils';
 
 let focusAscend = true;
 let statusAscend = true;
@@ -149,7 +149,10 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
 
 const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
-  console.log("🚀 ~ file: dom-updateTasksDisplay.js:152 ~ updateTasksDisplay ~ showCompleted:", showCompleted)
+  console.log(
+    '🚀 ~ file: dom-updateTasksDisplay.js:152 ~ updateTasksDisplay ~ showCompleted:',
+    showCompleted
+  );
 
   // Display the tasks list body
   global.tasksListEl.innerHTML = '';
@@ -179,7 +182,11 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const taskFocusEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col, style: 'color: red; text-align: center'},
+      {
+        'data-row': row,
+        'data-col': col,
+        style: 'color: red; text-align: center',
+      },
       ''
     );
     // if (task.focus) {
@@ -199,7 +206,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
         'data-row': row,
         'data-col': col,
         'data-statusindex': global.status.indexOf(task.status),
-        style: 'text-align: center'
+        style: 'text-align: center',
       },
       ''
     );
@@ -234,11 +241,12 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     }
 
     col++;
+    const startDateText = getDateText(task.startDate);
     const taskStartDateEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col },
-      task.startDate
+      { 'data-row': row, 'data-col': col, 'data-date': task.startDate},
+      startDateText
     );
     if (isBefore(task.startDate, 0)) {
       taskStartDateEl.classList.add('date-passed');
@@ -246,11 +254,12 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     taskEl.appendChild(taskStartDateEl);
 
     col++;
+    const dueDateText = getDateText(task.dueDate);
     const taskDueDateEl = createElement(
       'div',
       [],
-      { 'data-row': row, 'data-col': col },
-      task.dueDate
+      { 'data-row': row, 'data-col': col, 'data-date': task.dueDate},
+      dueDateText
     );
     if (isBefore(task.dueDate, 0)) {
       taskDueDateEl.classList.add('date-passed');

@@ -150,19 +150,21 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
     editingTaskEl.appendChild(descriptionEl);
 
     // StartDate date input
+    const startDateIndex = showView ? 4 : 3;
     const startDateEl = createElement(
       'input',
       [],
-      { type: 'date', value: taskEl.children[3].innerText },
+      { type: 'date', value: taskEl.children[startDateIndex].dataset.date },
       ''
     );
     editingTaskEl.appendChild(startDateEl);
 
     // Update dueDate
+    const dueDateIndex = showView ? 5 : 4;
     const dueDateEl = createElement(
       'input',
       [],
-      { type: 'date', value: taskEl.children[4].innerText },
+      { type: 'date', value: taskEl.children[dueDateIndex].dataset.date },
       ''
     );
     editingTaskEl.appendChild(dueDateEl);

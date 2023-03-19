@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
-import isBefore  from './utils';
+import {isBefore} from './utils';
 
 const todayClickHandler = (projects) => {
   const list = [];
