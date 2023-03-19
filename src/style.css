@@ -192,10 +192,10 @@ h2 {
  font-size: 0.9rem;
 }
 
-
 .task-list {
-  /* border: 1px blue solid; */
-  max-height: 50vh;
+  /* overflow: none; */
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
 }
 
 .active-task {
