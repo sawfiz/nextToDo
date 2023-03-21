@@ -24,7 +24,7 @@ function isOnOrBefore(dateString, days) {
 
 function getDateText(dateString) {
   // Parse the input date string into a Date object
-  if (!dateString) return;
+  if (!dateString) return '';
   const inputDate = new Date(dateString);
 
   // Get today's date
@@ -60,4 +60,6 @@ function showOverlay() {
   overlay.style.display = 'block';
 }
 
-export { isOnOrBefore, getDateText, hideOverlay, showOverlay };
+export {
+  isOnOrBefore, getDateText, hideOverlay, showOverlay,
+};

@@ -60,8 +60,7 @@ const screenController = () => {
   showCompletedCheckbox.checked = showCompleted;
 
   const overlay = document.querySelector('.overlay');
-  overlay.addEventListener('click', (e) => {
-    console.log("🚀 ~ file: screenController.js:67 ~ overlay.addEventListener ~ e:", e)
+  overlay.addEventListener('click', () => {
     updateCurrentView();
     hideOverlay();
   });
@@ -73,7 +72,6 @@ const screenController = () => {
     } else {
       updateProjectsDisplay(projects, activeProject);
       updateTasksDisplay(projects, activeProject.tasks);
-      console.log('Updated current project');
     }
   };
 
@@ -113,7 +111,6 @@ const screenController = () => {
 
   // The projects list
   global.projectListEl.addEventListener('click', (e) => {
-    console.log("🚀 ~ file: screenController.js:130 ~ global.projectListEl.addEventListener ~ e:", e)
     searchInputEl.value = '';
     projectListClickHandler(e, projects)
       .then((index) => {

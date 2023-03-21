@@ -218,10 +218,6 @@ h2 {
   overflow-y: auto;
 }
 
-.active-task {
-  /* border-bottom: 2px gray solid; */
-}
-
 .new-task,
 .new-task-with-project,
 .editing-task {
@@ -361,4 +357,8 @@ footer {
   font-weight: 100;
   visibility: visible;
   margin: auto;
+}
+
+.no-click {
+  cursor: default;
 }

@@ -147,13 +147,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   });
 };
 
-const updateTasksDisplay = (
-  projects,
-  taskList,
-  showProject,
-  completedView,
-  activeProject
-) => {
+const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
   // Display the tasks list body
@@ -228,7 +222,7 @@ const updateTasksDisplay = (
     // If showing a view, rather than an active project
     col++;
     // if (showProject) {
-    let projectName = task.projectName;
+    const { projectName } = task;
 
     // if (activeProject) {
     //   projectName = activeProject.name;

@@ -11,8 +11,8 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
   // Only add the mini menu for projects other than Inbox
   if (index > 0) {
     // Make project and project name visually unclickable
-    projectEl.style.cursor = 'default';
-    projectEl.children[0].style.cursor = 'default';
+    projectEl.classList.add('no-click');
+    projectEl.children[0].classList.add('no-click');
 
     // Create mini menu
     const menuEl = createElement('div', ['project-mini-menu'], {}, '');
@@ -136,15 +136,7 @@ const projectListClickHandler = (e, projects) => {
   let index;
   let activeProject;
   const parentEl = e.target.parentElement;
-  console.log(
-    '🚀 ~ file: dom-projects.js:138 ~ projectListClickHandler ~ parentEl:',
-    parentEl
-  );
   const grandParentEl = parentEl.parentElement;
-  console.log(
-    '🚀 ~ file: dom-projects.js:140 ~ projectListClickHandler ~ grandParentEl:',
-    grandParentEl
-  );
 
   return new Promise((resolve, reject) => {
     // Clicked on a project-name
@@ -152,19 +144,9 @@ const projectListClickHandler = (e, projects) => {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
       activeProject = projects.projects[index];
-      console.log(
-        '🚀 ~ file: dom-projects.js:148 ~ returnnewPromise ~ activeProject:',
-        activeProject
-      );
-      console.log(
-        '🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ activeProject.tasks:',
-        activeProject.tasks
-      );
       updateTasksDisplay(projects, activeProject.tasks);
       resolve(index);
-    }
-    // Clicked on a mini menu
-    else if (parentEl.classList.contains('project-mini-menu')) {
+    } else if (parentEl.classList.contains('project-mini-menu')) { // Clicked on mini menu
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(grandParentEl.dataset.id);
 
@@ -184,7 +166,7 @@ const projectListClickHandler = (e, projects) => {
           showOverlay();
           const inputEl = createElement('input', ['project-title-input'], {
             type: 'text',
-            value: grandParentEl.children[0].textContent.trim(), // get rid of the space in front
+            value: grandParentEl.children[0].textContent.trim(), // remove leading space
             'data-id': index,
           });
           grandParentEl.replaceChild(inputEl, grandParentEl.children[0]);
