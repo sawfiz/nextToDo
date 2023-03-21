@@ -21,6 +21,7 @@ import {
   projectListClickHandler,
 } from './dom-projects';
 import addSampleTasks from './addSampleTasks';
+import { showOverlay, hideOverlay } from './utils';
 
 const screenController = () => {
   // Create a Projects object with an empty list of projects
@@ -59,16 +60,6 @@ const screenController = () => {
   showCompletedCheckbox.checked = showCompleted;
 
   const overlay = document.querySelector('.overlay');
-
-  function hideOverlay() {
-    overlay.style.display = 'none';
-  }
-
-  function showOverlay() {
-    overlay.style.display = 'block';
-    console.log('show modal');
-  }
-
   overlay.addEventListener('click', (e) => {
     updateCurrentView();
     hideOverlay();

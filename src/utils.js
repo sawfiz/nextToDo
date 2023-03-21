@@ -50,4 +50,14 @@ function getDateText(dateString) {
   return `In ${days} day${s}`;
 }
 
-export { isOnOrBefore, getDateText };
+const overlay = document.querySelector('.overlay');
+
+function hideOverlay() {
+  overlay.style.display = 'none';
+}
+
+function showOverlay() {
+  overlay.style.display = 'block';
+}
+
+export { isOnOrBefore, getDateText, hideOverlay, showOverlay };
