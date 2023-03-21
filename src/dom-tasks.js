@@ -152,7 +152,6 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
     showView === true ? projects.projects[projectIndex] : activeProject;
 
   return new Promise((resolve, reject) => {
-    console.log('🚀 ~ file: dom-tasks.js:148 ~ returnnewPromise ~ col:', col);
     switch (col) {
       // Focus button
       case '0': {
@@ -170,7 +169,7 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
       case '1': {
         const selectedIndex = Number(taskEl.children[1].dataset.statusindex);
 
-        const statusEl = createElement('select', [], {}, '');
+        const statusEl = createElement('select', ['status-edit'], {}, '');
         // Option is from the statusIcons dictionary
         const statusToDoEl = createElement('option', [], {}, 'To do');
         if (selectedIndex === 0) statusToDoEl.selected = true;
@@ -322,7 +321,6 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
         break;
       }
       case '6': {
-        console.log("🚀 ~ file: dom-tasks.js:326 ~ returnnewPromise ~ taskIndex:", taskIndex)
         projects.deleteTaskFromProject(taskIndex, thisProject);
         resolve();
         break;
@@ -330,175 +328,6 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
       default:
         break;
     }
-
-    // resolve();
-    //   const editingTaskEl = createElement('div', ['editing-task'], {}, '');
-
-    //   // Focus button
-    //   const focusIcon = taskEl.children[0].innerText;
-    //   const focusEl = createElement('button', ['focus-btn'], {}, focusIcon);
-    //   editingTaskEl.appendChild(focusEl);
-
-    //   // Status pull down
-    //   const selectedIndex = Number(taskEl.children[1].dataset.statusindex);
-
-    //   const statusEl = createElement('select', [], {}, '');
-    //   // Option is from the statusIcons dictionary
-    //   const statusToDoEl = createElement('option', [], {}, 'To do');
-    //   if (selectedIndex === 0) statusToDoEl.selected = true;
-    //   statusEl.appendChild(statusToDoEl);
-    //   const statusDoingEl = createElement('option', [], {}, 'Doing');
-    //   if (selectedIndex === 1) statusDoingEl.selected = true;
-    //   statusEl.appendChild(statusDoingEl);
-    //   const statusWaitEl = createElement('option', [], {}, 'Waiting');
-    //   if (selectedIndex === 2) statusWaitEl.selected = true;
-    //   statusEl.appendChild(statusWaitEl);
-    //   const statusDoneEl = createElement('option', [], {}, 'Done');
-    //   if (selectedIndex === 3) statusDoneEl.selected = true;
-    //   statusEl.appendChild(statusDoneEl);
-    //   editingTaskEl.appendChild(statusEl);
-
-    //   // Description text input
-    //   const description = taskEl.children[2].innerText;
-    //   const descriptionEl = createElement(
-    //     'input',
-    //     [],
-    //     { value: description },
-    //     ''
-    //   );
-    //   editingTaskEl.appendChild(descriptionEl);
-
-    //   // StartDate date input
-    //   const startDateIndex = showView ? 4 : 3;
-    //   const startDateEl = createElement(
-    //     'input',
-    //     [],
-    //     { type: 'date', value: taskEl.children[startDateIndex].dataset.date },
-    //     ''
-    //   );
-    //   editingTaskEl.appendChild(startDateEl);
-
-    //   // Update dueDate
-    //   const dueDateIndex = showView ? 5 : 4;
-    //   const dueDateEl = createElement(
-    //     'input',
-    //     [],
-    //     { type: 'date', value: taskEl.children[dueDateIndex].dataset.date },
-    //     ''
-    //   );
-    //   editingTaskEl.appendChild(dueDateEl);
-
-    //   // Place holders
-    //   for (let i = 0; i < 3; i++) {
-    //     // make sure not to use 'div' here due to a check in screenController()
-    //     const element = createElement('p', [], {}, '');
-    //     editingTaskEl.appendChild(element);
-    //   }
-
-    //   // The project list drop down
-    //   const projectDropDownEl = createElement('select', [], {}, '');
-    //   // Options are project names
-    //   projects.projects.forEach((project) => {
-    //     const projectEl = createElement('option', [], {}, project.name);
-    //     if (project === activeProject) {
-    //       projectEl.selected = true;
-    //     }
-    //     projectDropDownEl.appendChild(projectEl);
-    //   });
-
-    //   editingTaskEl.appendChild(projectDropDownEl);
-
-    //   // The delete button
-    //   const delBtn = createElement('button', ['delete-btn'], {}, '❌');
-    //   editingTaskEl.appendChild(delBtn);
-
-    //   const thisProject =
-    //     showView === true ? projects.projects[projectIndex] : activeProject;
-    //   global.tasksListEl.replaceChild(editingTaskEl, taskEl);
-
-    //   console.log(
-    //     '🚀 ~ file: dom-tasks.js:192 ~ focusEl.addEventListener ~ thisProject:',
-    //     thisProject.name
-    //   );
-    //   console.log(
-    //     '🚀 ~ file: dom-tasks.js:193 ~ focusEl.addEventListener ~ taskIndex:',
-    //     taskIndex
-    //   );
-    //   focusEl.addEventListener('click', () => {
-    //     // Toggle focus icon
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'focus',
-    //       focusIcon === '🫥'
-    //     );
-    //     resolve();
-    //   });
-
-    //   statusEl.addEventListener('change', () => {
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'status',
-    //       global.status[statusEl.selectedIndex]
-    //     );
-    //     resolve();
-    //   });
-
-    //   descriptionEl.addEventListener('change', () => {
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'description',
-    //       descriptionEl.value
-    //     );
-    //     resolve();
-    //   });
-
-    //   // Use blur instead of change, so it does not fire too soon
-    //   startDateEl.addEventListener('blur', () => {
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'startDate',
-    //       startDateEl.value
-    //     );
-    //     resolve();
-    //   });
-
-    //   // Use blur instead of change, so it does not fire too soon
-    //   dueDateEl.addEventListener('blur', () => {
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'dueDate',
-    //       dueDateEl.value
-    //     );
-    //     resolve();
-    //   });
-
-    //   projectDropDownEl.addEventListener('change', () => {
-    //     projects.updateTaskinProject(
-    //       thisProject,
-    //       taskIndex,
-    //       'projectIndex',
-    //       projectDropDownEl.selectedIndex
-    //     );
-
-    //     projects.moveTasktoProject(
-    //       thisProject,
-    //       taskIndex,
-    //       projects.projects[projectDropDownEl.selectedIndex]
-    //     );
-    //     resolve();
-    //   });
-
-    //   delBtn.addEventListener('click', () => {
-    //     // Call from projects to delete the task
-    //     // so that the local storage is updated after the deletion
-    //     projects.deleteTaskFromProject(taskIndex, thisProject);
-    //     resolve();
-    //   });
   });
 };
 

@@ -198,7 +198,7 @@ h2 {
 
 .show-project-name {
   display: grid;
-  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr 1fr;
+  grid-template-columns: 30px 30px auto 120px 100px 100px 30px;
 }
 
 .task {
@@ -308,6 +308,7 @@ footer {
   z-index: 10;
 }
 
+.status-edit,
 .description-edit,
 .project-edit,
 .date-edit {
