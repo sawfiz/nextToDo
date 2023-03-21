@@ -4,6 +4,7 @@ import '@mdi/font/css/materialdesignicons.min.css';
 import * as global from './globalConstants';
 import { updateTasksDisplay } from './dom-updateTasksDisplay';
 import createElement from './createElement';
+import { hideOverlay, showOverlay } from './utils';
 
 // Add mini menu to the active project
 const addProjectMiniMenu = (projects, projectEl, index) => {
@@ -135,9 +136,15 @@ const projectListClickHandler = (e, projects) => {
   let index;
   let activeProject;
   const parentEl = e.target.parentElement;
-  console.log("🚀 ~ file: dom-projects.js:138 ~ projectListClickHandler ~ parentEl:", parentEl)
+  console.log(
+    '🚀 ~ file: dom-projects.js:138 ~ projectListClickHandler ~ parentEl:',
+    parentEl
+  );
   const grandParentEl = parentEl.parentElement;
-  console.log("🚀 ~ file: dom-projects.js:140 ~ projectListClickHandler ~ grandParentEl:", grandParentEl)
+  console.log(
+    '🚀 ~ file: dom-projects.js:140 ~ projectListClickHandler ~ grandParentEl:',
+    grandParentEl
+  );
 
   return new Promise((resolve, reject) => {
     // Clicked on a project-name
@@ -145,8 +152,14 @@ const projectListClickHandler = (e, projects) => {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
       activeProject = projects.projects[index];
-      console.log("🚀 ~ file: dom-projects.js:148 ~ returnnewPromise ~ activeProject:", activeProject)
-      console.log("🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ activeProject.tasks:", activeProject.tasks)
+      console.log(
+        '🚀 ~ file: dom-projects.js:148 ~ returnnewPromise ~ activeProject:',
+        activeProject
+      );
+      console.log(
+        '🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ activeProject.tasks:',
+        activeProject.tasks
+      );
       updateTasksDisplay(projects, activeProject.tasks);
       resolve(index);
     }
@@ -168,9 +181,10 @@ const projectListClickHandler = (e, projects) => {
           break;
         case 'edit': {
           // Replace project name with an input
-          const inputEl = createElement('input', ['input'], {
+          showOverlay();
+          const inputEl = createElement('input', ['project-title-input'], {
             type: 'text',
-            value: grandParentEl.children[0].textContent,
+            value: grandParentEl.children[0].textContent.trim(), // get rid of the space in front
             'data-id': index,
           });
           grandParentEl.replaceChild(inputEl, grandParentEl.children[0]);
@@ -189,13 +203,15 @@ const projectListClickHandler = (e, projects) => {
             projects.renameProject(activeProject, inputEl.value);
             // Replace the input with the new project name
             grandParentEl.replaceChild(projectNameEl, inputEl);
+            hideOverlay();
             resolve(index);
           });
 
           // Listen for the Esc key
-          inputEl.addEventListener('keydown', () => {
-            if (e.keyCode === 27) {
+          inputEl.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
               // global.projectListEl.removeChild(inputEl);
+              hideOverlay();
               reject();
             }
           });
