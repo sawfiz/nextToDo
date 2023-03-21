@@ -27,7 +27,12 @@ const addNewTask = (projects, activeProject, showView) => {
   statusEl.appendChild(statusDoneEl);
   taskEl.appendChild(statusEl);
 
-  const descriptionEl = createElement('input', ['input'], {}, '');
+  const descriptionEl = createElement(
+    'input',
+    ['input'],
+    { placeholder: 'New Task' },
+    ''
+  );
   taskEl.appendChild(descriptionEl);
 
   const projectEl = createElement('select', [], {}, '');
@@ -61,26 +66,53 @@ const addNewTask = (projects, activeProject, showView) => {
   // Focus on the description so the user can start entering text
   descriptionEl.focus();
 
-  // Wait for the submit button to be clicked on
-  return new Promise((resolve) => {
-    submitBtn.addEventListener('click', () => {
-      const projectIndex =
-        showView === true
-          ? projectEl.selectedIndex
-          : projects.projects.indexOf(activeProject);
-      const task = Task(
-        focusEl.checked,
-        // status is from array ['aTodo', 'bDoing', 'cWait', 'dDone']
-        global.status[statusEl.selectedIndex],
-        descriptionEl.value,
-        startDateEl.value,
-        dueDateEl.value,
-        projectIndex,
-        projects.projects[projectIndex].tasks.length
-      );
+  // Function to add create a valid task
+  const addNewTaskToProject = () => {
+    const projectIndex =
+      showView === true
+        ? projectEl.selectedIndex
+        : projects.projects.indexOf(activeProject);
 
-      projects.addTaskToProject(task, projects.projects[projectIndex]);
-      resolve();
+    const project = projects.projects[projectIndex];
+
+    const task = Task(
+      focusEl.checked,
+      // status is from array ['aTodo', 'bDoing', 'cWait', 'dDone']
+      global.status[statusEl.selectedIndex],
+      descriptionEl.value,
+      startDateEl.value,
+      dueDateEl.value,
+      projectIndex,
+      project.tasks.length
+    );
+    projects.addTaskToProject(task, project);
+  };
+
+  // Wait for the submit button to be clicked on
+  return new Promise((resolve, reject) => {
+    // Create a new task is the Submit button is pressed
+    submitBtn.addEventListener('click', () => {
+      if (descriptionEl.value) {
+        addNewTaskToProject();
+        resolve();
+      } else reject();
+    });
+
+    // Create a new task if the Enter key is pressed
+    descriptionEl.addEventListener('keydown', (e) => {
+      if (e.keyCode === 13) {
+        if (descriptionEl.value) {
+          addNewTaskToProject();
+          resolve();
+        } else reject();
+      }
+    });
+
+    // Dismiss if Esc key is pressed in description
+    descriptionEl.addEventListener('keydown', (e) => {
+      if (e.keyCode === 27) {
+        reject();
+      }
     });
   });
 };
@@ -90,9 +122,15 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
   const taskEl = global.tasksListEl.children[row];
   taskEl.classList.add('active-task');
   const projectIndex = taskEl.getAttribute('data-projectIndex');
-  console.log("🚀 ~ file: dom-tasks.js:93 ~ taskListClickHandler ~ projectIndex:", projectIndex)
+  console.log(
+    '🚀 ~ file: dom-tasks.js:93 ~ taskListClickHandler ~ projectIndex:',
+    projectIndex
+  );
   const taskIndex = taskEl.getAttribute('data-taskIndex');
-  console.log("🚀 ~ file: dom-tasks.js:95 ~ taskListClickHandler ~ taskIndex:", taskIndex)
+  console.log(
+    '🚀 ~ file: dom-tasks.js:95 ~ taskListClickHandler ~ taskIndex:',
+    taskIndex
+  );
 
   return new Promise((resolve) => {
     const editingTaskEl = createElement('div', ['editing-task'], {}, '');
@@ -179,8 +217,14 @@ const taskListClickHandler = (row, col, projects, activeProject, showView) => {
       showView === true ? projects.projects[projectIndex] : activeProject;
     global.tasksListEl.replaceChild(editingTaskEl, taskEl);
 
-    console.log("🚀 ~ file: dom-tasks.js:192 ~ focusEl.addEventListener ~ thisProject:", thisProject.name)
-    console.log("🚀 ~ file: dom-tasks.js:193 ~ focusEl.addEventListener ~ taskIndex:", taskIndex)
+    console.log(
+      '🚀 ~ file: dom-tasks.js:192 ~ focusEl.addEventListener ~ thisProject:',
+      thisProject.name
+    );
+    console.log(
+      '🚀 ~ file: dom-tasks.js:193 ~ focusEl.addEventListener ~ taskIndex:',
+      taskIndex
+    );
     focusEl.addEventListener('click', () => {
       // Toggle focus icon
       projects.updateTaskinProject(

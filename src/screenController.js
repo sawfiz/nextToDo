@@ -120,12 +120,17 @@ const screenController = () => {
     // disableButtons();
     // Wait until a new Task is added
     showOverlay();
-    addNewTask(projects, activeProject, showView !== false).then(() => {
-      updateCurrentView();
-      // After a new task is created, re- enable these disabled elements
-      // enableButtons();
-      hideOverlay();
-    });
+    addNewTask(projects, activeProject, showView !== false)
+      .then(() => {
+        updateCurrentView();
+        // After a new task is created, re- enable these disabled elements
+        // enableButtons();
+        hideOverlay();
+      })
+      .catch(() => {
+        updateCurrentView();
+        hideOverlay();
+      });
   });
 
   // The add project button
