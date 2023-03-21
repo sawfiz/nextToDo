@@ -175,12 +175,11 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
 
     let col = 0;
     const taskFocusEl = createElement(
-      'div',
-      [],
+      'button',
+      ['focus-btn'],
       {
         'data-row': row,
         'data-col': col,
-        style: 'color: red; text-align: center',
       },
       ''
     );
@@ -210,7 +209,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     col++;
     const taskDescriptionEl = createElement(
       'div',
-      ['limited-text'],
+      ['description', 'limited-text'],
       { 'data-row': row, 'data-col': col },
       task.description
     );
@@ -220,8 +219,8 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     taskEl.appendChild(taskDescriptionEl);
 
     // If showing a view, rather than an active project
+    col++;
     if (showProject) {
-      col++;
       let projectName = 'not assigned';
       if (!Number.isNaN(task.projectIndex)) {
         projectName = projects.projects[task.projectIndex].name;
@@ -239,7 +238,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const startDateText = getDateText(task.startDate);
     const taskStartDateEl = createElement(
       'div',
-      [],
+      ['date'],
       { 'data-row': row, 'data-col': col, 'data-date': task.startDate },
       startDateText
     );
@@ -252,7 +251,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     const dueDateText = getDateText(task.dueDate);
     const taskDueDateEl = createElement(
       'div',
-      [],
+      ['date'],
       { 'data-row': row, 'data-col': col, 'data-date': task.dueDate },
       dueDateText
     );
@@ -261,6 +260,10 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     }
     taskEl.appendChild(taskDueDateEl);
     row++;
+    
+    col++;
+    const delBtn = createElement('button', ['delete-btn'], {'data-row': row, 'data-col': col,}, '❌');
+    taskEl.appendChild(delBtn);
 
     global.tasksListEl.appendChild(taskEl);
   });

@@ -61,6 +61,7 @@ const screenController = () => {
 
   const overlay = document.querySelector('.overlay');
   overlay.addEventListener('click', (e) => {
+    console.log("🚀 ~ file: screenController.js:67 ~ overlay.addEventListener ~ e:", e)
     updateCurrentView();
     hideOverlay();
   });
@@ -72,6 +73,7 @@ const screenController = () => {
     } else {
       updateProjectsDisplay(projects, activeProject);
       updateTasksDisplay(projects, activeProject.tasks);
+      console.log('Updated current project');
     }
   };
 
@@ -131,7 +133,7 @@ const screenController = () => {
     // Refresh the project list, in case an add project form is open
     updateProjectsDisplay(projects, activeProject);
 
-    showOverlay();
+    // showOverlay();
 
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
@@ -142,38 +144,37 @@ const screenController = () => {
     // Dismiss any task being edited
     updateCurrentView();
 
-    taskListClickHandler(
-      row,
-      col,
-      projects,
-      activeProject,
-      showView !== false
-    ).then(() => {
-      if (showView) {
-        // Update list, otherwise edits are not visible
-        switch (showView) {
-          case 'today':
-            todayClickHandler(projects);
-            break;
-          case 'next7days':
-            next7daysClickHandler(projects);
-            break;
-          case 'undated':
-            undatedClickHandler(projects);
-            break;
-          case 'completed':
-            completedClickHandler(projects);
-            break;
-          case 'allTasks':
-            allTasksClickHandler(projects);
-            break;
-          default:
-            break;
+    taskListClickHandler(e, projects, activeProject, showView !== false)
+      .then(() => {
+        if (showView) {
+          // Update list, otherwise edits are not visible
+          switch (showView) {
+            case 'today':
+              todayClickHandler(projects);
+              break;
+            case 'next7days':
+              next7daysClickHandler(projects);
+              break;
+            case 'undated':
+              undatedClickHandler(projects);
+              break;
+            case 'completed':
+              completedClickHandler(projects);
+              break;
+            case 'allTasks':
+              allTasksClickHandler(projects);
+              break;
+            default:
+              break;
+          }
         }
-      }
-      updateCurrentView();
-      hideOverlay();
-    });
+        hideOverlay();
+        updateCurrentView();
+      })
+      .catch(() => {
+        hideOverlay();
+        updateCurrentView();
+      });
   });
 
   // The show completed tasks checkbox

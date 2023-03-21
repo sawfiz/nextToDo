@@ -114,7 +114,8 @@ h2 {
   width: 95%;
 }
 
-.view:hover, .project:hover {
+.view:hover,
+.project:hover {
   font-weight: bold;
 }
 
@@ -192,17 +193,17 @@ h2 {
 
 .not-show-project-name {
   display: grid;
-  grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
+  grid-template-columns: 30px 30px auto 100px 100px 30px;
 }
 
 .show-project-name {
   display: grid;
-  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr 1fr;
 }
 
 .task {
   height: 2rem;
-  padding-top: 0.5rem;
+  padding-top: 0.4rem;
   margin: 0 1%;
   border-bottom: 1px solid darkgray;
   font-size: 0.9rem;
@@ -218,10 +219,12 @@ h2 {
 }
 
 .active-task {
-  background-color: lightgray;
+  /* border-bottom: 2px gray solid; */
 }
 
-.new-task, .new-task-with-project, .editing-task {
+.new-task,
+.new-task-with-project,
+.editing-task {
   position: relative;
   z-index: 100;
 }
@@ -229,14 +232,14 @@ h2 {
 .new-task {
   margin: 0 1%;
   display: grid;
-  grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
 .new-task-with-project {
   margin: 0 1%;
   display: grid;
-  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 15fr 3fr 3fr 3fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
@@ -259,21 +262,12 @@ h2 {
   font-size: 1rem;
 }
 
-.focus-btn {
-  margin: 3px 15px 3px 0;
-  cursor: pointer;
-}
-
 .done {
   text-decoration: line-through;
 }
 
 .date-passed {
   color: red;
-}
-
-.delete-btn {
-  margin: 3px 30%;
 }
 
 footer {
@@ -310,6 +304,50 @@ footer {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   z-index: 10;
+}
+
+.description-edit,
+.project-edit,
+.date-edit {
+  position: relative;
+  z-index: 100;
+}
+
+.focus-btn,
+.description,
+.date,
+.delete-btn {
+  display: flex;
+  align-items: center;
+}
+
+.focus-btn,
+.delete-btn {
+  justify-content: center;
+  margin: auto;
+  width: 1.2rem;
+  cursor: pointer;
+  color: red;
+  text-align: center;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+  border: 1px #ccc solid;
+}
+
+.focus-btn:hover {
+  transform: scale(1.3);
+}
+
+.description-edit {
+  background-color: aliceblue;
+}
+
+.delete-btn {
+  display: none;
+}
+
+.task:hover .delete-btn {
+  display: block;
+  margin: auto;
 }
