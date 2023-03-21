@@ -34,13 +34,13 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   // Display the tasks list header
   const taskListHeaderEl = document.querySelector('.tasks-list-header');
   taskListHeaderEl.innerHTML = '';
-  if (showProject) {
-    taskListHeaderEl.classList.remove('not-show-project-name');
-    taskListHeaderEl.classList.add('show-project-name');
-  } else {
-    taskListHeaderEl.classList.remove('show-project-name');
-    taskListHeaderEl.classList.add('not-show-project-name');
-  }
+  // if (showProject) {
+  //   taskListHeaderEl.classList.remove('not-show-project-name');
+  taskListHeaderEl.classList.add('show-project-name');
+  // } else {
+  //   taskListHeaderEl.classList.remove('show-project-name');
+  //   taskListHeaderEl.classList.add('not-show-project-name');
+  // }
 
   const sortByFocusBtn = createElement(
     'btn',
@@ -89,27 +89,27 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     updateTasksDisplay(projects, sortedList, showProject, false);
   });
 
-  if (showProject) {
-    taskListHeaderEl.classList.remove('not-show-project-name');
-    taskListHeaderEl.classList.add('show-project-name');
-    const headerProjectNameEl = createElement('div', [], {}, 'Project ');
-    taskListHeaderEl.appendChild(headerProjectNameEl);
-    const sortByProjectBtn = createElement(
-      'btn',
-      ['mdi', 'mdi-sort-ascending'],
-      { style: 'cursor: pointer' },
-      ''
-    );
-    headerProjectNameEl.appendChild(sortByProjectBtn);
-    sortByProjectBtn.addEventListener('click', () => {
-      const list = getList(activeProject, showProject);
-      projectAscend = projectAscend ? false : true;
-      // Todo: should sort by project name, not project index
-      const sortedList = sortByKey(list, 'projectIndex', projectAscend);
-      localStorage.setItem('list', JSON.stringify(sortedList));
-      updateTasksDisplay(projects, sortedList, showProject, false);
-    });
-  }
+  // if (showProject) {
+  // taskListHeaderEl.classList.remove('not-show-project-name');
+  taskListHeaderEl.classList.add('show-project-name');
+  const headerProjectNameEl = createElement('div', [], {}, 'Project ');
+  taskListHeaderEl.appendChild(headerProjectNameEl);
+  const sortByProjectBtn = createElement(
+    'btn',
+    ['mdi', 'mdi-sort-ascending'],
+    { style: 'cursor: pointer' },
+    ''
+  );
+  headerProjectNameEl.appendChild(sortByProjectBtn);
+  sortByProjectBtn.addEventListener('click', () => {
+    const list = getList(activeProject, showProject);
+    projectAscend = projectAscend ? false : true;
+    // Todo: should sort by project name, not project index
+    const sortedList = sortByKey(list, 'projectIndex', projectAscend);
+    localStorage.setItem('list', JSON.stringify(sortedList));
+    updateTasksDisplay(projects, sortedList, showProject, false);
+  });
+  // }
 
   const headerStartDateEl = createElement('div', [], {}, 'Start ');
   taskListHeaderEl.appendChild(headerStartDateEl);
@@ -167,11 +167,11 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       },
       ''
     );
-    if (showProject) {
-      taskEl.classList.add('show-project-name');
-    } else {
-      taskEl.classList.add('not-show-project-name');
-    }
+    // if (showProject) {
+    taskEl.classList.add('show-project-name');
+    // } else {
+    //   taskEl.classList.add('not-show-project-name');
+    // }
 
     let col = 0;
     const taskFocusEl = createElement(
@@ -220,19 +220,19 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
 
     // If showing a view, rather than an active project
     col++;
-    if (showProject) {
-      let projectName = 'not assigned';
-      if (!Number.isNaN(task.projectIndex)) {
-        projectName = projects.projects[task.projectIndex].name;
-      }
-      const projectNameEl = createElement(
-        'div',
-        ['limited-text'],
-        { 'data-row': row, 'data-col': col },
-        projectName
-      );
-      taskEl.appendChild(projectNameEl);
+    // if (showProject) {
+    let projectName = 'not assigned';
+    if (!Number.isNaN(task.projectIndex)) {
+      projectName = projects.projects[task.projectIndex].name;
     }
+    const projectNameEl = createElement(
+      'div',
+      ['limited-text'],
+      { 'data-row': row, 'data-col': col },
+      projectName
+    );
+    taskEl.appendChild(projectNameEl);
+    // }
 
     col++;
     const startDateText = getDateText(task.startDate);
@@ -259,11 +259,16 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);
-    
+
     col++;
-    const delBtn = createElement('button', ['delete-btn'], {'data-row': row, 'data-col': col,}, '❌');
+    const delBtn = createElement(
+      'button',
+      ['delete-btn'],
+      { 'data-row': row, 'data-col': col },
+      '❌'
+    );
     taskEl.appendChild(delBtn);
-    
+
     row++;
 
     global.tasksListEl.appendChild(taskEl);
