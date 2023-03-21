@@ -259,11 +259,12 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);
-    row++;
     
     col++;
     const delBtn = createElement('button', ['delete-btn'], {'data-row': row, 'data-col': col,}, '❌');
     taskEl.appendChild(delBtn);
+    
+    row++;
 
     global.tasksListEl.appendChild(taskEl);
   });

@@ -129,7 +129,7 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
   console.log('🚀 ~ file: dom-tasks.js:126 ~ taskListClickHandler ~ col:', col);
 
   const taskEl = global.tasksListEl.children[row];
-  taskEl.classList.add('active-task');
+  // taskEl.classList.add('active-task');
   console.log(
     '🚀 ~ file: dom-tasks.js:131 ~ taskListClickHandler ~ taskEl:',
     taskEl
@@ -321,7 +321,12 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
         });
         break;
       }
-
+      case '6': {
+        console.log("🚀 ~ file: dom-tasks.js:326 ~ returnnewPromise ~ taskIndex:", taskIndex)
+        projects.deleteTaskFromProject(taskIndex, thisProject);
+        resolve();
+        break;
+      }
       default:
         break;
     }
