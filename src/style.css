@@ -352,3 +352,13 @@ footer {
   display: block;
   margin: auto;
 }
+
+.hide-project {
+  visibility: hidden;
+}
+
+.task:hover .hide-project {
+  font-weight: 100;
+  visibility: visible;
+  margin: auto;
+}

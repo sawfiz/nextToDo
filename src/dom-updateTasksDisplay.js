@@ -89,27 +89,28 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     updateTasksDisplay(projects, sortedList, showProject, false);
   });
 
-  // if (showProject) {
-  // taskListHeaderEl.classList.remove('not-show-project-name');
-  taskListHeaderEl.classList.add('show-project-name');
-  const headerProjectNameEl = createElement('div', [], {}, 'Project ');
+  const headerProjectNameEl = createElement('div', [], {}, '');
+  if (showProject) {
+    // taskListHeaderEl.classList.remove('not-show-project-name');
+    // taskListHeaderEl.classList.add('show-project-name');
+    headerProjectNameEl.innerText = 'Project ';
+    const sortByProjectBtn = createElement(
+      'btn',
+      ['mdi', 'mdi-sort-ascending'],
+      { style: 'cursor: pointer' },
+      ''
+    );
+    headerProjectNameEl.appendChild(sortByProjectBtn);
+    sortByProjectBtn.addEventListener('click', () => {
+      const list = getList(activeProject, showProject);
+      projectAscend = projectAscend ? false : true;
+      // Todo: should sort by project name, not project index
+      const sortedList = sortByKey(list, 'projectIndex', projectAscend);
+      localStorage.setItem('list', JSON.stringify(sortedList));
+      updateTasksDisplay(projects, sortedList, showProject, false);
+    });
+  }
   taskListHeaderEl.appendChild(headerProjectNameEl);
-  const sortByProjectBtn = createElement(
-    'btn',
-    ['mdi', 'mdi-sort-ascending'],
-    { style: 'cursor: pointer' },
-    ''
-  );
-  headerProjectNameEl.appendChild(sortByProjectBtn);
-  sortByProjectBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
-    projectAscend = projectAscend ? false : true;
-    // Todo: should sort by project name, not project index
-    const sortedList = sortByKey(list, 'projectIndex', projectAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
-  });
-  // }
 
   const headerStartDateEl = createElement('div', [], {}, 'Start ');
   taskListHeaderEl.appendChild(headerStartDateEl);
@@ -232,6 +233,9 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       projectName
     );
     taskEl.appendChild(projectNameEl);
+    if (!showProject) {
+      projectNameEl.classList.add('hide-project');
+    }
     // }
 
     col++;
