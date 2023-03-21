@@ -131,7 +131,7 @@ h2 {
 }
 
 .project-title-input {
-  position: absolute; /* This is required by z-index */
+  position: relative; /* This is required by z-index */
   z-index: 100;
   width: 230px;
   height: 1.2rem;
@@ -222,7 +222,7 @@ h2 {
 }
 
 .new-task, .new-task-with-project, .editing-task {
-  position: absolute;
+  position: relative;
   z-index: 100;
 }
 
