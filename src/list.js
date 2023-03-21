@@ -32,8 +32,6 @@ const List = (name, existingTasks = []) => {
     switch (attribute) {
       case 'focus':
         tasks[index].focus = value;
-        console.log(`Focus changed to ${value}`);
-        console.log("🚀 ~ file: list.js:35 ~ updateTask ~ tasks[index].focus:", tasks[index].focus)
         break;
       case 'status':
         tasks[index].status = value;
@@ -47,8 +45,8 @@ const List = (name, existingTasks = []) => {
       case 'dueDate':
         tasks[index].dueDate = value;
         break;
-      case 'projectIndex':
-        tasks[index].projectIndex = value;
+      case 'projectName':
+        tasks[index].projectName = value;
         break;
 
       default:

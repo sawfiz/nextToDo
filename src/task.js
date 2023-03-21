@@ -1,10 +1,10 @@
-const Task = (focus, status, description, startDate, dueDate, projectIndex, taskIndex) => ({
+const Task = (focus, status, description, startDate, dueDate, projectName, taskIndex) => ({
   focus,
   status,
   description,
   startDate,
   dueDate,
-  projectIndex,
+  projectName,
   taskIndex,
 });
 

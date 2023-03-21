@@ -135,7 +135,9 @@ const projectListClickHandler = (e, projects) => {
   let index;
   let activeProject;
   const parentEl = e.target.parentElement;
+  console.log("🚀 ~ file: dom-projects.js:138 ~ projectListClickHandler ~ parentEl:", parentEl)
   const grandParentEl = parentEl.parentElement;
+  console.log("🚀 ~ file: dom-projects.js:140 ~ projectListClickHandler ~ grandParentEl:", grandParentEl)
 
   return new Promise((resolve, reject) => {
     // Clicked on a project-name
@@ -143,6 +145,8 @@ const projectListClickHandler = (e, projects) => {
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(parentEl.dataset.id);
       activeProject = projects.projects[index];
+      console.log("🚀 ~ file: dom-projects.js:148 ~ returnnewPromise ~ activeProject:", activeProject)
+      console.log("🚀 ~ file: dom-projects.js:152 ~ returnnewPromise ~ activeProject.tasks:", activeProject.tasks)
       updateTasksDisplay(projects, activeProject.tasks);
       resolve(index);
     }

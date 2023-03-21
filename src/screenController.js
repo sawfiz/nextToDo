@@ -113,6 +113,7 @@ const screenController = () => {
 
   // The projects list
   global.projectListEl.addEventListener('click', (e) => {
+    console.log("🚀 ~ file: screenController.js:130 ~ global.projectListEl.addEventListener ~ e:", e)
     searchInputEl.value = '';
     projectListClickHandler(e, projects)
       .then((index) => {
@@ -121,7 +122,7 @@ const screenController = () => {
         showView = false;
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
-        updateTasksDisplay(projects, activeProject.tasks, showView);
+        updateTasksDisplay(projects, activeProject.tasks, showView, false, activeProject);
       })
       .catch(() => {
         updateProjectsDisplay(projects, activeProject);

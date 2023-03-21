@@ -30,7 +30,7 @@ const addSampleTasks = (projects) => {
     'Inbox task 0',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -44,7 +44,7 @@ const addSampleTasks = (projects) => {
     'Inbox task 1',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -58,7 +58,7 @@ const addSampleTasks = (projects) => {
     'Inbox task 2',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -72,7 +72,7 @@ const addSampleTasks = (projects) => {
     'Inbox task 3',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -86,7 +86,7 @@ const addSampleTasks = (projects) => {
     'Inbox task 4',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -104,7 +104,7 @@ const addSampleTasks = (projects) => {
     'Buy thing 0',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -118,7 +118,7 @@ const addSampleTasks = (projects) => {
     'Buy thing 1',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -132,7 +132,7 @@ const addSampleTasks = (projects) => {
     'Buy thing 2',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -146,7 +146,7 @@ const addSampleTasks = (projects) => {
     'Buy thing 3',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -160,7 +160,7 @@ const addSampleTasks = (projects) => {
     'Buy thing 4',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -174,7 +174,7 @@ const addSampleTasks = (projects) => {
     'A future buy 5',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -192,7 +192,7 @@ const addSampleTasks = (projects) => {
     'Feature 0',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -206,7 +206,7 @@ const addSampleTasks = (projects) => {
     'Fix bug 1',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -220,7 +220,7 @@ const addSampleTasks = (projects) => {
     'Read topic 2',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -234,7 +234,7 @@ const addSampleTasks = (projects) => {
     'Bug fix 3',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -248,7 +248,7 @@ const addSampleTasks = (projects) => {
     'Watch video 4',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
@@ -262,7 +262,7 @@ const addSampleTasks = (projects) => {
     'A future project 5',
     startDate,
     dueDate,
-    projects.projects.indexOf(project),
+    project.name,
     project.tasks.length
   );
   projects.addTaskToProject(task, project);

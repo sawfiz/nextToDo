@@ -147,7 +147,13 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   });
 };
 
-const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
+const updateTasksDisplay = (
+  projects,
+  taskList,
+  showProject,
+  completedView,
+  activeProject
+) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
   // Display the tasks list body
@@ -163,7 +169,7 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
       'div',
       ['task'],
       {
-        'data-projectIndex': task.projectIndex,
+        'data-projectName': task.projectName,
         'data-taskIndex': task.taskIndex,
       },
       ''
@@ -222,10 +228,13 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     // If showing a view, rather than an active project
     col++;
     // if (showProject) {
-    let projectName = 'not assigned';
-    if (!Number.isNaN(task.projectIndex)) {
-      projectName = projects.projects[task.projectIndex].name;
-    }
+    let projectName = task.projectName;
+
+    // if (activeProject) {
+    //   projectName = activeProject.name;
+    // } else {
+    //   projectName = projects.projects[task.projectIndex].name;
+    // }
     const projectNameEl = createElement(
       'div',
       ['limited-text'],
