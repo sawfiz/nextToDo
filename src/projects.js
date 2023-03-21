@@ -33,7 +33,10 @@ const Projects = () => {
   };
 
   const updateTaskinProject = (project, index, attribute, value) => {
-    console.log("🚀 ~ file: projects.js:36 ~ updateTaskinProject ~ project:", project)
+    console.log(
+      '🚀 ~ file: projects.js:36 ~ updateTaskinProject ~ project:',
+      project
+    );
     project.updateTask(index, attribute, value);
     saveProjects();
   };
@@ -52,6 +55,7 @@ const Projects = () => {
   // Change the name of the project
   const renameProject = (project, newName) => {
     project.name = newName;
+    project.updateAllTasks('projectName', newName);
     saveProjects();
   };
 

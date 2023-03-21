@@ -28,7 +28,7 @@ const List = (name, existingTasks = []) => {
   };
 
   const updateTask = (index, attribute, value) => {
-    console.log("🚀 ~ file: list.js:31 ~ updateTask ~ index:", index)
+    console.log('🚀 ~ file: list.js:31 ~ updateTask ~ index:', index);
     switch (attribute) {
       case 'focus':
         tasks[index].focus = value;
@@ -54,6 +54,12 @@ const List = (name, existingTasks = []) => {
     }
   };
 
+  const updateAllTasks = (attribute, value) => {
+    tasks.forEach((task, index) => {
+      updateTask(index, attribute, value);
+    });
+  };
+
   return {
     get name() {
       return name;
@@ -66,6 +72,7 @@ const List = (name, existingTasks = []) => {
     },
     addTask,
     updateTask,
+    updateAllTasks,
     removeTask,
     moveTask,
     printTasks,
