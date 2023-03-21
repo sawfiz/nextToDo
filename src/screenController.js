@@ -74,18 +74,6 @@ const screenController = () => {
     hideOverlay();
   });
 
-  const disableButtons = () => {
-    addProjectBtn.disabled = true;
-    addTaskBtn.disabled = true;
-    showCompletedCheckbox.disabled = true;
-  };
-
-  const enableButtons = () => {
-    addProjectBtn.disabled = false;
-    addTaskBtn.disabled = false;
-    showCompletedCheckbox.disabled = false;
-  };
-
   const updateCurrentView = () => {
     if (showView) {
       list = JSON.parse(localStorage.getItem('list'));
@@ -96,35 +84,14 @@ const screenController = () => {
     }
   };
 
-  // The body
-  // const bodyEl = document.querySelector('body');
-  // bodyEl.addEventListener('click', (e) => {
-  //   // Clicking on any element with 'dismiss' will refresh the projects and tasks list
-  //   // This dismisses any open add task, edit task and add project forms
-  //   // Also enables add task, add project and show completed setting buttons/checkbox
-  //   if (e.target.classList.contains('dismiss')) {
-  //     // Dismiss any task being edited
-  //     updateCurrentView();
-  //     enableButtons();
-  //   }
-  // });
-
   // The add task button
-  // ^ When adding a new task, the form is dismissed by
-  // 1. click on the Submit button
-  // 2. click on any element with the class 'dismiss'
-  // 3. click on a project in the projects list
   addTaskBtn.addEventListener('click', () => {
-    // Disable the follow elements when adding a new task
-    // This prevents multiple elements added on screen
-    // disableButtons();
-    // Wait until a new Task is added
+    // Show overlay to disable the rest of the screen
     showOverlay();
     addNewTask(projects, activeProject, showView !== false)
       .then(() => {
         updateCurrentView();
-        // After a new task is created, re- enable these disabled elements
-        // enableButtons();
+        // After a new task is created, remove the overlay
         hideOverlay();
       })
       .catch(() => {
@@ -134,13 +101,8 @@ const screenController = () => {
   });
 
   // The add project button
-  // ^ When adding a new project, the form is dismissed by
-  // 1. press enter to 'change' the name
-  // 2. click on any element with the 'dismiss' class
-  // 3. presse 'Esc"
   addProjectBtn.addEventListener('click', () => {
     showOverlay();
-    // disableButtons();
     addNewProject(projects)
       .then(() => {
         activeProject = projects.projects[projects.projects.length - 1];
@@ -149,11 +111,9 @@ const screenController = () => {
         updateProjectsDisplay(projects, activeProject);
         updateTasksListHeader(projects, activeProject, showView);
         updateTasksDisplay(projects, activeProject.tasks);
-        // enableButtons();
         hideOverlay();
       })
       .catch(() => {
-        // enableButtons();
         hideOverlay();
       });
   });
@@ -169,7 +129,6 @@ const screenController = () => {
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
         updateTasksDisplay(projects, activeProject.tasks, showView);
-        closeMenu();
       })
       .catch(() => {
         updateProjectsDisplay(projects, activeProject);
@@ -177,25 +136,17 @@ const screenController = () => {
   });
 
   // The tasks llist
-  // ^ The edit form is dismiss by:
-  // 1. change one attribute of a task
-  // 2. click on any elements with 'dismiss' class
-  // 3. click on a project
   global.tasksListEl.addEventListener('click', (e) => {
     // Refresh the project list, in case an add project form is open
     updateProjectsDisplay(projects, activeProject);
 
+    showOverlay();
+
     const { row } = e.target.dataset;
     const { col } = e.target.dataset;
-    // Ignores:
-    // - click on the margin of a task
-    // - click on the empty space or the submit button of add task
-    // - click on input fileds of editing a task
     if (!row || !col) {
       return;
     }
-
-    disableButtons();
 
     // Dismiss any task being edited
     updateCurrentView();
@@ -230,7 +181,7 @@ const screenController = () => {
         }
       }
       updateCurrentView();
-      enableButtons();
+      hideOverlay();
     });
   });
 
@@ -259,69 +210,45 @@ const screenController = () => {
     searchInputEl.classList.remove('active-view');
   };
 
-  // The views event listeners
-  todayEl.addEventListener('click', () => {
-    // Remove highlight of active project, by updating without activeProject
+  const switchToView = (element, view) => {
     activeProject = null;
+    // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
     removeViewHighlight();
-    searchInputEl.value = '';
-    todayEl.classList.add('active-view');
-    showView = 'today';
+    if (view !== 'search') searchInputEl.value = '';
+    element.classList.add('active-view');
+    showView = view;
     updateTasksListHeader(projects, activeProject, showView !== false);
+  };
+
+  // The views event listeners
+  todayEl.addEventListener('click', () => {
+    switchToView(todayEl, 'today');
     todayClickHandler(projects);
   });
 
   next7daysEl.addEventListener('click', () => {
-    // Remove highlight of active project, by updating without activeProject
-    updateProjectsDisplay(projects);
-    removeViewHighlight();
-    searchInputEl.value = '';
-    next7daysEl.classList.add('active-view');
-    showView = 'next7days';
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    switchToView(next7daysEl, 'next7days');
     next7daysClickHandler(projects);
   });
 
   undatedEl.addEventListener('click', () => {
-    // Remove highlight of active project, by updating without activeProject
-    updateProjectsDisplay(projects);
-    removeViewHighlight();
-    searchInputEl.value = '';
-    undatedEl.classList.add('active-view');
-    showView = 'undated';
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    switchToView(undatedEl, 'undated');
     undatedClickHandler(projects);
   });
 
   completedEl.addEventListener('click', () => {
-    // Remove highlight of active project, by updating without activeProject
-    updateProjectsDisplay(projects);
-    removeViewHighlight();
-    searchInputEl.value = '';
-    completedEl.classList.add('active-view');
-    showView = 'completed';
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    switchToView(completedEl, 'completed');
     completedClickHandler(projects);
   });
 
   allTasksEl.addEventListener('click', () => {
-    // Remove highlight of active project, by updating without activeProject
-    updateProjectsDisplay(projects);
-    removeViewHighlight();
-    searchInputEl.value = '';
-    allTasksEl.classList.add('active-view');
-    showView = 'allTasks';
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    switchToView(allTasksEl, 'alltasks');
     allTasksClickHandler(projects);
   });
 
   searchInputEl.addEventListener('change', () => {
-    updateProjectsDisplay(projects);
-    removeViewHighlight();
-    searchInputEl.classList.add('active-view');
-    showView = 'search';
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    switchToView(searchInputEl, 'search');
     searchClickHandler(projects, searchInputEl.value);
   });
 

@@ -63,6 +63,11 @@ const addNewTask = (projects, activeProject, showView) => {
   // Attach the new task element to the tasksList element
   global.tasksListEl.appendChild(taskEl);
 
+  console.log("🚀 ~ file: dom-tasks.js:67 ~ addNewTask ~   global.tasksListEl.scrollTop:",   global.tasksListEl.scrollTop)
+  // global.tasksListEl.scrollTop = global.tasksListEl.scrollHeight;
+  console.log("🚀 ~ file: dom-tasks.js:69 ~ addNewTask ~ global.tasksListEl.scrollHeight:", global.tasksListEl.scrollHeight)
+
+
   // Focus on the description so the user can start entering text
   descriptionEl.focus();
 

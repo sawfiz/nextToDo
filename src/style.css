@@ -114,6 +114,10 @@ h2 {
   width: 95%;
 }
 
+.view:hover, .project:hover {
+  font-weight: bold;
+}
+
 .projects-header {
   display: grid;
   grid-template-columns: 6fr 1fr;
@@ -146,6 +150,7 @@ h2 {
 .active-project {
   color: var(--darker-color);
   background-color: var(--dark-color);
+  font-weight: bold;
 }
 
 .project-mini-menu {
@@ -203,6 +208,10 @@ h2 {
   font-size: 0.9rem;
 }
 
+.task:hover {
+  font-weight: bold;
+}
+
 .task-list {
   max-height: calc(100vh - 210px);
   overflow-y: auto;
@@ -212,13 +221,16 @@ h2 {
   background-color: lightgray;
 }
 
-.new-task {
+.new-task, .new-task-with-project, .editing-task {
   position: absolute;
+  z-index: 100;
+}
+
+.new-task {
   margin: 0 1%;
   display: grid;
   grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
   grid-template-rows: 1fr 1fr;
-  z-index: 100;
 }
 
 .new-task-with-project {
