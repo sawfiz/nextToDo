@@ -12,7 +12,8 @@
   padding: 0;
   box-sizing: border-box;
   /* border: 1px red solid; */
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -41,7 +42,7 @@ h1 {
 .add-task-container {
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
 }
 
 .add-task {
@@ -80,7 +81,9 @@ h1 {
   grid-template-columns: 250px auto;
 }
 
-.inbox, .add-task, .add-project {
+.inbox,
+.add-task,
+.add-project {
   cursor: pointer;
 }
 
@@ -98,11 +101,13 @@ h2 {
   font-size: 1.2rem;
 }
 
-.views-container, .projects-container {
+.views-container,
+.projects-container {
   padding: 0.5rem;
 }
 
-.view, .project {
+.view,
+.project {
   cursor: pointer;
   font-size: 1rem;
   padding: 3px;
@@ -121,9 +126,12 @@ h2 {
   box-shadow: 1px 1px rgba(0, 0, 0, 0.3);
 }
 
-.project-title {
-  width: 230px;
-  font-size: 1.2rem;
+.project-title-input {
+  position: absolute; /* This is required by z-index */
+  z-index: 100;
+  width: 180px;
+  height: 1.2rem;
+  font-size: 1rem;
   padding: 15px;
 }
 
@@ -134,7 +142,8 @@ h2 {
   text-overflow: ellipsis; /* Add ellipsis (...) to indicate the text is truncated */
 }
 
-.active-view, .active-project {
+.active-view,
+.active-project {
   color: var(--darker-color);
   background-color: var(--dark-color);
 }
@@ -163,7 +172,8 @@ h2 {
   background-color: var(--lighter-color);
 }
 
-.tasks-list-header, .task {
+.tasks-list-header,
+.task {
   margin: 0 1%;
 }
 
@@ -190,7 +200,7 @@ h2 {
   padding-top: 0.5rem;
   margin: 0 1%;
   border-bottom: 1px solid darkgray;
- font-size: 0.9rem;
+  font-size: 0.9rem;
 }
 
 .task-list {
@@ -204,10 +214,12 @@ h2 {
 }
 
 .new-task {
+  position: absolute;
   margin: 0 1%;
   display: grid;
   grid-template-columns: 1fr 1fr 15fr 3fr 3fr;
   grid-template-rows: 1fr 1fr;
+  z-index: 100;
 }
 
 .new-task-with-project {
@@ -242,7 +254,7 @@ h2 {
 }
 
 .done {
-  text-decoration: line-through
+  text-decoration: line-through;
 }
 
 .date-passed {
@@ -278,4 +290,15 @@ footer {
   width: 95%;
   border-radius: 5px;
   border: 1px gray solid;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 10;
 }

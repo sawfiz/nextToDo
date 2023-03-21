@@ -58,6 +58,22 @@ const screenController = () => {
   const showCompletedCheckbox = document.querySelector('#show-completed');
   showCompletedCheckbox.checked = showCompleted;
 
+  const overlay = document.querySelector('.overlay');
+
+  function hideOverlay() {
+    overlay.style.display = 'none';
+  }
+
+  function showOverlay() {
+    overlay.style.display = 'block';
+    console.log('show modal');
+  }
+
+  overlay.addEventListener('click', (e) => {
+    updateCurrentView();
+    hideOverlay();
+  });
+
   const disableButtons = () => {
     addProjectBtn.disabled = true;
     addTaskBtn.disabled = true;
@@ -75,22 +91,23 @@ const screenController = () => {
       list = JSON.parse(localStorage.getItem('list'));
       updateTasksDisplay(projects, list, showView, showView === 'completed');
     } else {
+      updateProjectsDisplay(projects, activeProject);
       updateTasksDisplay(projects, activeProject.tasks);
     }
   };
 
   // The body
-  const bodyEl = document.querySelector('body');
-  bodyEl.addEventListener('click', (e) => {
-    // Clicking on any element with 'dismiss' will refresh the projects and tasks list
-    // This dismisses any open add task, edit task and add project forms
-    // Also enables add task, add project and show completed setting buttons/checkbox
-    if (e.target.classList.contains('dismiss')) {
-      // Dismiss any task being edited
-      updateCurrentView();
-      enableButtons();
-    }
-  });
+  // const bodyEl = document.querySelector('body');
+  // bodyEl.addEventListener('click', (e) => {
+  //   // Clicking on any element with 'dismiss' will refresh the projects and tasks list
+  //   // This dismisses any open add task, edit task and add project forms
+  //   // Also enables add task, add project and show completed setting buttons/checkbox
+  //   if (e.target.classList.contains('dismiss')) {
+  //     // Dismiss any task being edited
+  //     updateCurrentView();
+  //     enableButtons();
+  //   }
+  // });
 
   // The add task button
   // ^ When adding a new task, the form is dismissed by
@@ -100,12 +117,14 @@ const screenController = () => {
   addTaskBtn.addEventListener('click', () => {
     // Disable the follow elements when adding a new task
     // This prevents multiple elements added on screen
-    disableButtons();
+    // disableButtons();
     // Wait until a new Task is added
+    showOverlay();
     addNewTask(projects, activeProject, showView !== false).then(() => {
       updateCurrentView();
       // After a new task is created, re- enable these disabled elements
-      enableButtons();
+      // enableButtons();
+      hideOverlay();
     });
   });
 
@@ -115,7 +134,8 @@ const screenController = () => {
   // 2. click on any element with the 'dismiss' class
   // 3. presse 'Esc"
   addProjectBtn.addEventListener('click', () => {
-    disableButtons();
+    showOverlay();
+    // disableButtons();
     addNewProject(projects)
       .then(() => {
         activeProject = projects.projects[projects.projects.length - 1];
@@ -124,10 +144,12 @@ const screenController = () => {
         updateProjectsDisplay(projects, activeProject);
         updateTasksListHeader(projects, activeProject, showView);
         updateTasksDisplay(projects, activeProject.tasks);
-        enableButtons();
+        // enableButtons();
+        hideOverlay();
       })
       .catch(() => {
-        enableButtons();
+        // enableButtons();
+        hideOverlay();
       });
   });
 
@@ -142,6 +164,7 @@ const screenController = () => {
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
         updateTasksDisplay(projects, activeProject.tasks, showView);
+        closeMenu();
       })
       .catch(() => {
         updateProjectsDisplay(projects, activeProject);

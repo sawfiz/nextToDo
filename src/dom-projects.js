@@ -99,16 +99,27 @@ const updateProjectsDisplay = (projects, activeProject) => {
 
 // Add a new project
 const addNewProject = (projects) => {
-  const inputEl = createElement('input', ['project-title'], {});
+  const inputEl = createElement('input', ['project-title-input'], {});
   global.projectListEl.appendChild(inputEl);
+
   inputEl.focus();
 
   return new Promise((resolve, reject) => {
     // Get a name for the new project
-    inputEl.addEventListener('change', () => {
-      projects.addProject(inputEl.value);
-      resolve();
+    // A new project is only added if the Enter key is pressed and the name is not empty
+    // An Enter with empty text or Esc key dismisses the input field with no new project created
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.keyCode === 13) {
+        if (inputEl.value) {
+          projects.addProject(inputEl.value);
+          resolve();
+        } else {
+          global.projectListEl.removeChild(inputEl);
+          reject();
+        }
+      }
     });
+
     // Listen for the Esc key
     inputEl.addEventListener('keydown', (e) => {
       if (e.keyCode === 27) {
