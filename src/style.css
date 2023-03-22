@@ -89,20 +89,23 @@ h1 {
 .sidebar {
   margin: 5px 2%;
   display: grid;
-  grid-template-rows: 12rem auto 50px;
+  grid-template-rows: 12rem auto 30px;
   background-color: var(--light-color);
 }
 
 h2 {
   margin-bottom: 0.5rem;
-  color: #444;
-  text-shadow: 1px 1px rgba(0, 0, 0, 1);
   font-size: 1.2rem;
 }
 
 .views-container,
 .projects-container {
   padding: 0.5rem;
+}
+
+.project-list {
+  max-height: calc(100vh - 440px);
+  overflow-y: auto;
 }
 
 .view,
@@ -226,6 +229,7 @@ h2 {
 .task:hover {
   font-weight: bold;
 }
+
 
 .task-list {
   max-height: calc(100vh - 280px);

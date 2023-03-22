@@ -266,6 +266,94 @@ const addSampleTasks = (projects) => {
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
+
+  // Create Project 3
+  projects.addProject('Keep fit');
+  project = projects.projects[3];
+
+  // Task 0
+  startDate = getDateFromDaysOffset(0);
+  dueDate = getDateFromDaysOffset(0);
+  task = Task(
+    true,
+    'aTodo',
+    'Jog 0',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 1
+  startDate = getDateFromDaysOffset(-7);
+  dueDate = getDateFromDaysOffset(7);
+  task = Task(
+    false,
+    'bDoing',
+    'Lift weights 1',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 2
+  startDate = getDateFromDaysOffset(1);
+  dueDate = getDateFromDaysOffset(7);
+  task = Task(
+    false,
+    'cWait',
+    'Cycle 2',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 3
+  startDate = '';
+  dueDate = '';
+  task = Task(
+    false,
+    'dDone',
+    'Sleep well 3',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 4
+  startDate = getDateFromDaysOffset(-5);
+  dueDate = getDateFromDaysOffset(-1);
+  task = Task(
+    true,
+    'dDone',
+    'Eat well 4',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
+
+  // Task 5
+  startDate = getDateFromDaysOffset(10);
+  dueDate = getDateFromDaysOffset(17);
+  task = Task(
+    true,
+    'dDone',
+    'Drink lots of water 5',
+    startDate,
+    dueDate,
+    project.name,
+    project.tasks.length
+  );
+  projects.addTaskToProject(task, project);
 };
 
 export default addSampleTasks;
