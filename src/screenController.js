@@ -81,11 +81,11 @@ const screenController = () => {
     if (showView) {
       list = JSON.parse(localStorage.getItem('list'));
       updateTasksDisplay(projects, list, showView, showView === 'completed');
-      updateProjectsDisplay(projects, activeProject);
       enableDragProject();
     } else {
       updateTasksDisplay(projects, activeProject.tasks);
     }
+    updateProjectsDisplay(projects, activeProject);
   };
 
   // The add task button

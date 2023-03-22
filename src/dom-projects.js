@@ -64,7 +64,7 @@ const addProjectMiniMenu = (projects, projectEl, index) => {
     menuEl.appendChild(
       createElement(
         'button',
-        ['project-mini-menu-button', 'mdi', 'mdi-close'],
+        ['project-mini-menu-button', 'mdi', 'mdi-trash-can-outline'],
         { 'data-btn': 'remove', style: 'color: red' },
         ''
       )

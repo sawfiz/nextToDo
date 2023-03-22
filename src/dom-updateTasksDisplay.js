@@ -270,9 +270,9 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     col++;
     const delBtn = createElement(
       'button',
-      ['delete-btn'],
+      ['delete-btn', 'mdi', 'mdi-trash-can-outline'],
       { 'data-row': row, 'data-col': col },
-      '❌'
+      ''
     );
     taskEl.appendChild(delBtn);
 
