@@ -136,7 +136,6 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
   );
   const projectName = taskEl.getAttribute('data-projectName');
 
-
   // taskIndex is different depending on showing View of Project
   let taskIndex;
   if (showView) {
@@ -146,7 +145,9 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
   }
 
   const thisProject =
-    showView === true ? projects.projects.findIndex(project => project.name === tName) : activeProject;
+    showView === true
+      ? projects.projects.findIndex((project) => project.name === projectName)
+      : activeProject;
 
   return new Promise((resolve, reject) => {
     switch (col) {
@@ -248,7 +249,10 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
 
         taskEl.replaceChild(projectDropDownEl, taskEl.children[3]);
         projectDropDownEl.addEventListener('change', () => {
-          console.log("🚀 ~ file: dom-tasks.js:268 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.value:", projectDropDownEl.value)
+          console.log(
+            '🚀 ~ file: dom-tasks.js:268 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.value:',
+            projectDropDownEl.value
+          );
           projects.updateTaskinProject(
             thisProject,
             taskIndex,
