@@ -43,8 +43,10 @@ const Projects = () => {
   };
 
   // Swap the order of 2 projects
-  const swapProject = (x, y) => {
-    [projects[x], projects[y]] = [projects[y], projects[x]];
+  const swapProject = (index1, index2) => {
+    const temp = projects[index1];
+    projects[index1] = projects[index2];
+    projects[index2] = temp;
     saveProjects();
   };
 

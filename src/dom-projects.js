@@ -79,8 +79,7 @@ const updateProjectsDisplay = (projects, activeProject) => {
 
   // Go through each project in projects[]
   projects.projects.forEach((project, index) => {
-    const projectEl = createElement('div', ['project', 'draggable-item'], {
-      draggable: true,
+    const projectEl = createElement('div', ['project'], {
       'data-id': index,
     });
     const projectNameEl = createElement(
@@ -92,7 +91,14 @@ const updateProjectsDisplay = (projects, activeProject) => {
     projectEl.appendChild(projectNameEl);
 
     if (index !== 0) {
-      const dotsEl = createElement('div', ['dots', 'hide-project-icon'], {}, '⠇');
+      projectEl.classList.add('draggable-item');
+      projectEl.setAttribute('draggable', true);
+      const dotsEl = createElement(
+        'div',
+        ['dots', 'hide-project-icon'],
+        {},
+        '⠇'
+      );
       const dragHandelEl = createElement(
         'div',
         ['drag-handle', 'mdi', 'mdi-menu', 'hide-project-icon'],

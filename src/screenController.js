@@ -67,12 +67,23 @@ const screenController = () => {
     hideOverlay();
   });
 
+  const enableDragProject = () => {
+    // Attach event listeners
+    const draggableItems = document.querySelectorAll('.draggable-item');
+    draggableItems.forEach((item) => {
+      item.addEventListener('dragstart', onDragStart);
+      item.addEventListener('dragover', onDragOver);
+      item.addEventListener('dragend', onDragEnd);
+    });
+  };
+
   const updateCurrentView = () => {
     if (showView) {
       list = JSON.parse(localStorage.getItem('list'));
       updateTasksDisplay(projects, list, showView, showView === 'completed');
-    } else {
       updateProjectsDisplay(projects, activeProject);
+      enableDragProject();
+    } else {
       updateTasksDisplay(projects, activeProject.tasks);
     }
   };
@@ -102,6 +113,7 @@ const screenController = () => {
         removeViewHighlight();
         showView = false;
         updateProjectsDisplay(projects, activeProject);
+        enableDragProject();
         updateTasksListHeader(projects, activeProject, showView);
         updateTasksDisplay(projects, activeProject.tasks);
         hideOverlay();
@@ -119,6 +131,7 @@ const screenController = () => {
         activeProject = projects.projects[index];
         largeProjectNameEl.innerText = activeProject.name;
         updateProjectsDisplay(projects, activeProject);
+        enableDragProject();
         showView = false;
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
@@ -133,6 +146,7 @@ const screenController = () => {
       })
       .catch(() => {
         updateProjectsDisplay(projects, activeProject);
+        enableDragProject();
         hideOverlay();
       });
   });
@@ -141,6 +155,7 @@ const screenController = () => {
   global.tasksListEl.addEventListener('click', (e) => {
     // Refresh the project list, in case an add project form is open
     updateProjectsDisplay(projects, activeProject);
+    enableDragProject();
 
     // showOverlay();
 
@@ -215,6 +230,7 @@ const screenController = () => {
     activeProject = null;
     // Remove highlight of active project, by updating without activeProject
     updateProjectsDisplay(projects);
+    enableDragProject();
     removeViewHighlight();
     if (view !== 'search') searchInputEl.value = '';
     element.classList.add('active-view');
@@ -229,31 +245,31 @@ const screenController = () => {
     switchToView(todayEl, 'today');
     todayClickHandler(projects);
   });
-  
+
   next7daysEl.addEventListener('click', () => {
     currentViewName = 'Next 7 days';
     switchToView(next7daysEl, 'next7days');
     next7daysClickHandler(projects);
   });
-  
+
   undatedEl.addEventListener('click', () => {
     currentViewName = 'Undated';
     switchToView(undatedEl, 'undated');
     undatedClickHandler(projects);
   });
-  
+
   completedEl.addEventListener('click', () => {
     currentViewName = 'Completed';
     switchToView(completedEl, 'completed');
     completedClickHandler(projects);
   });
-  
+
   allTasksEl.addEventListener('click', () => {
     currentViewName = 'All tasks';
     switchToView(allTasksEl, 'alltasks');
     allTasksClickHandler(projects);
   });
-  
+
   searchInputEl.addEventListener('change', () => {
     currentViewName = 'Search results...';
     switchToView(searchInputEl, 'search');
@@ -262,48 +278,46 @@ const screenController = () => {
 
   // Draggable stuff
   let draggedItem;
+  let oldIndex, newIndex;
 
   function onDragStart(event) {
     draggedItem = event.target;
     event.dataTransfer.setData('text/plain', '');
+    oldIndex = event.target.dataset.id;
+    console.log(
+      '🚀 ~ file: screenController.js:287 ~ onDragStart ~ oldIndex:',
+      oldIndex
+    );
   }
 
   function onDragOver(event) {
-    console.log('dragged over');
     event.preventDefault();
     if (event.target.classList.contains('draggable-item')) {
       const rect = event.target.getBoundingClientRect();
       const offsetY = event.clientY - rect.top;
       if (offsetY < rect.height / 2) {
-        event.target.parentNode.insertBefore(draggedItem, event.target);
+        newIndex = event.target.dataset.id;
       } else {
-        event.target.parentNode.insertBefore(
-          draggedItem,
-          event.target.nextSibling
-        );
+        newIndex = event.target.nextSibling.dataset.id;
       }
     }
   }
 
-  function onDragEnd() {
+  function onDragEnd(event) {
+    event.target.parentNode.insertBefore(
+      draggedItem,
+      event.target.parentNode.children[newIndex]
+    );
+    projects.swapProject(oldIndex, newIndex);
     draggedItem = null;
+    updateProjectsDisplay(projects);
+    enableDragProject();
   }
 
   updateProjectsDisplay(projects, activeProject);
+  enableDragProject();
   updateTasksListHeader(projects, activeProject, showView !== false);
   updateTasksDisplay(projects, activeProject.tasks, showView);
-
-  // Attach event listeners
-  const draggableItems = document.querySelectorAll('.draggable-item');
-  console.log(
-    '🚀 ~ file: screenController.js:284 ~ screenController ~ draggableItems:',
-    draggableItems
-  );
-  draggableItems.forEach((item) => {
-    item.addEventListener('dragstart', onDragStart);
-    item.addEventListener('dragover', onDragOver);
-    item.addEventListener('dragend', onDragEnd);
-  });
 };
 
 export default screenController;
