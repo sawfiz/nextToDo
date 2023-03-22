@@ -86,6 +86,7 @@ const screenController = () => {
       updateTasksDisplay(projects, activeProject.tasks);
     }
     updateProjectsDisplay(projects, activeProject);
+    largeProjectNameEl.innerText = activeProject.name;
   };
 
   // The add task button
@@ -278,37 +279,54 @@ const screenController = () => {
 
   // Draggable stuff
   let draggedItem;
+  let start;
   let fromIndex;
   let toIndex;
 
   function onDragStart(event) {
     draggedItem = event.target;
+    start = event.clientY;
+
     event.dataTransfer.setData('text/plain', '');
     fromIndex = event.target.dataset.id;
+    activeProject = projects.projects[fromIndex];
+    updateTasksDisplay(
+      projects,
+      activeProject.tasks,
+      showView,
+      showView === 'completed'
+    );
+    largeProjectNameEl.innerText = activeProject.name;
   }
 
   function onDragOver(event) {
     event.preventDefault();
     if (event.target.classList.contains('draggable-item')) {
       const rect = event.target.getBoundingClientRect();
-      const offsetY = event.clientY - rect.top;
-      if (offsetY > 0) {
-        toIndex = event.target.dataset.id;
-      } else {
-        toIndex = event.target.nexSibling.dataset.id;
+      // Find out how much the item is dragged
+      // 5 is the margin bottom
+      const offsetY = Math.floor((event.clientY - start) / (rect.height + 5));
+      // If dragging downwards
+      if (event.clientY > start) {
+        toIndex = Number(fromIndex) + offsetY;
+      } else { // Dragging up
+        toIndex = Number(fromIndex) + offsetY + 1;
       }
     }
   }
 
   function onDragEnd(event) {
-    event.target.parentNode.insertBefore(
-      draggedItem,
-      event.target.parentNode.children[toIndex]
-    );
-    projects.moveProject(fromIndex, toIndex);
-    draggedItem = null;
-    updateProjectsDisplay(projects);
-    enableDragProject();
+    if (toIndex > 0) {
+      event.target.parentNode.insertBefore(
+        draggedItem,
+        event.target.parentNode.children[toIndex]
+      );
+      projects.moveProject(fromIndex, toIndex);
+      activeProject = projects.projects[toIndex];
+      draggedItem = null;
+      updateProjectsDisplay(projects, activeProject);
+      enableDragProject();
+    }
   }
 
   // Initialize the screen

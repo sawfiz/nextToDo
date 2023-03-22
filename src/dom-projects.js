@@ -170,6 +170,10 @@ const projectListClickHandler = (e, projects) => {
     }
 
     if (e.target.classList.contains('dots')) {
+      activeProject = projects.projects[index];
+      const largeProjectNameEl = document.querySelector('.large-project-name');
+      largeProjectNameEl.innerText = activeProject.name;
+      updateTasksDisplay(projects, activeProject.tasks);
       showOverlay();
       addProjectMiniMenu(projects, parentEl, index);
     }
