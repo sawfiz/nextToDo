@@ -225,6 +225,9 @@ const screenController = () => {
     completedEl.classList.remove('active-view');
     allTasksEl.classList.remove('active-view');
     searchInputEl.classList.remove('active-view');
+    Array.from(global.projectListEl.children).forEach((projectEl) => {
+      projectEl.classList.remove('active-project');
+    });
   };
 
   const switchToView = (element, view) => {
@@ -279,17 +282,17 @@ const screenController = () => {
 
   // Draggable stuff
   let draggedItem;
-  let start;
   let fromIndex;
   let toIndex;
 
   function onDragStart(event) {
     draggedItem = event.target;
-    start = event.clientY;
 
     event.dataTransfer.setData('text/plain', '');
     fromIndex = event.target.dataset.id;
     activeProject = projects.projects[fromIndex];
+    removeViewHighlight();
+    draggedItem.classList.add('active-project');
     updateTasksDisplay(
       projects,
       activeProject.tasks,
@@ -305,28 +308,25 @@ const screenController = () => {
       const rect = event.target.getBoundingClientRect();
       // Find out how much the item is dragged
       // 5 is the margin bottom
-      const offsetY = Math.floor((event.clientY - start) / (rect.height + 5));
-      // If dragging downwards
-      if (event.clientY > start) {
-        toIndex = Number(fromIndex) + offsetY;
-      } else { // Dragging up
-        toIndex = Number(fromIndex) + offsetY + 1;
+
+      const offsetY = event.clientY - rect.top;
+      if (offsetY < rect.height / 2) {
+        event.target.parentNode.insertBefore(draggedItem, event.target);
+      } else {
+        event.target.parentNode.insertBefore(
+          draggedItem,
+          event.target.nextSibling
+        );
       }
     }
   }
 
-  function onDragEnd(event) {
-    if (toIndex > 0) {
-      event.target.parentNode.insertBefore(
-        draggedItem,
-        event.target.parentNode.children[toIndex]
-      );
-      projects.moveProject(fromIndex, toIndex);
-      activeProject = projects.projects[toIndex];
-      draggedItem = null;
-      updateProjectsDisplay(projects, activeProject);
-      enableDragProject();
-    }
+  function onDragEnd() {
+    toIndex = Array.from(global.projectListEl.children).indexOf(draggedItem);
+    projects.moveProject(fromIndex, toIndex);
+    draggedItem = null;
+    updateProjectsDisplay(projects, activeProject);
+    enableDragProject();
   }
 
   // Initialize the screen
