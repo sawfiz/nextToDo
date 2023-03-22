@@ -225,6 +225,10 @@ const screenController = () => {
     completedEl.classList.remove('active-view');
     allTasksEl.classList.remove('active-view');
     searchInputEl.classList.remove('active-view');
+  };
+
+  // Clear highlight in Projects
+  const removeProjectHighlight = () => {
     Array.from(global.projectListEl.children).forEach((projectEl) => {
       projectEl.classList.remove('active-project');
     });
@@ -292,6 +296,7 @@ const screenController = () => {
     fromIndex = event.target.dataset.id;
     activeProject = projects.projects[fromIndex];
     removeViewHighlight();
+    removeProjectHighlight();
     draggedItem.classList.add('active-project');
     updateTasksDisplay(
       projects,
