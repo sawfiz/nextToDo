@@ -278,28 +278,34 @@ const screenController = () => {
 
   // Draggable stuff
   let draggedItem;
-  let oldIndex;
-  let newIndex;
+  let fromIndex;
+  let toIndex;
 
   function onDragStart(event) {
     draggedItem = event.target;
     event.dataTransfer.setData('text/plain', '');
-    oldIndex = event.target.dataset.id;
+    fromIndex = event.target.dataset.id;
   }
 
   function onDragOver(event) {
     event.preventDefault();
     if (event.target.classList.contains('draggable-item')) {
-      newIndex = event.target.dataset.id;
+      const rect = event.target.getBoundingClientRect();
+      const offsetY = event.clientY - rect.top;
+      if (offsetY > 0) {
+        toIndex = event.target.dataset.id;
+      } else {
+        toIndex = event.target.nexSibling.dataset.id;
+      }
     }
   }
 
   function onDragEnd(event) {
     event.target.parentNode.insertBefore(
       draggedItem,
-      event.target.parentNode.children[newIndex]
+      event.target.parentNode.children[toIndex]
     );
-    projects.swapProject(oldIndex, newIndex);
+    projects.moveProject(fromIndex, toIndex);
     draggedItem = null;
     updateProjectsDisplay(projects);
     enableDragProject();

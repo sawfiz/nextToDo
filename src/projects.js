@@ -49,6 +49,12 @@ const Projects = () => {
     projects[index2] = temp;
     saveProjects();
   };
+  
+  const moveProject = (fromIndex, toIndex) => {
+    const projectToMove = projects.splice(fromIndex, 1)[0];
+    projects.splice(toIndex, 0, projectToMove);
+    saveProjects();
+  };
 
   // Change the name of the project
   const renameProject = (project, newName) => {
@@ -71,6 +77,7 @@ const Projects = () => {
     moveTasktoProject,
     removeProject,
     swapProject,
+    moveProject,
     saveProjects,
     renameProject,
     get projects() {

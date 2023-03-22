@@ -354,6 +354,22 @@ const addSampleTasks = (projects) => {
     project.tasks.length
   );
   projects.addTaskToProject(task, project);
+
+  // Create Project 4
+  projects.addProject('Test 1');
+  project = projects.projects[4];
+  // Create Project 5
+  projects.addProject('Test 2');
+  project = projects.projects[5];
+  // Create Project 6
+  projects.addProject('Test 3');
+  project = projects.projects[6];
+  // Create Project 7
+  projects.addProject('Test 4');
+  project = projects.projects[7];
+  // Create Project 8
+  projects.addProject('Test 5');
+  project = projects.projects[8];
 };
 
 export default addSampleTasks;
