@@ -278,28 +278,19 @@ const screenController = () => {
 
   // Draggable stuff
   let draggedItem;
-  let oldIndex, newIndex;
+  let oldIndex;
+  let newIndex;
 
   function onDragStart(event) {
     draggedItem = event.target;
     event.dataTransfer.setData('text/plain', '');
     oldIndex = event.target.dataset.id;
-    console.log(
-      '🚀 ~ file: screenController.js:287 ~ onDragStart ~ oldIndex:',
-      oldIndex
-    );
   }
 
   function onDragOver(event) {
     event.preventDefault();
     if (event.target.classList.contains('draggable-item')) {
-      const rect = event.target.getBoundingClientRect();
-      const offsetY = event.clientY - rect.top;
-      if (offsetY < rect.height / 2) {
-        newIndex = event.target.dataset.id;
-      } else {
-        newIndex = event.target.nextSibling.dataset.id;
-      }
+      newIndex = event.target.dataset.id;
     }
   }
 
@@ -314,6 +305,7 @@ const screenController = () => {
     enableDragProject();
   }
 
+  // Initialize the screen
   updateProjectsDisplay(projects, activeProject);
   enableDragProject();
   updateTasksListHeader(projects, activeProject, showView !== false);
