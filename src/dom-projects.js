@@ -79,19 +79,34 @@ const updateProjectsDisplay = (projects, activeProject) => {
 
   // Go through each project in projects[]
   projects.projects.forEach((project, index) => {
-    const projectEl = createElement('div', ['project'], { 'data-id': index });
+    const projectEl = createElement('div', ['project', 'draggable-item'], {
+      draggable: true,
+      'data-id': index,
+    });
     const projectNameEl = createElement(
       'div',
       ['project-name', 'mdi', 'mdi-list-box-outline'],
-      { style: 'cursor: pointer' },
+      {},
       ` ${project.name}`
     );
     projectEl.appendChild(projectNameEl);
 
+    if (index !== 0) {
+      const dotsEl = createElement('div', ['dots', 'hide-project-icon'], {}, '⠇');
+      const dragHandelEl = createElement(
+        'div',
+        ['drag-handle', 'mdi', 'mdi-menu', 'hide-project-icon'],
+        {},
+        ''
+      );
+      projectEl.appendChild(dotsEl);
+      projectEl.appendChild(dragHandelEl);
+    }
+
     // Highlight the active project, and add a mini menu
     if (project === activeProject) {
       projectEl.classList.add('active-project');
-      addProjectMiniMenu(projects, projectEl, index);
+      // addProjectMiniMenu(projects, projectEl, index);
     }
 
     global.projectListEl.appendChild(projectEl);
@@ -137,16 +152,24 @@ const projectListClickHandler = (e, projects) => {
   let activeProject;
   const parentEl = e.target.parentElement;
   const grandParentEl = parentEl.parentElement;
+  index = Number(parentEl.dataset.id);
 
   return new Promise((resolve, reject) => {
     // Clicked on a project-name
     if (e.target.classList.contains('project-name')) {
       // id is stored as a string, need to convert it to a number to avoid issues
-      index = Number(parentEl.dataset.id);
       activeProject = projects.projects[index];
       updateTasksDisplay(projects, activeProject.tasks);
       resolve(index);
-    } else if (parentEl.classList.contains('project-mini-menu')) { // Clicked on mini menu
+    }
+
+    if (e.target.classList.contains('dots')) {
+      showOverlay();
+      addProjectMiniMenu(projects, parentEl, index);
+    }
+
+    if (parentEl.classList.contains('project-mini-menu')) {
+      // Clicked on mini menu
       // id is stored as a string, need to convert it to a number to avoid issues
       index = Number(grandParentEl.dataset.id);
 

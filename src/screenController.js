@@ -58,6 +58,8 @@ const screenController = () => {
   const addProjectBtn = document.querySelector('.add-project');
   const showCompletedCheckbox = document.querySelector('#show-completed');
   showCompletedCheckbox.checked = showCompleted;
+  const largeProjectNameEl = document.querySelector('.large-project-name');
+  let currentViewName = 'Today';
 
   const overlay = document.querySelector('.overlay');
   overlay.addEventListener('click', () => {
@@ -115,14 +117,23 @@ const screenController = () => {
     projectListClickHandler(e, projects)
       .then((index) => {
         activeProject = projects.projects[index];
+        largeProjectNameEl.innerText = activeProject.name;
         updateProjectsDisplay(projects, activeProject);
         showView = false;
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
-        updateTasksDisplay(projects, activeProject.tasks, showView, false, activeProject);
+        updateTasksDisplay(
+          projects,
+          activeProject.tasks,
+          showView,
+          false,
+          activeProject
+        );
+        hideOverlay();
       })
       .catch(() => {
         updateProjectsDisplay(projects, activeProject);
+        hideOverlay();
       });
   });
 
@@ -208,43 +219,91 @@ const screenController = () => {
     if (view !== 'search') searchInputEl.value = '';
     element.classList.add('active-view');
     showView = view;
+    largeProjectNameEl.innerText = currentViewName;
     updateTasksListHeader(projects, activeProject, showView !== false);
   };
 
   // The views event listeners
   todayEl.addEventListener('click', () => {
+    currentViewName = 'Today';
     switchToView(todayEl, 'today');
     todayClickHandler(projects);
   });
-
+  
   next7daysEl.addEventListener('click', () => {
+    currentViewName = 'Next 7 days';
     switchToView(next7daysEl, 'next7days');
     next7daysClickHandler(projects);
   });
-
+  
   undatedEl.addEventListener('click', () => {
+    currentViewName = 'Undated';
     switchToView(undatedEl, 'undated');
     undatedClickHandler(projects);
   });
-
+  
   completedEl.addEventListener('click', () => {
+    currentViewName = 'Completed';
     switchToView(completedEl, 'completed');
     completedClickHandler(projects);
   });
-
+  
   allTasksEl.addEventListener('click', () => {
+    currentViewName = 'All tasks';
     switchToView(allTasksEl, 'alltasks');
     allTasksClickHandler(projects);
   });
-
+  
   searchInputEl.addEventListener('change', () => {
+    currentViewName = 'Search results...';
     switchToView(searchInputEl, 'search');
     searchClickHandler(projects, searchInputEl.value);
   });
 
+  // Draggable stuff
+  let draggedItem;
+
+  function onDragStart(event) {
+    draggedItem = event.target;
+    event.dataTransfer.setData('text/plain', '');
+  }
+
+  function onDragOver(event) {
+    console.log('dragged over');
+    event.preventDefault();
+    if (event.target.classList.contains('draggable-item')) {
+      const rect = event.target.getBoundingClientRect();
+      const offsetY = event.clientY - rect.top;
+      if (offsetY < rect.height / 2) {
+        event.target.parentNode.insertBefore(draggedItem, event.target);
+      } else {
+        event.target.parentNode.insertBefore(
+          draggedItem,
+          event.target.nextSibling
+        );
+      }
+    }
+  }
+
+  function onDragEnd() {
+    draggedItem = null;
+  }
+
   updateProjectsDisplay(projects, activeProject);
   updateTasksListHeader(projects, activeProject, showView !== false);
   updateTasksDisplay(projects, activeProject.tasks, showView);
+
+  // Attach event listeners
+  const draggableItems = document.querySelectorAll('.draggable-item');
+  console.log(
+    '🚀 ~ file: screenController.js:284 ~ screenController ~ draggableItems:',
+    draggableItems
+  );
+  draggableItems.forEach((item) => {
+    item.addEventListener('dragstart', onDragStart);
+    item.addEventListener('dragover', onDragOver);
+    item.addEventListener('dragend', onDragEnd);
+  });
 };
 
 export default screenController;
