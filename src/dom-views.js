@@ -42,7 +42,7 @@ const undatedClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true, true);
+  updateTasksDisplay(projects, list, true);
 };
 
 const completedClickHandler = (projects) => {

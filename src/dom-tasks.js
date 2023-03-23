@@ -131,8 +131,11 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
   
 
   const taskEl = global.tasksListEl.children[row];
+  console.log("🚀 ~ file: dom-tasks.js:134 ~ taskListClickHandler ~ taskEl:", taskEl)
   const projectName = taskEl.getAttribute('data-projectName');
+  console.log("🚀 ~ file: dom-tasks.js:136 ~ taskListClickHandler ~ projectName:", projectName)
   const taskIndex = taskEl.getAttribute('data-taskIndex');
+  console.log("🚀 ~ file: dom-tasks.js:138 ~ taskListClickHandler ~ taskIndex:", taskIndex)
 
   const thisProject =
     showView === true
