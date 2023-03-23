@@ -375,7 +375,7 @@ footer {
   visibility: hidden;
 }
 
-.task:hover .hide-project-icon {
+.task:hover .hide-project {
   font-weight: 100;
   visibility: visible;
   margin: auto;

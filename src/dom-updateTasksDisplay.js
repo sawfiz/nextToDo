@@ -224,11 +224,6 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     // if (showProject) {
     const { projectName } = task;
 
-    // if (activeProject) {
-    //   projectName = activeProject.name;
-    // } else {
-    //   projectName = projects.projects[task.projectIndex].name;
-    // }
     const projectNameEl = createElement(
       'div',
       ['limited-text'],
@@ -239,7 +234,6 @@ const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
     if (!showProject) {
       projectNameEl.classList.add('hide-project');
     }
-    // }
 
     col++;
     const startDateText = getDateText(task.startDate);
