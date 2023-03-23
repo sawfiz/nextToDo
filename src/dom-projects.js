@@ -165,7 +165,7 @@ const projectListClickHandler = (e, projects) => {
     if (e.target.classList.contains('project-name')) {
       // id is stored as a string, need to convert it to a number to avoid issues
       activeProject = projects.projects[index];
-      updateTasksDisplay(projects, activeProject.tasks);
+      updateTasksDisplay(activeProject.tasks);
       resolve(index);
     }
 
@@ -173,7 +173,7 @@ const projectListClickHandler = (e, projects) => {
       activeProject = projects.projects[index];
       const largeProjectNameEl = document.querySelector('.large-project-name');
       largeProjectNameEl.innerText = activeProject.name;
-      updateTasksDisplay(projects, activeProject.tasks);
+      updateTasksDisplay(activeProject.tasks);
       showOverlay();
       addProjectMiniMenu(projects, parentEl, index);
     }

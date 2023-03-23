@@ -14,7 +14,7 @@ const todayClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(list, true);
 };
 
 const next7daysClickHandler = (projects) => {
@@ -28,7 +28,7 @@ const next7daysClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(list, true);
 };
 
 const undatedClickHandler = (projects) => {
@@ -42,7 +42,7 @@ const undatedClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(list, true);
 };
 
 const completedClickHandler = (projects) => {
@@ -56,7 +56,8 @@ const completedClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true, true);
+  // This call makes the use of the last parameter, sets showCompleted = true
+  updateTasksDisplay(list, true, true);
 };
 
 const allTasksClickHandler = (projects) => {
@@ -68,7 +69,7 @@ const allTasksClickHandler = (projects) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(list, true);
 };
 
 const searchClickHandler = (projects, text) => {
@@ -79,7 +80,7 @@ const searchClickHandler = (projects, text) => {
     });
   });
   localStorage.setItem('list', JSON.stringify(list));
-  updateTasksDisplay(projects, list, true);
+  updateTasksDisplay(list, true);
 };
 
 export {

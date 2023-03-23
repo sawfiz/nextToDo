@@ -6,7 +6,6 @@ import * as global from './globalConstants';
 import createElement from './createElement';
 import Task from './task';
 import { showOverlay } from './utils';
-// import updateTasksDisplay from './updateTasksDisplay';
 
 // Function for adding a new task
 const addNewTask = (projects, activeProject, showView) => {

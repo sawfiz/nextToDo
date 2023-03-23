@@ -81,10 +81,10 @@ const screenController = () => {
   const updateCurrentView = () => {
     if (showView) {
       list = JSON.parse(localStorage.getItem('list'));
-      updateTasksDisplay(projects, list, showView, showView === 'completed');
+      updateTasksDisplay(list, showView, showView === 'completed');
       enableDragProject();
     } else {
-      updateTasksDisplay(projects, activeProject.tasks);
+      updateTasksDisplay(activeProject.tasks);
       largeProjectNameEl.innerText = activeProject.name;
     }
     updateProjectsDisplay(projects, activeProject);
@@ -117,7 +117,7 @@ const screenController = () => {
         updateProjectsDisplay(projects, activeProject);
         enableDragProject();
         updateTasksListHeader(projects, activeProject, showView);
-        updateTasksDisplay(projects, activeProject.tasks);
+        updateTasksDisplay(activeProject.tasks);
         hideOverlay();
       })
       .catch(() => {
@@ -138,7 +138,6 @@ const screenController = () => {
         removeViewHighlight();
         updateTasksListHeader(projects, activeProject, showView !== false);
         updateTasksDisplay(
-          projects,
           activeProject.tasks,
           showView,
           false,
@@ -300,7 +299,6 @@ const screenController = () => {
     removeProjectHighlight();
     draggedItem.classList.add('active-project');
     updateTasksDisplay(
-      projects,
       activeProject.tasks,
       showView,
       showView === 'completed'
@@ -405,7 +403,7 @@ const screenController = () => {
   updateProjectsDisplay(projects, activeProject);
   enableDragProject();
   updateTasksListHeader(projects, activeProject, showView !== false);
-  updateTasksDisplay(projects, activeProject.tasks, showView);
+  updateTasksDisplay(activeProject.tasks, showView);
 };
 
 export default screenController;

@@ -54,7 +54,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     focusAscend = focusAscend ? false : true;
     const sortedList = sortByKey(list, 'focus', focusAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
+    updateTasksDisplay(sortedList, showProject, false);
   });
 
   const sortByStatusBtn = createElement(
@@ -69,7 +69,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     statusAscend = statusAscend ? false : true;
     const sortedList = sortByKey(list, 'status', statusAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
+    updateTasksDisplay(sortedList, showProject, false);
   });
 
   const headerDescriptionEl = createElement('div', [], {}, 'Description ');
@@ -86,7 +86,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     descriptionAscend = descriptionAscend ? false : true;
     const sortedList = sortByKey(list, 'description', descriptionAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
+    updateTasksDisplay(sortedList, showProject, false);
   });
 
   const headerProjectNameEl = createElement('div', [], {}, '');
@@ -107,7 +107,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
       // Todo: should sort by project name, not project index
       const sortedList = sortByKey(list, 'projectIndex', projectAscend);
       localStorage.setItem('list', JSON.stringify(sortedList));
-      updateTasksDisplay(projects, sortedList, showProject, false);
+      updateTasksDisplay(sortedList, showProject, false);
     });
   }
   taskListHeaderEl.appendChild(headerProjectNameEl);
@@ -126,7 +126,7 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     startDateAscend = startDateAscend ? false : true;
     const sortedList = sortByKey(list, 'startDate', startDateAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
+    updateTasksDisplay(sortedList, showProject, false);
   });
 
   const headerDueDateEl = createElement('div', [], {}, 'Due ');
@@ -143,11 +143,11 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     dueDateAscend = dueDateAscend ? false : true;
     const sortedList = sortByKey(list, 'dueDate', dueDateAscend);
     localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(projects, sortedList, showProject, false);
+    updateTasksDisplay(sortedList, showProject, false);
   });
 };
 
-const updateTasksDisplay = (projects, taskList, showProject, completedView) => {
+const updateTasksDisplay = (taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
   // Display the tasks list body
