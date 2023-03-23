@@ -64,6 +64,7 @@ const screenController = () => {
   const overlay = document.querySelector('.overlay');
   overlay.addEventListener('click', () => {
     updateCurrentView();
+    dropdownContainer.classList.remove('open');
     hideOverlay();
   });
 
@@ -333,6 +334,72 @@ const screenController = () => {
     updateProjectsDisplay(projects, activeProject);
     enableDragProject();
   }
+
+  // Dropdown menu for changing color theme
+  const dropdownBtn = document.querySelector('.dropdown-btn');
+  const dropdownContainer = document.querySelector('.dropdown-container');
+  dropdownBtn.addEventListener('click', () => {
+    showOverlay();
+    dropdownContainer.classList.add('open');
+  });
+
+  const optionsEl = document.querySelector('.dropdown-content');
+  optionsEl.addEventListener('click', (e) => {
+    const clickedOption = e.target.textContent;
+    dropdownBtn.textContent = `Color theme: ${clickedOption}`;
+    dropdownContainer.classList.remove('open');
+    switch (clickedOption) {
+      case 'Blue':
+        document.documentElement.style.setProperty('--darker-color', '#ff0000');
+        document.documentElement.style.setProperty('--dark-color', '#11cbd7');
+        document.documentElement.style.setProperty('--light-color', '#c6f1e7');
+        document.documentElement.style.setProperty(
+          '--lighter-color',
+          '#f0fff3'
+        );
+        break;
+      case 'Brown':
+        document.documentElement.style.setProperty('--darker-color', '4d4d4d');
+        document.documentElement.style.setProperty('--dark-color', '#b46060');
+        document.documentElement.style.setProperty('--light-color', '#ffbf9b');
+        document.documentElement.style.setProperty(
+          '--lighter-color',
+          '#fff4ed'
+        );
+        break;
+      case 'Red':
+        document.documentElement.style.setProperty('--darker-color', '#002b5b');
+        document.documentElement.style.setProperty('--dark-color', '#ea5455');
+        document.documentElement.style.setProperty('--light-color', '#e4dccf');
+        document.documentElement.style.setProperty(
+          '--lighter-color',
+          '#f9f5eb'
+        );
+        break;
+      case 'Green':
+        document.documentElement.style.setProperty('--darker-color', '#40513b');
+        document.documentElement.style.setProperty('--dark-color', '#609966');
+        document.documentElement.style.setProperty('--light-color', '#9dc08b');
+        document.documentElement.style.setProperty(
+          '--lighter-color',
+          '#edf1d6'
+        );
+        break;
+      case 'Orange':
+        document.documentElement.style.setProperty('--darker-color', '#183a1d');
+        document.documentElement.style.setProperty('--dark-color', '#f0a04b');
+        document.documentElement.style.setProperty('--light-color', '#e1eedd');
+        document.documentElement.style.setProperty(
+          '--lighter-color',
+          '#fefbe9'
+        );
+        break;
+
+      default:
+        break;
+    }
+    hideOverlay();
+  });
 
   // Initialize the screen
   updateProjectsDisplay(projects, activeProject);
