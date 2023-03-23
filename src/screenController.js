@@ -116,7 +116,7 @@ const screenController = () => {
         showView = false;
         updateProjectsDisplay(projects, activeProject);
         enableDragProject();
-        updateTasksListHeader(projects, activeProject, showView);
+        updateTasksListHeader(activeProject, showView);
         updateTasksDisplay(activeProject.tasks);
         hideOverlay();
       })
@@ -136,13 +136,8 @@ const screenController = () => {
         enableDragProject();
         showView = false;
         removeViewHighlight();
-        updateTasksListHeader(projects, activeProject, showView !== false);
-        updateTasksDisplay(
-          activeProject.tasks,
-          showView,
-          false,
-          activeProject
-        );
+        updateTasksListHeader(activeProject, showView );
+        updateTasksDisplay(activeProject.tasks, showView, false, activeProject);
         hideOverlay();
       })
       .catch(() => {
@@ -244,7 +239,7 @@ const screenController = () => {
     element.classList.add('active-view');
     showView = view;
     largeProjectNameEl.innerText = currentViewName;
-    updateTasksListHeader(projects, activeProject, showView !== false);
+    updateTasksListHeader(activeProject, showView);
   };
 
   // The views event listeners
@@ -298,11 +293,7 @@ const screenController = () => {
     removeViewHighlight();
     removeProjectHighlight();
     draggedItem.classList.add('active-project');
-    updateTasksDisplay(
-      activeProject.tasks,
-      showView,
-      showView === 'completed'
-    );
+    updateTasksDisplay(activeProject.tasks, showView, showView === 'completed');
     largeProjectNameEl.innerText = activeProject.name;
   }
 
@@ -402,7 +393,7 @@ const screenController = () => {
   // Initialize the screen
   updateProjectsDisplay(projects, activeProject);
   enableDragProject();
-  updateTasksListHeader(projects, activeProject, showView !== false);
+  updateTasksListHeader(activeProject, showView);
   updateTasksDisplay(activeProject.tasks, showView);
 };
 

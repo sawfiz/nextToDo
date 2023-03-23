@@ -30,17 +30,19 @@ const sortByKey = (array, key, sortAscend) => {
   });
 };
 
-const updateTasksListHeader = (projects, activeProject, showProject) => {
+const sortAndUpdate = (activeProject, sortKey, sortDirection, showProject) => {
+  const list = getList(activeProject, showProject);
+  const sortedList = sortByKey(list, sortKey, sortDirection);
+  localStorage.setItem('list', JSON.stringify(sortedList));
+  updateTasksDisplay(sortedList, showProject, false);
+};
+
+// Refresh the task list header, add sort buttons, and add event listeners
+const updateTasksListHeader = (activeProject, showProject) => {
   // Display the tasks list header
   const taskListHeaderEl = document.querySelector('.tasks-list-header');
   taskListHeaderEl.innerHTML = '';
-  // if (showProject) {
-  //   taskListHeaderEl.classList.remove('not-show-project-name');
   taskListHeaderEl.classList.add('show-project-name');
-  // } else {
-  //   taskListHeaderEl.classList.remove('show-project-name');
-  //   taskListHeaderEl.classList.add('not-show-project-name');
-  // }
 
   const sortByFocusBtn = createElement(
     'btn',
@@ -50,11 +52,8 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   );
   taskListHeaderEl.appendChild(sortByFocusBtn);
   sortByFocusBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
     focusAscend = focusAscend ? false : true;
-    const sortedList = sortByKey(list, 'focus', focusAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(sortedList, showProject, false);
+    sortAndUpdate(activeProject, 'focus', focusAscend, showProject);
   });
 
   const sortByStatusBtn = createElement(
@@ -65,11 +64,8 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   );
   taskListHeaderEl.appendChild(sortByStatusBtn);
   sortByStatusBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
     statusAscend = statusAscend ? false : true;
-    const sortedList = sortByKey(list, 'status', statusAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(sortedList, showProject, false);
+    sortAndUpdate(activeProject, 'status', statusAscend, showProject);
   });
 
   const headerDescriptionEl = createElement('div', [], {}, 'Description ');
@@ -82,17 +78,12 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   );
   headerDescriptionEl.appendChild(sortByDescriptionBtn);
   sortByDescriptionBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
     descriptionAscend = descriptionAscend ? false : true;
-    const sortedList = sortByKey(list, 'description', descriptionAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(sortedList, showProject, false);
+    sortAndUpdate(activeProject, 'description', descriptionAscend, showProject);
   });
 
   const headerProjectNameEl = createElement('div', [], {}, '');
   if (showProject) {
-    // taskListHeaderEl.classList.remove('not-show-project-name');
-    // taskListHeaderEl.classList.add('show-project-name');
     headerProjectNameEl.innerText = 'Project ';
     const sortByProjectBtn = createElement(
       'btn',
@@ -102,12 +93,9 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
     );
     headerProjectNameEl.appendChild(sortByProjectBtn);
     sortByProjectBtn.addEventListener('click', () => {
-      const list = getList(activeProject, showProject);
-      projectAscend = projectAscend ? false : true;
       // Todo: should sort by project name, not project index
-      const sortedList = sortByKey(list, 'projectIndex', projectAscend);
-      localStorage.setItem('list', JSON.stringify(sortedList));
-      updateTasksDisplay(sortedList, showProject, false);
+      projectAscend = projectAscend ? false : true;
+      sortAndUpdate(activeProject, 'projectName', projectAscend, showProject);
     });
   }
   taskListHeaderEl.appendChild(headerProjectNameEl);
@@ -122,11 +110,8 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   );
   headerStartDateEl.appendChild(sortByStartDateBtn);
   sortByStartDateBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
     startDateAscend = startDateAscend ? false : true;
-    const sortedList = sortByKey(list, 'startDate', startDateAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(sortedList, showProject, false);
+    sortAndUpdate(activeProject, 'startDate', startDateAscend, showProject);
   });
 
   const headerDueDateEl = createElement('div', [], {}, 'Due ');
@@ -139,14 +124,12 @@ const updateTasksListHeader = (projects, activeProject, showProject) => {
   );
   headerDueDateEl.appendChild(sortByDueDateBtn);
   sortByDueDateBtn.addEventListener('click', () => {
-    const list = getList(activeProject, showProject);
     dueDateAscend = dueDateAscend ? false : true;
-    const sortedList = sortByKey(list, 'dueDate', dueDateAscend);
-    localStorage.setItem('list', JSON.stringify(sortedList));
-    updateTasksDisplay(sortedList, showProject, false);
+    sortAndUpdate(activeProject, 'dueDate', dueDateAscend, showProject);
   });
 };
 
+// Function to display the task list
 const updateTasksDisplay = (taskList, showProject, completedView) => {
   const showCompleted = JSON.parse(localStorage.getItem('showCompleted'));
 
