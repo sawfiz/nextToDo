@@ -5,7 +5,7 @@ const List = (name, existingTasks = []) => {
   const printTasks = () => {
     tasks.forEach((task) => {
       // eslint-disable-next-line no-console
-      console.log(task.title);
+      console.log(task);
     });
   };
 
@@ -29,6 +29,7 @@ const List = (name, existingTasks = []) => {
   };
 
   const updateTask = (index, attribute, value) => {
+    console.log("🚀 ~ file: list.js:32 ~ updateTask ~ attribute, value:", attribute, value)
     switch (attribute) {
       case 'focus':
         tasks[index].focus = value;
@@ -52,6 +53,7 @@ const List = (name, existingTasks = []) => {
       default:
         break;
     }
+    printTasks()
   };
 
   const updateAllTasks = (attribute, value) => {

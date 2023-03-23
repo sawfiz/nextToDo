@@ -34,6 +34,7 @@ const Projects = () => {
 
   const updateTaskinProject = (project, index, attribute, value) => {
     project.updateTask(index, attribute, value);
+    console.log("🚀 ~ file: projects.js:37 ~ updateTaskinProject ~ index, attribute, value:", index, attribute, value)
     saveProjects();
   };
 

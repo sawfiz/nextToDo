@@ -136,13 +136,7 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
   );
   const projectName = taskEl.getAttribute('data-projectName');
 
-  // taskIndex is different depending on showing View of Project
-  let taskIndex;
-  if (showView) {
-    taskIndex = taskEl.getAttribute('data-taskIndex');
-  } else {
-    taskIndex = row;
-  }
+  const taskIndex = taskEl.getAttribute('data-taskIndex');
 
   const thisProject =
     showView === true
@@ -273,22 +267,24 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
       // Start date
       case '4': {
         showOverlay();
-        const startDateIndex = showView ? 4 : 3;
         const startDateEl = createElement(
           'input',
           ['date-edit'],
-          { type: 'date', value: taskEl.children[startDateIndex].dataset.date },
+          { type: 'date', value: taskEl.children[4].dataset.date },
           ''
         );
-        taskEl.replaceChild(startDateEl, taskEl.children[startDateIndex]);
+        taskEl.replaceChild(startDateEl, taskEl.children[4]);
         startDateEl.addEventListener('blur', () => {
-          console.log('start date blurred');
+          console.log('blurred');
+          console.log("🚀 ~ file: dom-tasks.js:292 ~ startDateEl.addEventListener ~ startDateEl.value:", startDateEl.value)
           projects.updateTaskinProject(
             thisProject,
             taskIndex,
             'startDate',
             startDateEl.value
           );
+          console.log("🚀 ~ file: dom-tasks.js:295 ~ startDateEl.addEventListener ~ startDateEl.value:", startDateEl.value)
+          
           resolve();
         });
         // Dismiss if Esc key is pressed
@@ -303,14 +299,13 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
       // Due date
       case '5': {
         showOverlay();
-        const dueDateIndex = showView ? 5 : 4;
         const dueDateEl = createElement(
           'input',
           ['date-edit'],
-          { type: 'date', value: taskEl.children[dueDateIndex].dataset.date },
+          { type: 'date', value: taskEl.children[5].dataset.date },
           ''
         );
-        taskEl.replaceChild(dueDateEl, taskEl.children[dueDateIndex]);
+        taskEl.replaceChild(dueDateEl, taskEl.children[5]);
         dueDateEl.addEventListener('blur', () => {
           projects.updateTaskinProject(
             thisProject,
