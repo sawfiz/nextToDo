@@ -178,15 +178,16 @@ h2 {
 }
 
 .settings-container {
-  margin: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  width: 95%;
+  margin: 5px 0.5rem;
+  display: grid;
+  grid-template-columns: 40px auto;
+  gap: 5px;
 }
 
 .main {
   margin: 5px;
-  border-left: 3px var(--darker-color) solid;
+  /* border-left: 3px var(--darker-color) solid; */
   background-color: var(--lighter-color);
 }
 
@@ -411,6 +412,7 @@ footer {
 /* The color theme dropdown */
 .dropdown-container {
   position: relative;
+  margin-left: 0.5rem;
   /* display: inline-block; */
 }
 
@@ -477,3 +479,55 @@ footer {
   animation: moveUp 0.3s ease-out;
 }
 
+/* Toggle switch to show/hide complted tasks */
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--dark-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.slider.round {
+  border-radius: 10px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
