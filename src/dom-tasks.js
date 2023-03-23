@@ -125,22 +125,18 @@ const addNewTask = (projects, activeProject, showView) => {
 // Handles a valid click on the tasks list
 const taskListClickHandler = (e, projects, activeProject, showView) => {
   const { row } = e.target.dataset;
+  console.log("🚀 ~ file: dom-tasks.js:128 ~ taskListClickHandler ~ row:", row)
   const { col } = e.target.dataset;
-  console.log('🚀 ~ file: dom-tasks.js:126 ~ taskListClickHandler ~ col:', col);
+  console.log("🚀 ~ file: dom-tasks.js:130 ~ taskListClickHandler ~ col:", col)
+  
 
   const taskEl = global.tasksListEl.children[row];
-  // taskEl.classList.add('active-task');
-  console.log(
-    '🚀 ~ file: dom-tasks.js:131 ~ taskListClickHandler ~ taskEl:',
-    taskEl
-  );
   const projectName = taskEl.getAttribute('data-projectName');
-
   const taskIndex = taskEl.getAttribute('data-taskIndex');
 
   const thisProject =
     showView === true
-      ? projects.projects.findIndex((project) => project.name === projectName)
+      ? projects.projects[projects.projects.findIndex((project) => project.name === projectName)]
       : activeProject;
 
   return new Promise((resolve, reject) => {
@@ -200,8 +196,10 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
         taskEl.replaceChild(descriptionEl, taskEl.children[2]);
         descriptionEl.focus();
         showOverlay();
-        // Create a new task if the Enter key is pressed
+
+        // Change task description if the Enter key is pressed
         descriptionEl.addEventListener('keydown', (e) => {
+          console.log("🚀 ~ file: dom-tasks.js:212 ~ descriptionEl.addEventListener ~ thisProject:", thisProject)
           if (e.keyCode === 13) {
             if (descriptionEl.value) {
               projects.updateTaskinProject(
@@ -243,10 +241,6 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
 
         taskEl.replaceChild(projectDropDownEl, taskEl.children[3]);
         projectDropDownEl.addEventListener('change', () => {
-          console.log(
-            '🚀 ~ file: dom-tasks.js:268 ~ projectDropDownEl.addEventListener ~ projectDropDownEl.value:',
-            projectDropDownEl.value
-          );
           projects.updateTaskinProject(
             thisProject,
             taskIndex,
@@ -276,15 +270,12 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
         taskEl.replaceChild(startDateEl, taskEl.children[4]);
         startDateEl.addEventListener('blur', () => {
           console.log('blurred');
-          console.log("🚀 ~ file: dom-tasks.js:292 ~ startDateEl.addEventListener ~ startDateEl.value:", startDateEl.value)
           projects.updateTaskinProject(
             thisProject,
             taskIndex,
             'startDate',
             startDateEl.value
           );
-          console.log("🚀 ~ file: dom-tasks.js:295 ~ startDateEl.addEventListener ~ startDateEl.value:", startDateEl.value)
-          
           resolve();
         });
         // Dismiss if Esc key is pressed

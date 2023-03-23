@@ -53,7 +53,6 @@ const List = (name, existingTasks = []) => {
       default:
         break;
     }
-    printTasks()
   };
 
   const updateAllTasks = (attribute, value) => {

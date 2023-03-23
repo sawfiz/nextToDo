@@ -85,9 +85,9 @@ const screenController = () => {
       enableDragProject();
     } else {
       updateTasksDisplay(projects, activeProject.tasks);
+      largeProjectNameEl.innerText = activeProject.name;
     }
     updateProjectsDisplay(projects, activeProject);
-    largeProjectNameEl.innerText = activeProject.name;
   };
 
   // The add task button
