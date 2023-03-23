@@ -104,7 +104,7 @@ const addNewTask = (projects, activeProject, showView) => {
 
     // Create a new task if the Enter key is pressed
     descriptionEl.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
+      if (e.key === 'Enter') {
         if (descriptionEl.value) {
           addNewTaskToProject();
           resolve();
@@ -202,7 +202,7 @@ const taskListClickHandler = (e, projects, activeProject, showView) => {
         // Change task description if the Enter key is pressed
         descriptionEl.addEventListener('keydown', (e) => {
           console.log("🚀 ~ file: dom-tasks.js:212 ~ descriptionEl.addEventListener ~ thisProject:", thisProject)
-          if (e.keyCode === 13) {
+          if (e.key === 'Enter') {
             if (descriptionEl.value) {
               projects.updateTaskinProject(
                 thisProject,

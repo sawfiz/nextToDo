@@ -112,7 +112,6 @@ const updateProjectsDisplay = (projects, activeProject) => {
     // Highlight the active project, and add a mini menu
     if (project === activeProject) {
       projectEl.classList.add('active-project');
-      // addProjectMiniMenu(projects, projectEl, index);
     }
 
     global.projectListEl.appendChild(projectEl);
@@ -131,7 +130,7 @@ const addNewProject = (projects) => {
     // A new project is only added if the Enter key is pressed and the name is not empty
     // An Enter with empty text or Esc key dismisses the input field with no new project created
     inputEl.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
+      if (e.key === 'Enter') {
         if (inputEl.value) {
           projects.addProject(inputEl.value);
           resolve();
