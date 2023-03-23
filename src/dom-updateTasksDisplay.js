@@ -14,6 +14,8 @@ let projectAscend = true;
 let startDateAscend = true;
 let dueDateAscend = true;
 
+// Get the list to display depending on the showProject setting
+// if of not show "Project" in the header
 const getList = (activeProject, showProject) => {
   if (showProject) {
     return JSON.parse(localStorage.getItem('list'));
@@ -21,6 +23,7 @@ const getList = (activeProject, showProject) => {
   return activeProject.tasks;
 };
 
+// Sort a list by a key, then return the new list
 const sortByKey = (array, key, sortAscend) => {
   return array.sort((a, b) => {
     if (sortAscend) {
@@ -30,6 +33,7 @@ const sortByKey = (array, key, sortAscend) => {
   });
 };
 
+// Actions taken when a sort button is clicked on
 const sortAndUpdate = (activeProject, sortKey, sortDirection, showProject) => {
   const list = getList(activeProject, showProject);
   const sortedList = sortByKey(list, sortKey, sortDirection);
@@ -151,11 +155,7 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
       },
       ''
     );
-    // if (showProject) {
     taskEl.classList.add('show-project-name');
-    // } else {
-    //   taskEl.classList.add('not-show-project-name');
-    // }
 
     let col = 0;
     const taskFocusEl = createElement(
@@ -167,12 +167,6 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
       },
       ''
     );
-    // if (task.focus) {
-    //   taskFocusEl.classList.add('mdi', 'mdi-weather-sunny');
-    //   taskFocusEl.style.color = 'red';
-    // } else {
-    //   taskFocusEl.classList.add('mdi', 'mdi-blur');
-    // }
     taskFocusEl.innerText = task.focus ? '‼️' : '🫥';
     taskEl.appendChild(taskFocusEl);
 
@@ -202,11 +196,8 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
     }
     taskEl.appendChild(taskDescriptionEl);
 
-    // If showing a view, rather than an active project
     col++;
-    // if (showProject) {
     const { projectName } = task;
-
     const projectNameEl = createElement(
       'div',
       ['limited-text'],
@@ -214,6 +205,7 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
       projectName
     );
     taskEl.appendChild(projectNameEl);
+    // If not in Views, hide the project name
     if (!showProject) {
       projectNameEl.classList.add('hide-project');
     }
@@ -226,7 +218,8 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
       { 'data-row': row, 'data-col': col, 'data-date': task.startDate },
       startDateText
     );
-    if (isOnOrBefore(task.startDate, 0)) {
+    // Show dates before today in red
+    if (isOnOrBefore(task.startDate, -1)) {
       taskStartDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskStartDateEl);
@@ -239,7 +232,8 @@ const updateTasksDisplay = (taskList, showProject, completedView) => {
       { 'data-row': row, 'data-col': col, 'data-date': task.dueDate },
       dueDateText
     );
-    if (isOnOrBefore(task.dueDate, 0)) {
+    // Show dates before today in red
+    if (isOnOrBefore(task.dueDate, -1)) {
       taskDueDateEl.classList.add('date-passed');
     }
     taskEl.appendChild(taskDueDateEl);
